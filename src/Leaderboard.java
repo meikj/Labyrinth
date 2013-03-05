@@ -30,7 +30,7 @@ public class Leaderboard {
 	 * @param file The leaderboard file to load
 	 */
 	public Leaderboard(String file) {
-		super();
+		this();
 	}
 	
 	/**

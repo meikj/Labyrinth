@@ -63,5 +63,26 @@ public class Tile {
 	public void setRotation(RotationAngle newRotation) {
 		this.rotation = newRotation;
 	}
+	
+	public String getTileString() {
+		switch(type) {
+			case CORNER:
+				// Return corner string
+				break;
+			case LINE:
+				// Return line string
+				break;
+			case TSHAPE:
+				// Return tshape string
+				break;
+			case CROSS:
+				// Return cross string
+				break;
+			default:
+				// Error occurred
+				System.out.println("[ERROR]: getTileString(): Invalid TileType");
+				break;
+		}
+	}
 
 }
