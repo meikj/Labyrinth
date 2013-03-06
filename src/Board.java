@@ -27,7 +27,9 @@ public class Board {
 		
 		for(int i = 0; i < width; i++) {
 			for(int j = 0; j < height; j++) {
-				tiles[i][j] = new Tile(TileType.EMPTY);
+				Tile TEMP = new Tile(TileType.TSHAPE);
+				TEMP.setRotation(RotationAngle.NINETY);
+				tiles[i][j] = TEMP;
 			}
 		}
 	}
@@ -36,12 +38,60 @@ public class Board {
 	 * Draw the game board to the standard output
 	 */
 	public void draw() {
+		String numberTop = "       ";
+		String borderTop = "     =====";
+		
+		for(int i = 0; i < width; i++)
+			numberTop += Integer.toString(i + 1) + "    ";
+		
+		for(int i = 1; i < width; i++)
+			borderTop += "=====";
+		
+		// Display top border
+		System.out.println(numberTop);
+		System.out.println(borderTop);
+		
+		// Display each tile
 		for(int i = 0; i < width; i++) {
+			// Form the row by concatenating each tile on the row together
+			// A tile is 3x3, so therefore consists of top, middle and bottom
+			
+			String rowTop = "  ||  ";
+			String rowMiddle = " " + Integer.toString(width - i) + "||  ";
+			String rowBottom = "  ||  ";
+			
 			for(int j = 0; j < height; j++) {
-				System.out.print("[" + tiles[i][j].getTileString() + "]");
+				// Split the tile up into its top, middle and bottom
+				// tileContents[0] = top
+				// tileContents[1] = middle
+				// tileContents[2] = bottom
+				
+				String tileString = tiles[i][j].getTileString();
+				String[] tileContents = tileString.split("\n");
+				
+				// Check which tile it is for correct border placement
+				if(j == (height - 1)) {
+					// Last tile on row requires a border
+					rowTop += tileContents[0] + "  ||";
+					rowMiddle += tileContents[1] + "  ||";
+					rowBottom += tileContents[2] + "  ||";
+				}
+				else {
+					// A tile will be placed to the right of this tile, so skip border
+					rowTop += tileContents[0] + "  ";
+					rowMiddle += tileContents[1] + "  ";
+					rowBottom += tileContents[2] + "  ";
+				}
 			}
-			System.out.println();
+			
+			// Output full row now
+			System.out.println(rowTop);
+			System.out.println(rowMiddle);
+			System.out.println(rowBottom);
 		}
+		
+		// Display bottom border
+		System.out.println(borderTop);
 	}
 	
 	/**

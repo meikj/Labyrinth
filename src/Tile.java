@@ -75,15 +75,26 @@ public class Tile {
 				// TODO
 				break;
 			case TSHAPE:
-				// Return tshape string
-				// TODO
-				break;
+				// Return tshape string:
+				// |  
+				// |--
+				// |
+				
+				if(rotation == RotationAngle.DEFAULT)
+					return "|  \n|--\n|  \n";
+				else if(rotation == RotationAngle.NINETY)
+					return "---\n | \n | \n";
+				else if(rotation == RotationAngle.HUNDREDANDEIGHTY)
+					return "  |\n--|\n  |\n";
+				else
+					return " | \n | \n---\n";
+				
 			case CROSS:
 				// Return cross string
-				return "+";
+				return " | \n- -\n | \n";
 			case EMPTY:
 				// Return empty string
-				return " ";
+				return "   \n   \n   \n";
 			default:
 				// Throw error?
 				break;
