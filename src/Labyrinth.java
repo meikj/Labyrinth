@@ -18,8 +18,6 @@ public class Labyrinth {
 		
 		while(true) {
 			Scanner sc = new Scanner(System.in);
-			
-			tc.getPlayer().setSpareTile(new Tile(TileType.CORNER));
 			 
 			tc.update();
 			 

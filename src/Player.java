@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Represents the player in the Labyrinth game
  * 
@@ -18,7 +20,14 @@ public class Player {
 	public Player() {
 		this.score = 0;
 		this.moves = 0;
-		this.spareTile = new Tile(TileType.TSHAPE);
+		
+		// Generate a random spare tile
+		Random r = new Random();
+		int randomSelection = r.nextInt(4); // CORNER, LINE, TSHAPE, CROSS
+		
+		TileType[] tileTypes = TileType.values();
+		
+		this.spareTile = new Tile(tileTypes[randomSelection]);
 	}
 	
 	public void setScore(int newScore) { score = newScore; }

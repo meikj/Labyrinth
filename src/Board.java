@@ -38,14 +38,14 @@ public class Board {
 	 * Draw the game board to the standard output
 	 */
 	public void draw() {
-		String numberTop = "       ";
-		String borderTop = "     =====";
+		String numberTop = "      ";
+		String borderTop = "     ===";
 		
 		for(int i = 0; i < width; i++)
-			numberTop += Integer.toString(i + 1) + "    ";
+			numberTop += Integer.toString(i + 1) + "  ";
 		
 		for(int i = 1; i < width; i++)
-			borderTop += "=====";
+			borderTop += "===";
 		
 		// Display top border
 		System.out.println(numberTop);
@@ -56,9 +56,9 @@ public class Board {
 			// Form the row by concatenating each tile on the row together
 			// A tile is 3x3, so therefore consists of top, middle and bottom
 			
-			String rowTop = "  ||  ";
-			String rowMiddle = " " + Integer.toString(width - i) + "||  ";
-			String rowBottom = "  ||  ";
+			String rowTop = "  || ";
+			String rowMiddle = " " + Integer.toString(width - i) + "|| ";
+			String rowBottom = "  || ";
 			
 			for(int j = 0; j < height; j++) {
 				// Split the tile up into its top, middle and bottom
@@ -72,15 +72,15 @@ public class Board {
 				// Check which tile it is for correct border placement
 				if(j == (height - 1)) {
 					// Last tile on row requires a border
-					rowTop += tileContents[0] + "  ||";
-					rowMiddle += tileContents[1] + "  ||";
-					rowBottom += tileContents[2] + "  ||";
+					rowTop += tileContents[0] + " ||";
+					rowMiddle += tileContents[1] + " ||";
+					rowBottom += tileContents[2] + " ||";
 				}
 				else {
 					// A tile will be placed to the right of this tile, so skip border
-					rowTop += tileContents[0] + "  ";
-					rowMiddle += tileContents[1] + "  ";
-					rowBottom += tileContents[2] + "  ";
+					rowTop += tileContents[0] + "";
+					rowMiddle += tileContents[1] + "";
+					rowBottom += tileContents[2] + "";
 				}
 			}
 			
@@ -91,6 +91,7 @@ public class Board {
 		}
 		
 		// Display bottom border
+		System.out.println();
 		System.out.println(borderTop);
 	}
 	
