@@ -52,6 +52,7 @@ public class TreasureChase {
 		tile.setRotation(newAngle);
 		board.setTile(x, y, tile);
 		player.setMoves(player.getMoves() + 1);
+		round++;
 	}
 	
 	/**
@@ -66,6 +67,7 @@ public class TreasureChase {
 		board.setTile(x, y, player.getSpareTile());
 		player.setSpareTile(oldTile);
 		player.setMoves(player.getMoves() + 1);
+		round++;
 	}
 	
 	/**
@@ -78,13 +80,40 @@ public class TreasureChase {
 	public void replaceTile(int x, int y, Tile newTile) {
 		board.setTile(x, y, newTile);
 		player.setMoves(player.getMoves() + 1);
+		round++;
 	}
 	
 	/**
 	 * Update the interface
 	 */
 	public void update() {
+		// Draw the board
 		board.draw();
+		
+		// Draw the "HUB"
+		Tile spareTile = player.getSpareTile();
+		String spareTileStr = spareTile.getTileString();
+		String[] tileRows = spareTileStr.split("\n");
+		
+		String roundString = Integer.toString(round);
+		
+		// Determine rounding padding
+		if(round < 10)
+			// Prepend 2 zeros
+			roundString = "00" + roundString;
+		else if(round < 100)
+			// Prepend 1 zero
+			roundString = "0" + roundString;
+		
+		// Score in Treasure Chase is rounds
+		
+		System.out.println(" ------------- ------- -------");
+		System.out.println("| SPARE  TILE | ROUND | SCORE |");
+		System.out.println("|=============|=======|=======|");
+		System.out.println("|     " + tileRows[0] + "     |       |       |");
+		System.out.println("|     " + tileRows[1] + "     |  " + roundString + "  |  " + roundString + "  |");
+		System.out.println("|     " + tileRows[2] + "     |       |       |");
+		System.out.println(" ------------- ------- -------");
 	}
 	
 	public void save() { return; }

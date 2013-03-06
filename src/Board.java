@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Represents the board in the Labyrinth game
  * 
@@ -25,11 +27,45 @@ public class Board {
 		
 		tiles = new Tile[width][height];
 		
+		Random r = new Random();
+		
+		// Set outside tiles to "walled" tiles
+		
+		// Top and bottom row tiles
 		for(int i = 0; i < width; i++) {
-			for(int j = 0; j < height; j++) {
-				Tile TEMP = new Tile(TileType.TSHAPE);
-				TEMP.setRotation(RotationAngle.NINETY);
-				tiles[i][j] = TEMP;
+			// Top row
+			tiles[0][i] = new Tile(TileType.TSHAPE, RotationAngle.NINETY);;
+			
+			// Bottom row
+			tiles[height - 1][i] = new Tile(TileType.TSHAPE, RotationAngle.TWOHUNDREDANDSEVENTY);
+		}
+		
+		// Side tiles (skip top and bottom row)
+		for(int i = 1; i < (height - 1); i++) {
+			// Left side
+			tiles[i][0] = new Tile(TileType.TSHAPE);
+			
+			// Right side
+			tiles[i][width - 1] = new Tile(TileType.TSHAPE, RotationAngle.HUNDREDANDEIGHTY);
+		}
+		
+		// Corners
+		tiles[0][0] = new Tile(TileType.CORNER);
+		tiles[0][width - 1] = new Tile(TileType.CORNER, RotationAngle.NINETY);
+		tiles[height - 1][width - 1] = new Tile(TileType.CORNER, RotationAngle.HUNDREDANDEIGHTY);
+		tiles[height - 1][0] = new Tile(TileType.CORNER, RotationAngle.TWOHUNDREDANDSEVENTY);
+		
+		// Set inside tiles to random
+		// Skip top row and bottom row
+		for(int i = 1; i < (height - 1); i++) {
+			// Skip far left and far right columns
+			for(int j = 1; j < (width - 1); j++) {
+				Tile randomTile;
+				int rNumber = r.nextInt(4); // CORNER, LINE, TSHAPE, CROSS
+				TileType[] tileTypes = TileType.values();
+				
+				randomTile = new Tile(tileTypes[rNumber]);
+				tiles[i][j] = randomTile;
 			}
 		}
 	}

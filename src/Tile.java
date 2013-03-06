@@ -23,6 +23,17 @@ public class Tile {
 	}
 	
 	/**
+	 * Construct a tile of a particular type and rotation
+	 * 
+	 * @param type The type of tile to construct
+	 * @param rotation The rotation of the tile to construct
+	 */
+	public Tile(TileType type, RotationAngle rotation) {
+		this(type);
+		this.rotation = rotation;
+	}
+	
+	/**
 	 * Get the tile type
 	 */
 	public TileType getType() {
@@ -61,7 +72,9 @@ public class Tile {
 	 * Set the rotation of the tile
 	 */
 	public void setRotation(RotationAngle newRotation) {
+		System.out.println("[DEBUG]: setRotation = " + newRotation);
 		this.rotation = newRotation;
+		System.out.println(getTileString());
 	}
 	
 	public String getTileString() {
@@ -77,9 +90,9 @@ public class Tile {
 				else if(rotation == RotationAngle.NINETY)
 					return "   \n-- \n | \n";
 				else if(rotation == RotationAngle.HUNDREDANDEIGHTY)
-					return " | \n-- \n   \n";
+					return " | \n | \n-- \n";
 				else
-					return "   \n --\n | \n";
+					return " | \n | \n --\n";
 			case LINE:
 				// Return line string
 				// | 
@@ -107,7 +120,7 @@ public class Tile {
 				else if(rotation == RotationAngle.HUNDREDANDEIGHTY)
 					return " | \n-| \n | \n";
 				else
-					return " | \n |-\n | \n";
+					return " | \n | \n---\n";
 			case CROSS:
 				// Return cross string
 				return " | \n-+-\n | \n";
