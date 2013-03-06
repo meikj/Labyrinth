@@ -3,7 +3,7 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.04032013
+ * @version 0.1.06032013
  *
  */
 public class Tile {
@@ -68,21 +68,28 @@ public class Tile {
 		switch(type) {
 			case CORNER:
 				// Return corner string
+				// TODO
 				break;
 			case LINE:
 				// Return line string
+				// TODO
 				break;
 			case TSHAPE:
 				// Return tshape string
+				// TODO
 				break;
 			case CROSS:
 				// Return cross string
-				break;
+				return "+";
+			case EMPTY:
+				// Return empty string
+				return " ";
 			default:
-				// Error occurred
-				System.out.println("[ERROR]: getTileString(): Invalid TileType");
+				// Throw error?
 				break;
 		}
+		
+		return null;
 	}
 
 }

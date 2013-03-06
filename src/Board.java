@@ -3,7 +3,7 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.04032013
+ * @version 0.1.06032013
  *
  */
 public class Board {
@@ -22,10 +22,26 @@ public class Board {
 	public Board(int width, int height) {
 		this.width = width;
 		this.height = height;
+		
+		tiles = new Tile[width][height];
+		
+		for(int i = 0; i < width; i++) {
+			for(int j = 0; j < height; j++) {
+				tiles[i][j] = new Tile(TileType.EMPTY);
+			}
+		}
 	}
 	
+	/**
+	 * Draw the game board to the standard output
+	 */
 	public void draw() {
-		// TODO
+		for(int i = 0; i < width; i++) {
+			for(int j = 0; j < height; j++) {
+				System.out.print("[" + tiles[i][j].getTileString() + "]");
+			}
+			System.out.println();
+		}
 	}
 	
 	/**
@@ -41,6 +57,14 @@ public class Board {
 			return null;
 		
 		return tiles[x][y];
+	}
+	
+	public void setTile(int x, int y, Tile newTile) {
+		// Check if tile is within valid bounds
+		if((x < 0 || x > width) || (y < 0 || y > height))
+			return;
+		
+		tiles[x][y] = newTile;
 	}
 	
 	public int getWidth() { return width; }

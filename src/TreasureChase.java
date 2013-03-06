@@ -3,7 +3,7 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.04032013
+ * @version 0.1.06032013
  *
  */
 public class TreasureChase {
@@ -22,7 +22,7 @@ public class TreasureChase {
 		this.player = player;
 		
 		// Generate the board with random treasure placements, etc.
-		this.board = null;
+		this.board = new Board(7, 7);
 	}
 	
 	/**
@@ -39,7 +39,18 @@ public class TreasureChase {
 	public boolean moveToken(int x, int y) { return false; }
 	public boolean moveTile(int currX, int currY, int newX, int newY) { return false; }
 	public boolean rotateTile(int x, int y, RotationAngle newAngle) { return false; }
-	public boolean replaceTile(int x, int y, Tile newTile) { return false; }
+	
+	/**
+	 * Replace an existing tile on the board with a new one
+	 * 
+	 * @param x The x coordinate of the existing tile
+	 * @param y The y coordinate of the existing tile
+	 * @param newTile The new tile
+	 * @return Whether or not the replacement was successful
+	 */
+	public boolean replaceTile(int x, int y, Tile newTile) {
+		return false;
+	}
 	
 	public void save() { return; }
 	public void end() { return; }
