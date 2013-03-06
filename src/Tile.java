@@ -68,30 +68,49 @@ public class Tile {
 		switch(type) {
 			case CORNER:
 				// Return corner string
-				// TODO
-				break;
-			case LINE:
-				// Return line string
-				// TODO
-				break;
-			case TSHAPE:
-				// Return tshape string:
-				// |  
-				// |--
-				// |
+				//    
+				//  --
+				//  |
 				
 				if(rotation == RotationAngle.DEFAULT)
-					return "|  \n|--\n|  \n";
+					return "   \n --\n | \n";
 				else if(rotation == RotationAngle.NINETY)
-					return "---\n | \n | \n";
+					return "   \n-- \n | \n";
 				else if(rotation == RotationAngle.HUNDREDANDEIGHTY)
-					return "  |\n--|\n  |\n";
+					return " | \n-- \n   \n";
 				else
-					return " | \n | \n---\n";
+					return "   \n --\n | \n";
+			case LINE:
+				// Return line string
+				// | 
+				// | 
+				// | 
 				
+				if(rotation == RotationAngle.DEFAULT)
+					return " | \n | \n | \n";
+				else if(rotation == RotationAngle.NINETY)
+					return "   \n---\n   ";
+				else if(rotation == RotationAngle.HUNDREDANDEIGHTY)
+					return " | \n | \n | \n";
+				else
+					return "   \n---\n   ";
+			case TSHAPE:
+				// Return tshape string:
+				//  |  
+				//  |-
+				//  |
+				
+				if(rotation == RotationAngle.DEFAULT)
+					return " | \n |-\n | \n";
+				else if(rotation == RotationAngle.NINETY)
+					return "   \n---\n | \n";
+				else if(rotation == RotationAngle.HUNDREDANDEIGHTY)
+					return " | \n-| \n | \n";
+				else
+					return " | \n |-\n | \n";
 			case CROSS:
 				// Return cross string
-				return " | \n- -\n | \n";
+				return " | \n-+-\n | \n";
 			case EMPTY:
 				// Return empty string
 				return "   \n   \n   \n";

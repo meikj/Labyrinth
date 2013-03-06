@@ -18,13 +18,12 @@ public class Player {
 	public Player() {
 		this.score = 0;
 		this.moves = 0;
-		
-		// Generate a random spare tile, perhaps?
-		this.spareTile = null;
+		this.spareTile = new Tile(TileType.TSHAPE);
 	}
 	
 	public void setScore(int newScore) { score = newScore; }
 	public void setMoves(int newMoves) { moves = newMoves; }
+	public void setSpareTile(Tile newTile) { spareTile = newTile; }
 	
 	public int getScore() { return score; }
 	public int getMoves() { return moves; }

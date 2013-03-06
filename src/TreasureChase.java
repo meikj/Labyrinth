@@ -55,11 +55,25 @@ public class TreasureChase {
 	}
 	
 	/**
-	 * Replace an existing tile on the board with a new one
+	 * Replace an existing tile on the board with the Player's spare tile
 	 * 
 	 * @param x The x coordinate of the existing tile
 	 * @param y The y coordinate of the existing tile
-	 * @param newTile The new tile
+	 */
+	public void replaceTile(int x, int y) {
+		Tile oldTile = board.getTile(x, y);
+		
+		board.setTile(x, y, player.getSpareTile());
+		player.setSpareTile(oldTile);
+		player.setMoves(player.getMoves() + 1);
+	}
+	
+	/**
+	 * Replace an existing tile on the board with a new tile
+	 * 
+	 * @param x The x coordinate of the existing tile
+	 * @param y The y coordinate of the existing tile
+	 * @param newTile The new tile to place over an existing tile
 	 */
 	public void replaceTile(int x, int y, Tile newTile) {
 		board.setTile(x, y, newTile);
@@ -77,5 +91,6 @@ public class TreasureChase {
 	public void end() { return; }
 	
 	public int getRound() { return round; }
+	public Player getPlayer() { return player; }
 	
 }
