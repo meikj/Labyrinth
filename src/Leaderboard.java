@@ -18,6 +18,9 @@ public class Leaderboard {
 		// Set the default max entries to 10
 		this.maxEntries = 10;
 		
+		// [][0] = Name, [][1] = Score
+		this.scores = new String[maxEntries][2];
+		
 		for(int i = 0; i < maxEntries; i++) {
 			scores[i][0] = "John Doe";
 			scores[i][1] = "No Score";

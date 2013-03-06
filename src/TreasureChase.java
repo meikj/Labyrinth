@@ -20,6 +20,7 @@ public class TreasureChase {
 	 */
 	public TreasureChase(Player player) {
 		this.player = player;
+		this.leaderboard = new Leaderboard();
 		
 		// Generate the board with random treasure placements, etc.
 		this.board = new Board(7, 7);
@@ -36,9 +37,22 @@ public class TreasureChase {
 		this.leaderboard = leaderboard;
 	}
 	
-	public boolean moveToken(int x, int y) { return false; }
-	public boolean moveTile(int currX, int currY, int newX, int newY) { return false; }
-	public boolean rotateTile(int x, int y, RotationAngle newAngle) { return false; }
+	public void moveToken(int x, int y) { return; }
+	public void moveTile(int currX, int currY, int newX, int newY) { return; }
+	
+	/**
+	 * Rotate the tile specified to a particular rotation
+	 * 
+	 * @param x The x coordinate of the existing tile
+	 * @param y The y coordinate of the existing tile
+	 * @param newAngle The new angle of the tile
+	 */
+	public void rotateTile(int x, int y, RotationAngle newAngle) {
+		Tile tile = board.getTile(x, y);
+		tile.setRotation(newAngle);
+		board.setTile(x, y, tile);
+		player.setMoves(player.getMoves() + 1);
+	}
 	
 	/**
 	 * Replace an existing tile on the board with a new one
@@ -46,10 +60,17 @@ public class TreasureChase {
 	 * @param x The x coordinate of the existing tile
 	 * @param y The y coordinate of the existing tile
 	 * @param newTile The new tile
-	 * @return Whether or not the replacement was successful
 	 */
-	public boolean replaceTile(int x, int y, Tile newTile) {
-		return false;
+	public void replaceTile(int x, int y, Tile newTile) {
+		board.setTile(x, y, newTile);
+		player.setMoves(player.getMoves() + 1);
+	}
+	
+	/**
+	 * Update the interface
+	 */
+	public void update() {
+		board.draw();
 	}
 	
 	public void save() { return; }

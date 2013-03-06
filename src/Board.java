@@ -109,6 +109,13 @@ public class Board {
 		return tiles[x][y];
 	}
 	
+	/**
+	 * Set the tile at the specified location to a new tile
+	 * 
+	 * @param x The x-axis location number
+	 * @param y The y-axis location number
+	 * @param newTile The new tile for replacing the existing tile with
+	 */
 	public void setTile(int x, int y, Tile newTile) {
 		// Check if tile is within valid bounds
 		if((x < 0 || x > width) || (y < 0 || y > height))
