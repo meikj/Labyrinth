@@ -11,6 +11,7 @@ public class Tile {
 	private TileType type;
 	private RotationAngle rotation;
 	private boolean treasure;
+	private boolean token;
 	
 	/**
 	 * Construct a tile of a particular type
@@ -20,6 +21,8 @@ public class Tile {
 	public Tile(TileType type) {
 		this.type = type;
 		this.rotation = RotationAngle.DEFAULT;
+		this.treasure = false;
+		this.token = false;
 	}
 	
 	/**
@@ -75,7 +78,35 @@ public class Tile {
 		this.rotation = newRotation;
 	}
 	
+	/**
+	 * Check whether or not the tile contains the token
+	 */
+	public boolean hasToken() {
+		return token;
+	}
+	
+	/**
+	 * Set whether or not the tile contains the token
+	 */
+	public void setToken(boolean state) {
+		this.token = state;
+	}
+	
+	/**
+	 * Get the String representation of the Tile. A tile consists of 3x3 characters
+	 * separated by new lines (e.g. "   \n   \n   \n"). This allows the tile to
+	 * be split up into 3 sections (top, middle and bottom) for easier manipulation
+	 * within an interface.
+	 * 
+	 * @return The String representation of the Tile
+	 */
 	public String getTileString() {
+		if(hasToken())
+			return "   \n O \n   \n";
+		
+		if(hasTreasure())
+			return " - \n|T|\n - \n";
+		
 		switch(type) {
 			case CORNER:
 				// Return corner string
@@ -88,9 +119,9 @@ public class Tile {
 				else if(rotation == RotationAngle.NINETY)
 					return "   \n-- \n | \n";
 				else if(rotation == RotationAngle.HUNDREDANDEIGHTY)
-					return " | \n | \n-- \n";
+					return " | \n-- \n   \n";
 				else
-					return " | \n | \n --\n";
+					return " | \n --\n   \n";
 			case LINE:
 				// Return line string
 				// | 
@@ -118,7 +149,7 @@ public class Tile {
 				else if(rotation == RotationAngle.HUNDREDANDEIGHTY)
 					return " | \n-| \n | \n";
 				else
-					return " | \n | \n---\n";
+					return " | \n---\n   \n";
 			case CROSS:
 				// Return cross string
 				return " | \n-+-\n | \n";

@@ -13,7 +13,7 @@ public class Board {
 	private Tile[][] tiles;
 	private int width;
 	private int height;
-	private String tokenPos; // In the format of, for example, A4?
+	private int[] tokenPos;
 	
 	/**
 	 * Construct a board of a particular size
@@ -22,12 +22,11 @@ public class Board {
 	 * @param height The height of the board
 	 */
 	public Board(int width, int height) {
+		Random r = new Random();
+		
 		this.width = width;
 		this.height = height;
-		
-		tiles = new Tile[width][height];
-		
-		Random r = new Random();
+		this.tiles = new Tile[width][height];
 		
 		// Set outside tiles to "walled" tiles
 		
@@ -68,6 +67,16 @@ public class Board {
 				tiles[i][j] = randomTile;
 			}
 		}
+		
+		// Set token position (bottom left corner)
+		this.tokenPos = new int[2];
+		this.tokenPos[0] = height - 1; // row
+		this.tokenPos[1] = 0; // column
+		
+		Tile tokenTile = new Tile(TileType.EMPTY);
+		tokenTile.setToken(true);
+		
+		tiles[tokenPos[0]][tokenPos[1]] = tokenTile;
 	}
 	
 	/**
@@ -75,17 +84,17 @@ public class Board {
 	 */
 	public void draw() {
 		String numberTop = "      ";
-		String borderTop = "     ===";
+		String border = "     ===";
 		
 		for(int i = 0; i < width; i++)
 			numberTop += Integer.toString(i + 1) + "  ";
 		
 		for(int i = 1; i < width; i++)
-			borderTop += "===";
+			border += "===";
 		
 		// Display top border
 		System.out.println(numberTop);
-		System.out.println(borderTop);
+		System.out.println(border);
 		
 		// Display each tile
 		for(int i = 0; i < width; i++) {
@@ -127,8 +136,7 @@ public class Board {
 		}
 		
 		// Display bottom border
-		System.out.println();
-		System.out.println(borderTop);
+		System.out.println(border);
 	}
 	
 	/**
@@ -163,6 +171,6 @@ public class Board {
 	
 	public int getWidth() { return width; }
 	public int getHeight() { return height; }
-	public String getTokenPos() { return tokenPos; }
+	public int[] getTokenPos() { return tokenPos; }
 
 }
