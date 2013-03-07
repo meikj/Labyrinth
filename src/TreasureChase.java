@@ -122,4 +122,14 @@ public class TreasureChase {
 	public int getRound() { return round; }
 	public Player getPlayer() { return player; }
 	
+	/**
+	 * Get tile from board
+	 * @param x The x coordinate of tile
+	 * @param y The y coordinate of tile
+	 * @return
+	 */
+	public Tile getTile(int x, int y) {
+		return board.getTile(x, y);
+	}
+	
 }

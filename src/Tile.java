@@ -72,9 +72,7 @@ public class Tile {
 	 * Set the rotation of the tile
 	 */
 	public void setRotation(RotationAngle newRotation) {
-		System.out.println("[DEBUG]: setRotation = " + newRotation);
 		this.rotation = newRotation;
-		System.out.println(getTileString());
 	}
 	
 	public String getTileString() {
