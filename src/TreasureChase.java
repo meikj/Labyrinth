@@ -3,10 +3,10 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.06032013
+ * @version 0.1.07032013
  *
  */
-public class TreasureChase {
+public class TreasureChase implements GameMode {
 	
 	private Player player;
 	private Board board;
@@ -22,7 +22,7 @@ public class TreasureChase {
 		this.player = player;
 		this.leaderboard = new Leaderboard();
 		
-		// Generate the board with random treasure placements, etc.
+		// Generate a board with default settings of 7x7
 		this.board = new Board(7, 7);
 	}
 	
@@ -37,20 +37,53 @@ public class TreasureChase {
 		this.leaderboard = leaderboard;
 	}
 	
-	public void moveToken(int x, int y) { return; }
-	public void moveTile(int currX, int currY, int newX, int newY) { return; }
+	public void moveToken(int row, int column) { return; }
+	public void moveTile(int currRow, int currColumn, int newRow, int newColumn) { return; }
+	
+	/**
+	 * Rotate the spare tile to a particular rotation
+	 * 
+	 * @param angle The angle to rotate the spare tile by
+	 */
+	public void rotateTile(int angle) throws NumberFormatException {
+		if(angle < 0 || angle > 270)
+			// Angle is out of bounds
+			throw new NumberFormatException("Angle must either be 90, 180 or 270");
+		
+		if((angle % 90) != 0)
+			// Angle isn't divisible by 90
+			throw new NumberFormatException("Angle must either be 90, 180 or 270");
+		
+		int currAngle = RotationAngle.convertToInt(player.getSpareTile().getRotation());
+		RotationAngle newAngle = RotationAngle.convertFromInt((angle + currAngle) % 360);
+		player.getSpareTile().setRotation(newAngle);
+		
+		player.setMoves(player.getMoves() + 1);
+		round++;
+	}
 	
 	/**
 	 * Rotate the tile specified to a particular rotation
 	 * 
-	 * @param x The x coordinate of the existing tile
-	 * @param y The y coordinate of the existing tile
-	 * @param newAngle The new angle of the tile
+	 * @param row The row coordinate of the existing tile
+	 * @param column The column coordinate of the existing tile
+	 * @param angle The angle to rotate the tile by
 	 */
-	public void rotateTile(int x, int y, RotationAngle newAngle) {
-		Tile tile = board.getTile(x, y);
+	public void rotateTile(int row, int column, int angle) throws NumberFormatException {
+		if(angle < 0 || angle > 270)
+			// Angle is out of bounds
+			throw new NumberFormatException("Angle must either be 90, 180 or 270");
+		
+		if((angle % 90) != 0)
+			// Angle isn't divisible by 90
+			throw new NumberFormatException("Angle must either be 90, 180 or 279");
+		
+		Tile tile = board.getTile(row, column);
+		int currAngle = RotationAngle.convertToInt(tile.getRotation());
+		RotationAngle newAngle = RotationAngle.convertFromInt((angle + currAngle) % 360);
 		tile.setRotation(newAngle);
-		board.setTile(x, y, tile);
+		board.setTile(row, column, tile);
+		
 		player.setMoves(player.getMoves() + 1);
 		round++;
 	}
@@ -58,14 +91,15 @@ public class TreasureChase {
 	/**
 	 * Replace an existing tile on the board with the Player's spare tile
 	 * 
-	 * @param x The x coordinate of the existing tile
-	 * @param y The y coordinate of the existing tile
+	 * @param row The row coordinate of the existing tile
+	 * @param column The column coordinate of the existing tile
 	 */
-	public void replaceTile(int x, int y) {
-		Tile oldTile = board.getTile(x, y);
+	public void replaceTile(int row, int column) {
+		Tile oldTile = board.getTile(row, column);
 		
-		board.setTile(x, y, player.getSpareTile());
+		board.setTile(row, column, player.getSpareTile());
 		player.setSpareTile(oldTile);
+		
 		player.setMoves(player.getMoves() + 1);
 		round++;
 	}
@@ -73,12 +107,13 @@ public class TreasureChase {
 	/**
 	 * Replace an existing tile on the board with a new tile
 	 * 
-	 * @param x The x coordinate of the existing tile
-	 * @param y The y coordinate of the existing tile
+	 * @param row The row coordinate of the existing tile
+	 * @param column The column coordinate of the existing tile
 	 * @param newTile The new tile to place over an existing tile
 	 */
-	public void replaceTile(int x, int y, Tile newTile) {
-		board.setTile(x, y, newTile);
+	public void replaceTile(int row, int column, Tile newTile) {
+		board.setTile(row, column, newTile);
+		
 		player.setMoves(player.getMoves() + 1);
 		round++;
 	}
@@ -121,15 +156,5 @@ public class TreasureChase {
 	
 	public int getRound() { return round; }
 	public Player getPlayer() { return player; }
-	
-	/**
-	 * Get tile from board
-	 * @param x The x coordinate of tile
-	 * @param y The y coordinate of tile
-	 * @return
-	 */
-	public Tile getTile(int x, int y) {
-		return board.getTile(x, y);
-	}
 	
 }

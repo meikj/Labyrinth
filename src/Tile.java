@@ -126,11 +126,9 @@ public class Tile {
 				// Return empty string
 				return "   \n   \n   \n";
 			default:
-				// Throw error?
-				break;
+				// Just return an empty string
+				return "   \n   \n   \n";
 		}
-		
-		return null;
 	}
 
 }

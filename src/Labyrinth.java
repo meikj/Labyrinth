@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -15,6 +14,9 @@ public class Labyrinth {
 	private Scanner input;
 	private boolean execute;
 	
+	/**
+	 * Construct a Labyrinth game interface
+	 */
 	public Labyrinth() {
 		tc = new TreasureChase(new Player());
 		input = new Scanner(System.in);
@@ -23,11 +25,15 @@ public class Labyrinth {
 	
 	public void run() {
 		while(execute) {
+			// Main game loop
 			tc.update();
 			 
 			System.out.print("\n> ");
 			parseInput(promptUser());
 		}
+		
+		// Game loop closed, call clean up code
+		input.close();
 	}
 	
 	/**
@@ -38,16 +44,16 @@ public class Labyrinth {
 	public void parseInput(String[] inputArgs) throws NumberFormatException, IndexOutOfBoundsException {
 		if(inputArgs[0].toLowerCase().equals("insert")) {
 			if(inputArgs.length < 3) {
-				System.out.println("Usage: insert <x> <y>");
+				System.out.println("Usage: insert <row> <column>");
 				return;
 			}
 		
 			// Insert spare tile command
-			int x, y;
+			int row, column;
 			
 			try {
-				x = Integer.parseInt(inputArgs[1]);
-				y = Integer.parseInt(inputArgs[2]);
+				row = Integer.parseInt(inputArgs[1]);
+				column = Integer.parseInt(inputArgs[2]);
 			}
 			catch(NumberFormatException e) {
 				throw new NumberFormatException("Invalid coordinates entered\n");
@@ -56,46 +62,48 @@ public class Labyrinth {
 				throw new IndexOutOfBoundsException("Not enough arguments\n");
 			}
 			
-			tc.replaceTile(x, y);
+			tc.replaceTile(row, column);
 		}
 		else if(inputArgs[0].toLowerCase().equals("rotate")) {
 			if(inputArgs.length == 2) {
 				// Rotate spare tile
-				int currentDeg = RotationAngle.getAsInt(tc.getPlayer().getSpareTile().getRotation());
-				
-				if(Integer.parseInt(inputArgs[1]) < 0 || Integer.parseInt(inputArgs[1]) > 270)
-					throw new NumberFormatException("Invalid angle. Only 90, 180 and 270 accepted.");
-				
-				currentDeg += Integer.parseInt(inputArgs[1]);
-				currentDeg = currentDeg % 360; // Normalise the angle
-				
-				tc.getPlayer().getSpareTile().setRotation(RotationAngle.convertFromInt(currentDeg));
+				try {
+					tc.rotateTile(Integer.parseInt(inputArgs[1]));
+				}
+				catch(NumberFormatException e) {
+					System.out.println("Invalid angle: must be 90, 180 or 270");
+					return;
+				}
 			}
 			else if(inputArgs.length == 4) {
 				// Rotate tile on board
-				int x = Integer.parseInt(inputArgs[1]);
-				int y = Integer.parseInt(inputArgs[2]);
-				int currentDeg = RotationAngle.getAsInt(tc.getTile(x, y).getRotation());
+				int row = Integer.parseInt(inputArgs[1]);
+				int column = Integer.parseInt(inputArgs[2]);
 				
-				if(Integer.parseInt(inputArgs[3]) < 0 || Integer.parseInt(inputArgs[3]) > 270)
-					throw new NumberFormatException("Invalid angle. Only 90, 180 and 270 accepted.");
-				
-				currentDeg += Integer.parseInt(inputArgs[1]);
-				currentDeg = currentDeg % 360; // Normalise the angle
-				
-				tc.rotateTile(x, y, RotationAngle.convertFromInt(currentDeg));
+				try {
+					tc.rotateTile(row, column, Integer.parseInt(inputArgs[3]));
+				}
+				catch(NumberFormatException e) {
+					System.out.println("Invalid angle: must be 90, 180 or 270");
+					return;
+				}
 			}
 			else {
-				System.out.println("Usage: rotate <degrees> (rotate spare tile) or rotate <x> <y> <degrees>");
+				System.out.println("Usage: rotate <degrees> (rotate spare tile) or rotate <row> <column> <degrees>");
 			}
+		}
+		else if(inputArgs[0].toLowerCase().equals("exit")) {
+			// Exit command called
+			execute = false;
 		}
 		else if(inputArgs[0].toLowerCase().equals("help")) {
 			System.out.println("insert \t Insert spare tile to specified location");
 			System.out.println("rotate \t Rotate either spare tile or specified tile by a number of degrees");
+			System.out.println("exit \t Exit the game");
 			System.out.println("help \t Display available game options");
 		}
 		else {
-			System.out.println("Please enter 'help' for more information");
+			System.out.println("Invalid command: please enter 'help' for more information");
 		}
 	}
 	

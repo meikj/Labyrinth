@@ -5,7 +5,7 @@ import java.util.Random;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.06032013
+ * @version 0.1.07032013
  *
  */
 public class Board {
@@ -71,7 +71,7 @@ public class Board {
 	}
 	
 	/**
-	 * Draw the game board to the standard output
+	 * Draw the game board
 	 */
 	public void draw() {
 		String numberTop = "      ";
@@ -134,31 +134,31 @@ public class Board {
 	/**
 	 * Get the tile at the specified location
 	 * 
-	 * @param x The x-axis location number
-	 * @param y The y-axis location number
+	 * @param row The row coordinate of the tile
+	 * @param column The column coordinate of the tile
 	 * @return The particular tile at the specified location. Returns null on error.
 	 */
-	public Tile getTile(int x, int y) {
+	public Tile getTile(int row, int column) {
 		// Check if tile is within valid bounds
-		if((x < 0 || x > width) || (y < 0 || y > height))
+		if((row < 0 || row > width) || (column < 0 || column > height))
 			return null;
 		
-		return tiles[x][y];
+		return tiles[row][column];
 	}
 	
 	/**
 	 * Set the tile at the specified location to a new tile
 	 * 
-	 * @param x The x-axis location number
-	 * @param y The y-axis location number
+	 * @param row The row coordinate of the tile
+	 * @param column The column coordinate of the tile
 	 * @param newTile The new tile for replacing the existing tile with
 	 */
-	public void setTile(int x, int y, Tile newTile) {
+	public void setTile(int row, int column, Tile newTile) {
 		// Check if tile is within valid bounds
-		if((x < 0 || x > width) || (y < 0 || y > height))
+		if((row < 0 || row > width) || (column < 0 || column > height))
 			return;
 		
-		tiles[x][y] = newTile;
+		tiles[row][column] = newTile;
 	}
 	
 	public int getWidth() { return width; }

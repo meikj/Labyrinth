@@ -4,14 +4,20 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.04032013
+ * @version 0.1.07032013
  *
  */
 public enum RotationAngle {
 	
 	DEFAULT, NINETY, HUNDREDANDEIGHTY, TWOHUNDREDANDSEVENTY;
 	
-	public static int getAsInt(RotationAngle ra) {
+	/**
+	 * Convert a RotationAngle to its corresponding integer equivalent
+	 * 
+	 * @param ra The RotationAngle to convert
+	 * @return The resulting integer
+	 */
+	public static int convertToInt(RotationAngle ra) {
 		switch(ra) {
 			case DEFAULT:
 				return 0;
@@ -26,6 +32,12 @@ public enum RotationAngle {
 		}
 	}
 	
+	/**
+	 * Convert an integer to a RotationAngle
+	 * 
+	 * @param angle The integer to convert
+	 * @return The resulting RotationAngle
+	 */
 	public static RotationAngle convertFromInt(int angle) {
 		if(angle == 90)
 			return NINETY;
