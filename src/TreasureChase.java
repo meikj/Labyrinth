@@ -76,7 +76,7 @@ public class TreasureChase implements GameMode {
 		
 		if((angle % 90) != 0)
 			// Angle isn't divisible by 90
-			throw new NumberFormatException("Angle must either be 90, 180 or 279");
+			throw new NumberFormatException("Angle must either be 90, 180 or 270");
 		
 		Tile tile = board.getTile(row, column);
 		int currAngle = RotationAngle.convertToInt(tile.getRotation());
