@@ -93,7 +93,7 @@ public class Board {
 			border += "===";
 		
 		// Display top border
-		System.out.println(numberTop);
+		
 		System.out.println(border);
 		
 		// Display each tile
@@ -136,7 +136,9 @@ public class Board {
 		}
 		
 		// Display bottom border
+		
 		System.out.println(border);
+		System.out.println(numberTop);
 	}
 	
 	/**
