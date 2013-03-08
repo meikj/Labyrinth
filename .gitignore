@@ -8,6 +8,7 @@
 # Eclipse Files #
 .classpath
 .project
+.settings/
 bin/
 
 # Ghost Files #

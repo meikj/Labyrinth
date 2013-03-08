@@ -127,28 +127,33 @@ public class TreasureChase implements GameMode {
 		
 		// Draw the "HUB"
 		Tile spareTile = player.getSpareTile();
-		String spareTileStr = spareTile.getTileString();
-		String[] tileRows = spareTileStr.split("\n");
+		String[] tileRows = spareTile.getTileString();
 		
 		String roundString = Integer.toString(round);
 		
 		// Determine rounding padding
 		if(round < 10)
+			// Prepend 4 zeros
+			roundString = "0000" + roundString;
+		else if(round < 100)
+			// Prepend 3 zeros
+			roundString = "000" + roundString;
+		else if(round < 1000)
 			// Prepend 2 zeros
 			roundString = "00" + roundString;
-		else if(round < 100)
-			// Prepend 1 zero
-			roundString = "0" + roundString;
 		
 		// Score in Treasure Chase is rounds
 		
-		System.out.println(" ------------- ------- -------");
-		System.out.println("| SPARE  TILE | ROUND | SCORE |");
-		System.out.println("|=============|=======|=======|");
-		System.out.println("|     " + tileRows[0] + "     |       |       |");
-		System.out.println("|     " + tileRows[1] + "     |  " + roundString + "  |  " + roundString + "  |");
-		System.out.println("|     " + tileRows[2] + "     |       |       |");
-		System.out.println(" ------------- ------- -------");
+		System.out.println();
+		System.out.println("    ------------- ----------- -----------");
+		System.out.println("   | SPARE  TILE |   ROUND   |   SCORE   |");
+		System.out.println("   |=============|===========|===========|");
+		System.out.println("   |    " + tileRows[0] + "    |           |           |");
+		System.out.println("   |    " + tileRows[1] + "    |           |           |");
+		System.out.println("   |    " + tileRows[2] + "    |   " + roundString + "   |   " + roundString + "   |");
+		System.out.println("   |    " + tileRows[3] + "    |           |           |");
+		System.out.println("   |    " + tileRows[4] + "    |           |           |");
+		System.out.println("    ------------- ----------- -----------");
 	}
 	
 	public void save() { return; }

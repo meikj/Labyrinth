@@ -12,6 +12,7 @@ public class Tile {
 	private RotationAngle rotation;
 	private boolean treasure;
 	private boolean token;
+	private String[] tileString;
 	
 	/**
 	 * Construct a tile of a particular type
@@ -23,6 +24,7 @@ public class Tile {
 		this.rotation = RotationAngle.DEFAULT;
 		this.treasure = false;
 		this.token = false;
+		this.tileString = formTileString();
 	}
 	
 	/**
@@ -34,6 +36,7 @@ public class Tile {
 	public Tile(TileType type, RotationAngle rotation) {
 		this(type);
 		this.rotation = rotation;
+		this.tileString = formTileString();
 	}
 	
 	/**
@@ -62,6 +65,9 @@ public class Tile {
 	 */
 	public void setTreasure(boolean state) {
 		this.treasure = state;
+		
+		// Treasure has been altered, re-form the tile string
+		this.tileString = formTileString();
 	}
 	
 	/**
@@ -76,6 +82,9 @@ public class Tile {
 	 */
 	public void setRotation(RotationAngle newRotation) {
 		this.rotation = newRotation;
+		
+		// Rotation has been altered, re-form the tile string
+		this.tileString = formTileString();
 	}
 	
 	/**
@@ -90,76 +99,151 @@ public class Tile {
 	 */
 	public void setToken(boolean state) {
 		this.token = state;
+		
+		// Token has been altered, re-form the tile string
+		this.tileString = formTileString();
 	}
 	
 	/**
-	 * Get the String representation of the Tile. A tile consists of 3x3 characters
-	 * separated by new lines (e.g. "   \n   \n   \n"). This allows the tile to
-	 * be split up into 3 sections (top, middle and bottom) for easier manipulation
-	 * within an interface.
+	 * Get the String representation of the Tile. A tile consists of 5x5 characters.
+	 * The tile is separated into 5 sections (top, top-middle, middle, middle-bottom, bottom).
+	 * As such, a String array of 5 elements is returned containing the aforementioned
+	 * sections.
 	 * 
-	 * @return The String representation of the Tile
+	 * @return The String array of the Tile
 	 */
-	public String getTileString() {
-		if(hasToken())
-			return "   \n O \n   \n";
-		
-		if(hasTreasure())
-			return " - \n|T|\n - \n";
+	public String[] getTileString() {
+		return tileString;
+	}
+	
+	/**
+	 * Form a tile string in accordance to its current type and rotation.
+	 * This forms a String array, consisting of 5 sections: top, top-middle, middle,
+	 * middle-bottom, and bottom.
+	 * 
+	 * @return The String array of the Tile
+	 */
+	private String[] formTileString() {
+		String[] tile = new String[5];
 		
 		switch(type) {
-			case CORNER:
-				// Return corner string
-				//    
-				//  --
-				//  |
-				
-				if(rotation == RotationAngle.DEFAULT)
-					return "   \n --\n | \n";
-				else if(rotation == RotationAngle.NINETY)
-					return "   \n-- \n | \n";
-				else if(rotation == RotationAngle.HUNDREDANDEIGHTY)
-					return " | \n-- \n   \n";
-				else
-					return " | \n --\n   \n";
-			case LINE:
-				// Return line string
-				// | 
-				// | 
-				// | 
-				
-				if(rotation == RotationAngle.DEFAULT)
-					return " | \n | \n | \n";
-				else if(rotation == RotationAngle.NINETY)
-					return "   \n---\n   ";
-				else if(rotation == RotationAngle.HUNDREDANDEIGHTY)
-					return " | \n | \n | \n";
-				else
-					return "   \n---\n   ";
-			case TSHAPE:
-				// Return tshape string:
-				//  |  
-				//  |-
-				//  |
-				
-				if(rotation == RotationAngle.DEFAULT)
-					return " | \n |-\n | \n";
-				else if(rotation == RotationAngle.NINETY)
-					return "   \n---\n | \n";
-				else if(rotation == RotationAngle.HUNDREDANDEIGHTY)
-					return " | \n-| \n | \n";
-				else
-					return " | \n---\n   \n";
-			case CROSS:
-				// Return cross string
-				return " | \n-+-\n | \n";
-			case EMPTY:
-				// Return empty string
-				return "   \n   \n   \n";
-			default:
-				// Just return an empty string
-				return "   \n   \n   \n";
+		case CROSS:
+			tile[0] = " | | ";
+			tile[1] = "—   —";
+			tile[2] = "     ";
+			tile[3] = "—   —";
+			tile[4] = " | | ";
+			
+			break;
+		case TSHAPE:
+			if(rotation == RotationAngle.DEFAULT) {
+				tile[0] = " | | ";
+				tile[1] = " |  —";
+				tile[2] = " |   ";
+				tile[3] = " |  —";
+				tile[4] = " | | ";
+			} else if(rotation == RotationAngle.NINETY) {
+				tile[0] = "     ";
+				tile[1] = "—————";
+				tile[2] = "     ";
+				tile[3] = "—   —";
+				tile[4] = " | | ";
+			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
+				tile[0] = " | | ";
+				tile[1] = "—  | ";
+				tile[2] = "   | ";
+				tile[3] = "—  | ";
+				tile[4] = " | | ";
+			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
+				tile[0] = " | | ";
+				tile[1] = "—   —";
+				tile[2] = "     ";
+				tile[3] = "—————";
+				tile[4] = "     ";
+			}
+			
+			break;
+		case LINE:
+			if(rotation == RotationAngle.DEFAULT) {
+				tile[0] = " | | ";
+				tile[1] = " | | ";
+				tile[2] = " | | ";
+				tile[3] = " | | ";
+				tile[4] = " | | ";
+			} else if(rotation == RotationAngle.NINETY) {
+				tile[0] = "     ";
+				tile[1] = "—————";
+				tile[2] = "     ";
+				tile[3] = "—————";
+				tile[4] = "     ";
+			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
+				tile[0] = " | | ";
+				tile[1] = " | | ";
+				tile[2] = " | | ";
+				tile[3] = " | | ";
+				tile[4] = " | | ";
+			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
+				tile[0] = "     ";
+				tile[1] = "—————";
+				tile[2] = "     ";
+				tile[3] = "—————";
+				tile[4] = "     ";
+			}
+			
+			break;
+		case CORNER:
+			if(rotation == RotationAngle.DEFAULT) {
+				tile[0] = "     ";
+				tile[1] = "  ———";
+				tile[2] = " |   ";
+				tile[3] = " |  —";
+				tile[4] = " | | ";
+			} else if(rotation == RotationAngle.NINETY) {
+				tile[0] = "     ";
+				tile[1] = "———  ";
+				tile[2] = "   | ";
+				tile[3] = "—  | ";
+				tile[4] = " | | ";
+			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
+				tile[0] = " | | ";
+				tile[1] = "-  | ";
+				tile[2] = "   | ";
+				tile[3] = "———  ";
+				tile[4] = "     ";
+			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
+				tile[0] = " | | ";
+				tile[1] = " |  —";
+				tile[2] = " |   ";
+				tile[3] = "  ———";
+				tile[4] = "     ";
+			}
+			
+			break;
+		case EMPTY:
+			tile[0] = "     ";
+			tile[1] = "     ";
+			tile[2] = "     ";
+			tile[3] = "     ";
+			tile[4] = "     ";
+			
+			break;
 		}
+		
+		// Check if tile contains treasure or token
+		if(hasToken()) {
+			// Change middle section, middle element to token
+			char[] tileMiddle = tile[2].toCharArray();
+			tileMiddle[2] = 'O'; // Set to token
+			tile[2] = new String(tileMiddle);
+		}
+		else if(hasTreasure()) {
+			// Change middle section, middle element to treasure
+			char[] tileMiddle = tile[2].toCharArray();
+			tileMiddle[2] = 'T'; // Set to token
+			tile[2] = new String(tileMiddle);
+		}
+		
+		return tile;
 	}
 
 }

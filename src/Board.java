@@ -73,24 +73,21 @@ public class Board {
 		this.tokenPos[0] = height - 1; // row
 		this.tokenPos[1] = 0; // column
 		
-		Tile tokenTile = new Tile(TileType.EMPTY);
-		tokenTile.setToken(true);
-		
-		tiles[tokenPos[0]][tokenPos[1]] = tokenTile;
+		tiles[tokenPos[0]][tokenPos[1]].setToken(true);
 	}
 	
 	/**
 	 * Draw the game board
 	 */
 	public void draw() {
-		String numberTop = "      ";
-		String border = "     ===";
+		String numberTop = "       ";
+		String border = "     =====";
 		
 		for(int i = 0; i < width; i++)
-			numberTop += Integer.toString(i + 1) + "  ";
+			numberTop += Integer.toString(i + 1) + "    ";
 		
 		for(int i = 1; i < width; i++)
-			border += "===";
+			border += "=====";
 		
 		// Display top border
 		
@@ -99,39 +96,46 @@ public class Board {
 		// Display each tile
 		for(int i = 0; i < width; i++) {
 			// Form the row by concatenating each tile on the row together
-			// A tile is 3x3, so therefore consists of top, middle and bottom
+			// A tile is 5x5, so therefore consists of 5 sections
 			
 			String rowTop = "  || ";
+			String rowTM = "  || ";
 			String rowMiddle = " " + Integer.toString(width - i) + "|| ";
+			String rowMB = "  || ";
 			String rowBottom = "  || ";
 			
 			for(int j = 0; j < height; j++) {
-				// Split the tile up into its top, middle and bottom
-				// tileContents[0] = top
-				// tileContents[1] = middle
-				// tileContents[2] = bottom
+				// Split the tile up into its relevant sections
+				// tile[0] = top, tile[1] = top-middle
+				// tile[2] = middle, tile[3] = middle-bottom
+				// tile[4] = bottom
 				
-				String tileString = tiles[i][j].getTileString();
-				String[] tileContents = tileString.split("\n");
+				String[] tile = tiles[i][j].getTileString();
 				
 				// Check which tile it is for correct border placement
 				if(j == (height - 1)) {
 					// Last tile on row requires a border
-					rowTop += tileContents[0] + " ||";
-					rowMiddle += tileContents[1] + " ||";
-					rowBottom += tileContents[2] + " ||";
+					rowTop += tile[0] + " ||";
+					rowTM += tile[1] + " ||";
+					rowMiddle += tile[2] + " ||";
+					rowMB += tile[3] + " ||";
+					rowBottom += tile[4] + " ||";
 				}
 				else {
 					// A tile will be placed to the right of this tile, so skip border
-					rowTop += tileContents[0] + "";
-					rowMiddle += tileContents[1] + "";
-					rowBottom += tileContents[2] + "";
+					rowTop += tile[0];
+					rowTM += tile[1];
+					rowMiddle += tile[2];
+					rowMB += tile[3];
+					rowBottom += tile[4];
 				}
 			}
 			
 			// Output full row now
 			System.out.println(rowTop);
+			System.out.println(rowTM);
 			System.out.println(rowMiddle);
+			System.out.println(rowMB);
 			System.out.println(rowBottom);
 		}
 		
