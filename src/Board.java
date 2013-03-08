@@ -144,35 +144,55 @@ public class Board {
 	/**
 	 * Get the tile at the specified location
 	 * 
-	 * @param row The row coordinate of the tile
 	 * @param column The column coordinate of the tile
+	 * @param row The row coordinate of the tile
 	 * @return The particular tile at the specified location. Returns null on error.
 	 */
-	public Tile getTile(int row, int column) {
+	public Tile getTile(int column, int row) {
 		// Check if tile is within valid bounds
 		if((row < 0 || row > width) || (column < 0 || column > height))
 			return null;
 		
-		return tiles[row][column];
+		return tiles[internalRow(row)][internalColumn(column)];
 	}
 	
 	/**
 	 * Set the tile at the specified location to a new tile
 	 * 
-	 * @param row The row coordinate of the tile
 	 * @param column The column coordinate of the tile
+	 * @param row The row coordinate of the tile
 	 * @param newTile The new tile for replacing the existing tile with
 	 */
-	public void setTile(int row, int column, Tile newTile) {
+	public void setTile(int column, int row, Tile newTile) {
 		// Check if tile is within valid bounds
 		if((row < 0 || row > width) || (column < 0 || column > height))
 			return;
 		
-		tiles[row][column] = newTile;
+		tiles[internalRow(row)][internalColumn(column)] = newTile;
 	}
 	
 	public int getWidth() { return width; }
 	public int getHeight() { return height; }
 	public int[] getTokenPos() { return tokenPos; }
+	
+	/**
+	 * Convert a row to its internal array equivalent
+	 * 
+	 * @param row The row as labelled on the board
+	 * @return The internal array equivalent
+	 */
+	private int internalRow(int row) {
+		return (getHeight() - row);
+	}
+	
+	/**
+	 * Convert a column to its internal array equivalent
+	 * 
+	 * @param column The column as labelled on the board
+	 * @return The internal array equivalent
+	 */
+	private int internalColumn(int column) {
+		return column - 1;
+	}
 
 }

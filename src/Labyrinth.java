@@ -44,16 +44,16 @@ public class Labyrinth {
 	public void parseInput(String[] inputArgs) throws NumberFormatException, IndexOutOfBoundsException {
 		if(inputArgs[0].toLowerCase().equals("insert")) {
 			if(inputArgs.length < 3) {
-				System.out.println("Usage: insert <row> <column>");
+				System.out.println("Usage: insert <column> <row>");
 				return;
 			}
 		
 			// Insert spare tile command
-			int row, column;
+			int column, row;
 			
 			try {
-				row = Integer.parseInt(inputArgs[1]);
-				column = Integer.parseInt(inputArgs[2]);
+				column = Integer.parseInt(inputArgs[1]);
+				row = Integer.parseInt(inputArgs[2]);
 			}
 			catch(NumberFormatException e) {
 				throw new NumberFormatException("Invalid coordinates entered\n");
@@ -62,7 +62,7 @@ public class Labyrinth {
 				throw new IndexOutOfBoundsException("Not enough arguments\n");
 			}
 			
-			tc.replaceTile(row, column);
+			tc.replaceTile(column, row);
 		}
 		else if(inputArgs[0].toLowerCase().equals("rotate")) {
 			if(inputArgs.length == 2) {
@@ -77,11 +77,11 @@ public class Labyrinth {
 			}
 			else if(inputArgs.length == 4) {
 				// Rotate tile on board
-				int row = Integer.parseInt(inputArgs[1]);
-				int column = Integer.parseInt(inputArgs[2]);
+				int column = Integer.parseInt(inputArgs[1]);
+				int row = Integer.parseInt(inputArgs[2]);
 				
 				try {
-					tc.rotateTile(row, column, Integer.parseInt(inputArgs[3]));
+					tc.rotateTile(column, row, Integer.parseInt(inputArgs[3]));
 				}
 				catch(NumberFormatException e) {
 					System.out.println("Invalid angle: must be 90, 180 or 270");
@@ -89,7 +89,7 @@ public class Labyrinth {
 				}
 			}
 			else {
-				System.out.println("Usage: rotate <degrees> (rotate spare tile) or rotate <row> <column> <degrees>");
+				System.out.println("Usage: rotate <degrees> (rotate spare tile) or rotate <column> <row> <degrees>");
 			}
 		}
 		else if(inputArgs[0].toLowerCase().equals("exit")) {

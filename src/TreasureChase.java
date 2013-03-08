@@ -65,11 +65,11 @@ public class TreasureChase implements GameMode {
 	/**
 	 * Rotate the tile specified to a particular rotation
 	 * 
-	 * @param row The row coordinate of the existing tile
 	 * @param column The column coordinate of the existing tile
+	 * @param row The row coordinate of the existing tile
 	 * @param angle The angle to rotate the tile by
 	 */
-	public void rotateTile(int row, int column, int angle) throws NumberFormatException {
+	public void rotateTile(int column, int row, int angle) throws NumberFormatException {
 		if(angle < 0 || angle > 270)
 			// Angle is out of bounds
 			throw new NumberFormatException("Angle must either be 90, 180 or 270");
@@ -78,14 +78,11 @@ public class TreasureChase implements GameMode {
 			// Angle isn't divisible by 90
 			throw new NumberFormatException("Angle must either be 90, 180 or 270");
 		
-		int realRow = convertRow(row);
-		int realColumn = convertColumn(column);
-		
-		Tile tile = board.getTile(realRow, realColumn);
+		Tile tile = board.getTile(column, row);
 		int currAngle = RotationAngle.convertToInt(tile.getRotation());
 		RotationAngle newAngle = RotationAngle.convertFromInt((angle + currAngle) % 360);
 		tile.setRotation(newAngle);
-		board.setTile(realRow, realColumn, tile);
+		board.setTile(column, row, tile);
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
@@ -94,15 +91,13 @@ public class TreasureChase implements GameMode {
 	/**
 	 * Replace an existing tile on the board with the Player's spare tile
 	 * 
-	 * @param row The row coordinate of the existing tile
 	 * @param column The column coordinate of the existing tile
+	 * @param row The row coordinate of the existing tile
 	 */
-	public void replaceTile(int row, int column) {
-		int realRow = convertRow(row);
-		int realColumn = convertColumn(column);
-		Tile oldTile = board.getTile(realRow, realColumn);
+	public void replaceTile(int column, int row) {
+		Tile oldTile = board.getTile(column, row);
 		
-		board.setTile(realRow, realColumn, player.getSpareTile());
+		board.setTile(column, row, player.getSpareTile());
 		player.setSpareTile(oldTile);
 		
 		player.setMoves(player.getMoves() + 1);
@@ -112,14 +107,12 @@ public class TreasureChase implements GameMode {
 	/**
 	 * Replace an existing tile on the board with a new tile
 	 * 
-	 * @param row The row coordinate of the existing tile
 	 * @param column The column coordinate of the existing tile
+	 * @param row The row coordinate of the existing tile
 	 * @param newTile The new tile to place over an existing tile
 	 */
-	public void replaceTile(int row, int column, Tile newTile) {
-		int realRow = convertRow(row);
-		int realColumn = convertColumn(column);
-		board.setTile(realRow, realColumn, newTile);
+	public void replaceTile(int column, int row, Tile newTile) {
+		board.setTile(column, row, newTile);
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
@@ -163,25 +156,5 @@ public class TreasureChase implements GameMode {
 	
 	public int getRound() { return round; }
 	public Player getPlayer() { return player; }
-	
-	/**
-	 * Convert board row number to internal row number
-	 * 
-	 * @param row The row number to convert
-	 * @return The internal board equivalent
-	 */
-	private int convertRow(int row) {
-		return (board.getHeight() - row);
-	}
-	
-	/**
-	 * Convert board column number to internal board number
-	 * 
-	 * @param column The column number to convert
-	 * @return The internal board equivalent
-	 */
-	private int convertColumn(int column) {
-		return column - 1;
-	}
 	
 }
