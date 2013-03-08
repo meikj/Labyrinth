@@ -78,11 +78,14 @@ public class TreasureChase implements GameMode {
 			// Angle isn't divisible by 90
 			throw new NumberFormatException("Angle must either be 90, 180 or 270");
 		
-		Tile tile = board.getTile(row, column);
+		int realRow = convertRow(row);
+		int realColumn = convertColumn(column);
+		
+		Tile tile = board.getTile(realRow, realColumn);
 		int currAngle = RotationAngle.convertToInt(tile.getRotation());
 		RotationAngle newAngle = RotationAngle.convertFromInt((angle + currAngle) % 360);
 		tile.setRotation(newAngle);
-		board.setTile(row, column, tile);
+		board.setTile(realRow, realColumn, tile);
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
@@ -95,9 +98,11 @@ public class TreasureChase implements GameMode {
 	 * @param column The column coordinate of the existing tile
 	 */
 	public void replaceTile(int row, int column) {
-		Tile oldTile = board.getTile(row, column);
+		int realRow = convertRow(row);
+		int realColumn = convertColumn(column);
+		Tile oldTile = board.getTile(realRow, realColumn);
 		
-		board.setTile(row, column, player.getSpareTile());
+		board.setTile(realRow, realColumn, player.getSpareTile());
 		player.setSpareTile(oldTile);
 		
 		player.setMoves(player.getMoves() + 1);
@@ -112,7 +117,9 @@ public class TreasureChase implements GameMode {
 	 * @param newTile The new tile to place over an existing tile
 	 */
 	public void replaceTile(int row, int column, Tile newTile) {
-		board.setTile(row, column, newTile);
+		int realRow = convertRow(row);
+		int realColumn = convertColumn(column);
+		board.setTile(realRow, realColumn, newTile);
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
@@ -156,5 +163,25 @@ public class TreasureChase implements GameMode {
 	
 	public int getRound() { return round; }
 	public Player getPlayer() { return player; }
+	
+	/**
+	 * Convert board row number to internal row number
+	 * 
+	 * @param row The row number to convert
+	 * @return The internal board equivalent
+	 */
+	private int convertRow(int row) {
+		return (board.getHeight() - row);
+	}
+	
+	/**
+	 * Convert board column number to internal board number
+	 * 
+	 * @param column The column number to convert
+	 * @return The internal board equivalent
+	 */
+	private int convertColumn(int column) {
+		return column - 1;
+	}
 	
 }
