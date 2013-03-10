@@ -105,8 +105,8 @@ public class Tile {
 	}
 	
 	/**
-	 * Get the String representation of the Tile. A tile consists of 5x5 characters.
-	 * The tile is separated into 5 sections (top, top-middle, middle, middle-bottom, bottom).
+	 * Get the String representation of the Tile. A tile consists of 7x5 characters.
+	 * The tile is separated into 5 row sections (top, top-middle, middle, middle-bottom, bottom).
 	 * As such, a String array of 5 elements is returned containing the aforementioned
 	 * sections.
 	 * 
@@ -128,94 +128,94 @@ public class Tile {
 		
 		switch(type) {
 		case CROSS:
-			tile[0] = " X X ";
-			tile[1] = "XX XX";
-			tile[2] = "     ";
-			tile[3] = "XX XX";
-			tile[4] = " X X ";
+			tile[0] = "XX   XX";
+			tile[1] = "XX   XX";
+			tile[2] = "       ";
+			tile[3] = "XX   XX";
+			tile[4] = "XX   XX";
 			
 			break;
 		case TSHAPE:
 			if(rotation == RotationAngle.DEFAULT) {
-				tile[0] = " X X ";
-				tile[1] = " X XX";
-				tile[2] = " X   ";
-				tile[3] = " X XX";
-				tile[4] = " X X ";
+				tile[0] = "XX   XX";
+				tile[1] = "XX   XX";
+				tile[2] = "XX     ";
+				tile[3] = "XX   XX";
+				tile[4] = "XX   XX";
 			} else if(rotation == RotationAngle.NINETY) {
-				tile[0] = "     ";
-				tile[1] = "XXXXX";
-				tile[2] = "     ";
-				tile[3] = "XX XX";
-				tile[4] = " X X ";
+				tile[0] = "XXXXXXX";
+				tile[1] = "XXXXXXX";
+				tile[2] = "       ";
+				tile[3] = "XX   XX";
+				tile[4] = "XX   XX";
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
-				tile[0] = " X X ";
-				tile[1] = "XX X ";
-				tile[2] = "   X ";
-				tile[3] = "XX X ";
-				tile[4] = " X X ";
+				tile[0] = "XX   XX";
+				tile[1] = "XX   XX";
+				tile[2] = "     XX";
+				tile[3] = "XX   XX";
+				tile[4] = "XX   XX";
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
-				tile[0] = " X X ";
-				tile[1] = "XX XX";
-				tile[2] = "     ";
-				tile[3] = "XXXXX";
-				tile[4] = "     ";
+				tile[0] = "XX   XX";
+				tile[1] = "XX   XX";
+				tile[2] = "       ";
+				tile[3] = "XXXXXXX";
+				tile[4] = "XXXXXXX";
 			}
 			
 			break;
 		case LINE:
 			if(rotation == RotationAngle.DEFAULT) {
-				tile[0] = " X X ";
-				tile[1] = " X X ";
-				tile[2] = " X X ";
-				tile[3] = " X X ";
-				tile[4] = " X X ";
+				tile[0] = "XX   XX";
+				tile[1] = "XX   XX";
+				tile[2] = "XX   XX";
+				tile[3] = "XX   XX";
+				tile[4] = "XX   XX";
 			} else if(rotation == RotationAngle.NINETY) {
-				tile[0] = "     ";
-				tile[1] = "XXXXX";
-				tile[2] = "     ";
-				tile[3] = "XXXXX";
-				tile[4] = "     ";
+				tile[0] = "XXXXXXX";
+				tile[1] = "XXXXXXX";
+				tile[2] = "       ";
+				tile[3] = "XXXXXXX";
+				tile[4] = "XXXXXXX";
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
-				tile[0] = " X X ";
-				tile[1] = " X X ";
-				tile[2] = " X X ";
-				tile[3] = " X X ";
-				tile[4] = " X X ";
+				tile[0] = "XX   XX";
+				tile[1] = "XX   XX";
+				tile[2] = "XX   XX";
+				tile[3] = "XX   XX";
+				tile[4] = "XX   XX";
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
-				tile[0] = "     ";
-				tile[1] = "XXXXX";
-				tile[2] = "     ";
-				tile[3] = "XXXXX";
-				tile[4] = "     ";
+				tile[0] = "XXXXXXX";
+				tile[1] = "XXXXXXX";
+				tile[2] = "       ";
+				tile[3] = "XXXXXXX";
+				tile[4] = "XXXXXXX";
 			}
 			
 			break;
 		case CORNER:
 			if(rotation == RotationAngle.DEFAULT) {
-				tile[0] = "     ";
-				tile[1] = " XXXX";
-				tile[2] = " X   ";
-				tile[3] = " X XX";
-				tile[4] = " X X ";
+				tile[0] = "XXXXXXX";
+				tile[1] = "XXXXXXX";
+				tile[2] = "XX     ";
+				tile[3] = "XX   XX";
+				tile[4] = "XX   XX";
 			} else if(rotation == RotationAngle.NINETY) {
-				tile[0] = "     ";
-				tile[1] = "XXXX ";
-				tile[2] = "   X ";
-				tile[3] = "XX X ";
-				tile[4] = " X X ";
+				tile[0] = "XXXXXXX";
+				tile[1] = "XXXXXXX";
+				tile[2] = "     XX";
+				tile[3] = "XX   XX";
+				tile[4] = "XX   XX";
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
-				tile[0] = " X X ";
-				tile[1] = "XX X ";
-				tile[2] = "   X ";
-				tile[3] = "XXXX ";
-				tile[4] = "     ";
+				tile[0] = "XX   XX";
+				tile[1] = "XX   XX";
+				tile[2] = "     XX";
+				tile[3] = "XXXXXXX";
+				tile[4] = "XXXXXXX";
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
-				tile[0] = " X X ";
-				tile[1] = " X XX";
-				tile[2] = " X   ";
-				tile[3] = " XXXX";
-				tile[4] = "     ";
+				tile[0] = "XX   XX";
+				tile[1] = "XX   XX";
+				tile[2] = "XX     ";
+				tile[3] = "XXXXXXX";
+				tile[4] = "XXXXXXX";
 			}
 			
 			break;
@@ -233,13 +233,13 @@ public class Tile {
 		if(hasToken()) {
 			// Change middle section, middle element to token
 			char[] tileMiddle = tile[2].toCharArray();
-			tileMiddle[2] = 'O'; // Set to token
+			tileMiddle[3] = 'O'; // Set to token
 			tile[2] = new String(tileMiddle);
 		}
 		else if(hasTreasure()) {
 			// Change middle section, middle element to treasure
 			char[] tileMiddle = tile[2].toCharArray();
-			tileMiddle[2] = 'T'; // Set to token
+			tileMiddle[3] = 'T'; // Set to token
 			tile[2] = new String(tileMiddle);
 		}
 		

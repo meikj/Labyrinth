@@ -80,28 +80,28 @@ public class Board {
 	 * Draw the game board
 	 */
 	public void draw() {
-		String numberTop = "       ";
-		String border = "     =====";
+		// Form horizontal border
+		String numberTop = "        ";
+		String border = "     ======";
 		
 		for(int i = 0; i < width; i++)
-			numberTop += Integer.toString(i + 1) + "    ";
+			numberTop += Integer.toString(i + 1) + "      ";
 		
 		for(int i = 1; i < width; i++)
-			border += "=====";
+			border += "=======";
 		
 		// Display top border
-		
 		System.out.println(border);
 		
 		// Display each tile
 		for(int i = 0; i < width; i++) {
 			// Form the row by concatenating each tile on the row together
-			// A tile is 5x5, so therefore consists of 5 sections
+			// A tile is 7x5, so therefore consists of 5 row sections
 			
-			String rowTop = "  || ";
-			String rowTM = "  || ";
+			String rowTop    = "  || ";
+			String rowTM     = "  || ";
 			String rowMiddle = " " + Integer.toString(width - i) + "|| ";
-			String rowMB = "  || ";
+			String rowMB     = "  || ";
 			String rowBottom = "  || ";
 			
 			for(int j = 0; j < height; j++) {
@@ -115,18 +115,18 @@ public class Board {
 				// Check which tile it is for correct border placement
 				if(j == (height - 1)) {
 					// Last tile on row requires a border
-					rowTop += tile[0] + " ||";
-					rowTM += tile[1] + " ||";
+					rowTop    += tile[0] + " ||";
+					rowTM     += tile[1] + " ||";
 					rowMiddle += tile[2] + " ||";
-					rowMB += tile[3] + " ||";
+					rowMB     += tile[3] + " ||";
 					rowBottom += tile[4] + " ||";
 				}
 				else {
 					// A tile will be placed to the right of this tile, so skip border
-					rowTop += tile[0];
-					rowTM += tile[1];
+					rowTop    += tile[0];
+					rowTM     += tile[1];
 					rowMiddle += tile[2];
-					rowMB += tile[3];
+					rowMB     += tile[3];
 					rowBottom += tile[4];
 				}
 			}
@@ -140,7 +140,6 @@ public class Board {
 		}
 		
 		// Display bottom border
-		
 		System.out.println(border);
 		System.out.println(numberTop);
 	}
