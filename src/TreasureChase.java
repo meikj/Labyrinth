@@ -145,15 +145,15 @@ public class TreasureChase implements GameMode {
 		// Score in Treasure Chase is rounds
 		
 		System.out.println();
-		System.out.println("    ------------- ----------- -----------");
-		System.out.println("   | SPARE  TILE |   ROUND   |   SCORE   |");
-		System.out.println("   |=============|===========|===========|");
-		System.out.println("   |    " + tileRows[0] + "    |           |           |");
-		System.out.println("   |    " + tileRows[1] + "    |           |           |");
-		System.out.println("   |    " + tileRows[2] + "    |   " + roundString + "   |   " + roundString + "   |");
-		System.out.println("   |    " + tileRows[3] + "    |           |           |");
-		System.out.println("   |    " + tileRows[4] + "    |           |           |");
-		System.out.println("    ------------- ----------- -----------");
+		System.out.println("          --------------- ----------- -----------");
+		System.out.println("         |  SPARE  TILE  |   ROUND   |   SCORE   |");
+		System.out.println("         |===============|===========|===========|");
+		System.out.println("         |    " + tileRows[0] + "    |           |           |");
+		System.out.println("         |    " + tileRows[1] + "    |           |           |");
+		System.out.println("         |    " + tileRows[2] + "    |   " + roundString + "   |   " + roundString + "   |");
+		System.out.println("         |    " + tileRows[3] + "    |           |           |");
+		System.out.println("         |    " + tileRows[4] + "    |           |           |");
+		System.out.println("          --------------- ----------- -----------");
 	}
 	
 	public void save() { return; }
