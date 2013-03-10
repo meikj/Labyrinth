@@ -128,65 +128,65 @@ public class Tile {
 		
 		switch(type) {
 		case CROSS:
-			tile[0] = " | | ";
-			tile[1] = "—   —";
+			tile[0] = " X X ";
+			tile[1] = "XX XX";
 			tile[2] = "     ";
-			tile[3] = "—   —";
-			tile[4] = " | | ";
+			tile[3] = "XX XX";
+			tile[4] = " X X ";
 			
 			break;
 		case TSHAPE:
 			if(rotation == RotationAngle.DEFAULT) {
-				tile[0] = " | | ";
-				tile[1] = " |  —";
-				tile[2] = " |   ";
-				tile[3] = " |  —";
-				tile[4] = " | | ";
+				tile[0] = " X X ";
+				tile[1] = " X XX";
+				tile[2] = " X   ";
+				tile[3] = " X XX";
+				tile[4] = " X X ";
 			} else if(rotation == RotationAngle.NINETY) {
 				tile[0] = "     ";
-				tile[1] = "—————";
+				tile[1] = "XXXXX";
 				tile[2] = "     ";
-				tile[3] = "—   —";
-				tile[4] = " | | ";
+				tile[3] = "XX XX";
+				tile[4] = " X X ";
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
-				tile[0] = " | | ";
-				tile[1] = "—  | ";
-				tile[2] = "   | ";
-				tile[3] = "—  | ";
-				tile[4] = " | | ";
+				tile[0] = " X X ";
+				tile[1] = "XX X ";
+				tile[2] = "   X ";
+				tile[3] = "XX X ";
+				tile[4] = " X X ";
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
-				tile[0] = " | | ";
-				tile[1] = "—   —";
+				tile[0] = " X X ";
+				tile[1] = "XX XX";
 				tile[2] = "     ";
-				tile[3] = "—————";
+				tile[3] = "XXXXX";
 				tile[4] = "     ";
 			}
 			
 			break;
 		case LINE:
 			if(rotation == RotationAngle.DEFAULT) {
-				tile[0] = " | | ";
-				tile[1] = " | | ";
-				tile[2] = " | | ";
-				tile[3] = " | | ";
-				tile[4] = " | | ";
+				tile[0] = " X X ";
+				tile[1] = " X X ";
+				tile[2] = " X X ";
+				tile[3] = " X X ";
+				tile[4] = " X X ";
 			} else if(rotation == RotationAngle.NINETY) {
 				tile[0] = "     ";
-				tile[1] = "—————";
+				tile[1] = "XXXXX";
 				tile[2] = "     ";
-				tile[3] = "—————";
+				tile[3] = "XXXXX";
 				tile[4] = "     ";
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
-				tile[0] = " | | ";
-				tile[1] = " | | ";
-				tile[2] = " | | ";
-				tile[3] = " | | ";
-				tile[4] = " | | ";
+				tile[0] = " X X ";
+				tile[1] = " X X ";
+				tile[2] = " X X ";
+				tile[3] = " X X ";
+				tile[4] = " X X ";
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
 				tile[0] = "     ";
-				tile[1] = "—————";
+				tile[1] = "XXXXX";
 				tile[2] = "     ";
-				tile[3] = "—————";
+				tile[3] = "XXXXX";
 				tile[4] = "     ";
 			}
 			
@@ -194,27 +194,27 @@ public class Tile {
 		case CORNER:
 			if(rotation == RotationAngle.DEFAULT) {
 				tile[0] = "     ";
-				tile[1] = "  ———";
-				tile[2] = " |   ";
-				tile[3] = " |  —";
-				tile[4] = " | | ";
+				tile[1] = " XXXX";
+				tile[2] = " X   ";
+				tile[3] = " X XX";
+				tile[4] = " X X ";
 			} else if(rotation == RotationAngle.NINETY) {
 				tile[0] = "     ";
-				tile[1] = "———  ";
-				tile[2] = "   | ";
-				tile[3] = "—  | ";
-				tile[4] = " | | ";
+				tile[1] = "XXXX ";
+				tile[2] = "   X ";
+				tile[3] = "XX X ";
+				tile[4] = " X X ";
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
-				tile[0] = " | | ";
-				tile[1] = "-  | ";
-				tile[2] = "   | ";
-				tile[3] = "———  ";
+				tile[0] = " X X ";
+				tile[1] = "XX X ";
+				tile[2] = "   X ";
+				tile[3] = "XXXX ";
 				tile[4] = "     ";
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
-				tile[0] = " | | ";
-				tile[1] = " |  —";
-				tile[2] = " |   ";
-				tile[3] = "  ———";
+				tile[0] = " X X ";
+				tile[1] = " X XX";
+				tile[2] = " X   ";
+				tile[3] = " XXXX";
 				tile[4] = "     ";
 			}
 			
