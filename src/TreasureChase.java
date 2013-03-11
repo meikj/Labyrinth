@@ -1,9 +1,9 @@
 /**
- * Represents the TreasureChase game mode
+ * Represents the Treasure Chase game mode.
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.07032013
+ * @version 0.1.11032013
  *
  */
 public class TreasureChase implements GameMode {
@@ -12,25 +12,27 @@ public class TreasureChase implements GameMode {
 	private Board board;
 	private Leaderboard leaderboard;
 	private int round;
+	private boolean win;
 	
 	/**
-	 * Construct a TreasureChase game with a specified player
+	 * Construct a TreasureChase game with a specified player.
 	 * 
-	 * @param player The player to play the game
+	 * @param player The player to play the game.
 	 */
 	public TreasureChase(Player player) {
 		this.player = player;
 		this.leaderboard = new Leaderboard();
+		this.win = false;
 		
 		// Generate a board with default settings of 7x7
 		this.board = new Board(7, 7);
 	}
 	
 	/**
-	 * Construct a TreasureChase game with a specified player and leaderboard
+	 * Construct a TreasureChase game with a specified player and leaderboard.
 	 * 
-	 * @param player The player to play the game
-	 * @param leaderboard The leaderboard to use
+	 * @param player The player to play the game.
+	 * @param leaderboard The leaderboard to use.
 	 */
 	public TreasureChase(Player player, Leaderboard leaderboard) {
 		this(player);
@@ -41,9 +43,9 @@ public class TreasureChase implements GameMode {
 	public void moveTile(int currRow, int currColumn, int newRow, int newColumn) { return; }
 	
 	/**
-	 * Rotate the spare tile to a particular rotation
+	 * Rotate the spare tile by a particular angle.
 	 * 
-	 * @param angle The angle to rotate the spare tile by
+	 * @param angle The angle to rotate the spare tile by. Must be either 90, 180 or 270.
 	 */
 	public void rotateTile(int angle) throws NumberFormatException {
 		if(angle < 0 || angle > 270)
@@ -63,13 +65,17 @@ public class TreasureChase implements GameMode {
 	}
 	
 	/**
-	 * Rotate the tile specified to a particular rotation
+	 * Rotate the tile specified by a particular angle.
 	 * 
-	 * @param column The column coordinate of the existing tile
-	 * @param row The row coordinate of the existing tile
-	 * @param angle The angle to rotate the tile by
+	 * @param column The column coordinate of the existing tile.
+	 * @param row The row coordinate of the existing tile.
+	 * @param angle The angle to rotate the spare tile by. Must be either 90, 180 or 270.
 	 */
 	public void rotateTile(int column, int row, int angle) throws NumberFormatException {
+		// Check if tile is immovable/fixed
+		if(!board.getTile(column, row).isMovable())
+			return;
+		
 		if(angle < 0 || angle > 270)
 			// Angle is out of bounds
 			throw new NumberFormatException("Angle must either be 90, 180 or 270");
@@ -89,12 +95,16 @@ public class TreasureChase implements GameMode {
 	}
 	
 	/**
-	 * Replace an existing tile on the board with the Player's spare tile
+	 * Replace an existing tile on the board with the player's spare tile.
 	 * 
-	 * @param column The column coordinate of the existing tile
-	 * @param row The row coordinate of the existing tile
+	 * @param column The column coordinate of the existing tile.
+	 * @param row The row coordinate of the existing tile.
 	 */
 	public void replaceTile(int column, int row) {
+		// Check if tile is immovable/fixed
+		if(!board.getTile(column, row).isMovable())
+			return;
+		
 		Tile oldTile = board.getTile(column, row);
 		
 		board.setTile(column, row, player.getSpareTile());
@@ -105,13 +115,17 @@ public class TreasureChase implements GameMode {
 	}
 	
 	/**
-	 * Replace an existing tile on the board with a new tile
+	 * Replace an existing tile on the board with a new tile.
 	 * 
-	 * @param column The column coordinate of the existing tile
-	 * @param row The row coordinate of the existing tile
-	 * @param newTile The new tile to place over an existing tile
+	 * @param column The column coordinate of the existing tile.
+	 * @param row The row coordinate of the existing tile.
+	 * @param newTile The new tile to place over an existing tile.
 	 */
 	public void replaceTile(int column, int row, Tile newTile) {
+		// Check if tile is immovable/fixed
+		if(!board.getTile(column, row).isMovable())
+			return;
+		
 		board.setTile(column, row, newTile);
 		
 		player.setMoves(player.getMoves() + 1);
@@ -119,7 +133,7 @@ public class TreasureChase implements GameMode {
 	}
 	
 	/**
-	 * Update the interface
+	 * Update the interface.
 	 */
 	public void update() {
 		// Draw the board
@@ -163,9 +177,16 @@ public class TreasureChase implements GameMode {
 	public Player getPlayer() { return player; }
 	
 	/**
-	 * Called in the event the player has won (i.e. completed the game mode objective(s))
+	 * Check if the player has won the game.
 	 */
-	private void onWin() {
+	public boolean hasWon() {
+		return win;
+	}
+	
+	/**
+	 * Called in the event the player has won (i.e. completed the game mode objective(s)).
+	 */
+	public void onWin() {
 		//
 		// TODO: Clear console?
 		//

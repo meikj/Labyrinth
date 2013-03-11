@@ -1,5 +1,5 @@
 /**
- * Used to represent a tile type
+ * Used to represent a tile type.
  * 
  * @author Gareth Gill
  * @author John Meikle

@@ -1,6 +1,6 @@
 /**
  * Used to represent the choice of possible rotation angles for use with tile
- * manipulation
+ * manipulation.
  * 
  * @author Gareth Gill
  * @author John Meikle
@@ -12,10 +12,10 @@ public enum RotationAngle {
 	DEFAULT, NINETY, HUNDREDANDEIGHTY, TWOHUNDREDANDSEVENTY;
 	
 	/**
-	 * Convert a RotationAngle to its corresponding integer equivalent
+	 * Convert a RotationAngle to its corresponding integer equivalent.
 	 * 
-	 * @param ra The RotationAngle to convert
-	 * @return The resulting integer
+	 * @param ra The RotationAngle to convert.
+	 * @return The resulting integer.
 	 */
 	public static int convertToInt(RotationAngle ra) {
 		switch(ra) {

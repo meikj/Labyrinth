@@ -1,11 +1,11 @@
 import java.util.Random;
 
 /**
- * Represents the board in the Labyrinth game
+ * Represents a game board containing tiles.
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.07032013
+ * @version 0.1.11032013
  *
  */
 public class Board {
@@ -14,15 +14,16 @@ public class Board {
 	private int width;
 	private int height;
 	private int[] tokenPos;
+	private Random r;
 	
 	/**
-	 * Construct a board of a particular size
+	 * Construct a board of a particular size.
 	 * 
-	 * @param width The width of the board
-	 * @param height The height of the board
+	 * @param width The width of the board.
+	 * @param height The height of the board.
 	 */
 	public Board(int width, int height) {
-		Random r = new Random();
+		this.r = new Random();
 		
 		this.width = width;
 		this.height = height;
@@ -70,19 +71,22 @@ public class Board {
 		
 		// Set token position (bottom left corner)
 		this.tokenPos = new int[2];
-		this.tokenPos[0] = height - 1; // row
-		this.tokenPos[1] = 0; // column
+		this.tokenPos[0] = 1; // column
+		this.tokenPos[1] = 1; // row
 		
-		tiles[tokenPos[0]][tokenPos[1]].setToken(true);
+		tiles[getInternalRow(tokenPos[1])][getInternalColumn(tokenPos[1])].setToken(true);
+		
+		// Set some immovable tiles
+		tiles[2][3].setMovable(false);
 	}
 	
 	/**
-	 * Draw the game board
+	 * Draw the game board.
 	 */
 	public void draw() {
 		// Form horizontal border
 		String numberTop = "        ";
-		String border = "     ======";
+		String border = "     =======";
 		
 		for(int i = 0; i < width; i++)
 			numberTop += Integer.toString(i + 1) + "      ";
@@ -145,10 +149,10 @@ public class Board {
 	}
 	
 	/**
-	 * Get the tile at the specified location
+	 * Get the tile at the specified location.
 	 * 
-	 * @param column The column coordinate of the tile
-	 * @param row The row coordinate of the tile
+	 * @param column The column coordinate of the tile.
+	 * @param row The row coordinate of the tile.
 	 * @return The particular tile at the specified location. Returns null on error.
 	 */
 	public Tile getTile(int column, int row) {
@@ -156,45 +160,54 @@ public class Board {
 		if((row < 0 || row > width) || (column < 0 || column > height))
 			return null;
 		
-		return tiles[internalRow(row)][internalColumn(column)];
+		return tiles[getInternalRow(row)][getInternalColumn(column)];
 	}
 	
 	/**
-	 * Set the tile at the specified location to a new tile
+	 * Set the tile at the specified location to a new tile.
 	 * 
-	 * @param column The column coordinate of the tile
-	 * @param row The row coordinate of the tile
-	 * @param newTile The new tile for replacing the existing tile with
+	 * @param column The column coordinate of the tile.
+	 * @param row The row coordinate of the tile.
+	 * @param newTile The new tile for replacing the existing tile with.
 	 */
 	public void setTile(int column, int row, Tile newTile) {
 		// Check if tile is within valid bounds
 		if((row < 0 || row > width) || (column < 0 || column > height))
 			return;
 		
-		tiles[internalRow(row)][internalColumn(column)] = newTile;
+		tiles[getInternalRow(row)][getInternalColumn(column)] = newTile;
 	}
 	
 	public int getWidth() { return width; }
 	public int getHeight() { return height; }
-	public int[] getTokenPos() { return tokenPos; }
 	
 	/**
-	 * Convert a row to its internal array equivalent
+	 * Get the current token position as a board coordinate.
 	 * 
-	 * @param row The row as labelled on the board
-	 * @return The internal array equivalent
+	 * @return The token position as an integer array. Index 0 is
+	 * the column, index 1 is the row.
 	 */
-	private int internalRow(int row) {
+	public int[] getTokenPos() {
+		return tokenPos;
+	}
+	
+	/**
+	 * Convert a row to its internal array equivalent.
+	 * 
+	 * @param row The row as labelled on the board.
+	 * @return The internal array equivalent.
+	 */
+	public int getInternalRow(int row) {
 		return (getHeight() - row);
 	}
 	
 	/**
-	 * Convert a column to its internal array equivalent
+	 * Convert a column to its internal array equivalent.
 	 * 
-	 * @param column The column as labelled on the board
-	 * @return The internal array equivalent
+	 * @param column The column as labelled on the board.
+	 * @return The internal array equivalent.
 	 */
-	private int internalColumn(int column) {
+	public int getInternalColumn(int column) {
 		return column - 1;
 	}
 

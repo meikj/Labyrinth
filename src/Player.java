@@ -1,7 +1,7 @@
 import java.util.Random;
 
 /**
- * Represents the player in the Labyrinth game
+ * Represents the player in the Labyrinth game.
  * 
  * @author Gareth Gill
  * @author John Meikle
@@ -15,7 +15,7 @@ public class Player {
 	private Tile spareTile;
 	
 	/**
-	 * Construct a player object
+	 * Construct a player object.
 	 */
 	public Player() {
 		this.score = 0;

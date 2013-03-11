@@ -1,5 +1,5 @@
 /**
- * Represents the leaderboard in the Labyrinth game
+ * Represents the leaderboard in the Labyrinth game.
  * 
  * @author Gareth Gill
  * @author John Meikle
@@ -12,7 +12,7 @@ public class Leaderboard {
 	private int maxEntries;
 	
 	/**
-	 * Construct a standard empty leaderboard
+	 * Construct a standard empty leaderboard.
 	 */
 	public Leaderboard() {
 		// Set the default max entries to 10
@@ -28,20 +28,20 @@ public class Leaderboard {
 	}
 	
 	/**
-	 * Construct a leader board from an existing leader board file
+	 * Construct a leader board from an existing leader board file.
 	 * 
-	 * @param file The leaderboard file to load
+	 * @param file The leaderboard file to load.
 	 */
 	public Leaderboard(String file) {
 		this();
 	}
 	
 	/**
-	 * Submit a score to the leaderboard
+	 * Submit a score to the leaderboard.
 	 * 
-	 * @param name The name of the player
-	 * @param score The score to submit
-	 * @return Returns whether or not the submission was successful
+	 * @param name The name of the player.
+	 * @param score The score to submit.
+	 * @return Returns whether or not the submission was successful.
 	 */
 	public boolean submit(String name, int score) {
 		// Check if any spaces spare, if score is eligible, etc.

@@ -1,9 +1,9 @@
 /**
- * Represents a tile for use within a board
+ * Represents a tile for use within a board.
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.06032013
+ * @version 0.1.11032013
  *
  */
 public class Tile {
@@ -12,26 +12,28 @@ public class Tile {
 	private RotationAngle rotation;
 	private boolean treasure;
 	private boolean token;
+	private boolean movable;
 	private String[] tileString;
 	
 	/**
-	 * Construct a tile of a particular type
+	 * Construct a tile of a particular type.
 	 * 
-	 * @param type The type of tile to construct
+	 * @param type The type of tile to construct.
 	 */
 	public Tile(TileType type) {
 		this.type = type;
 		this.rotation = RotationAngle.DEFAULT;
 		this.treasure = false;
 		this.token = false;
+		this.movable = true;
 		this.tileString = formTileString();
 	}
 	
 	/**
-	 * Construct a tile of a particular type and rotation
+	 * Construct a tile of a particular type and rotation.
 	 * 
-	 * @param type The type of tile to construct
-	 * @param rotation The rotation of the tile to construct
+	 * @param type The type of tile to construct.
+	 * @param rotation The rotation of the tile to construct.
 	 */
 	public Tile(TileType type, RotationAngle rotation) {
 		this(type);
@@ -40,28 +42,31 @@ public class Tile {
 	}
 	
 	/**
-	 * Get the tile type
+	 * Get the tile type.
 	 */
 	public TileType getType() {
 		return type;
 	}
 	
 	/**
-	 * Set the tile type
+	 * Set the tile type.
 	 */
 	public void setType(TileType newType) {
 		this.type = newType;
+		
+		// Type has been altered, reform tile string
+		tileString = formTileString();
 	}
 	
 	/**
-	 * Check whether or not the tile contains treasure
+	 * Check whether or not the tile contains treasure.
 	 */
 	public boolean hasTreasure() {
 		return treasure;
 	}
 	
 	/**
-	 * Set whether or not the tile contains treasure
+	 * Set whether or not the tile contains treasure.
 	 */
 	public void setTreasure(boolean state) {
 		this.treasure = state;
@@ -71,151 +76,168 @@ public class Tile {
 	}
 	
 	/**
-	 * Get the rotation of the tile
+	 * Get the rotation of the tile.
 	 */
 	public RotationAngle getRotation() {
 		return rotation;
 	}
 	
 	/**
-	 * Set the rotation of the tile
+	 * Set the rotation of the tile.
 	 */
 	public void setRotation(RotationAngle newRotation) {
-		this.rotation = newRotation;
+		if(!isMovable())
+			return;
 		
-		// Rotation has been altered, re-form the tile string
-		this.tileString = formTileString();
+		rotation = newRotation;
+		
+		// Rotation has been altered, reform the tile string
+		tileString = formTileString();
 	}
 	
 	/**
-	 * Check whether or not the tile contains the token
+	 * Check whether or not the tile contains the token.
 	 */
 	public boolean hasToken() {
 		return token;
 	}
 	
 	/**
-	 * Set whether or not the tile contains the token
+	 * Set whether or not the tile contains the token.
 	 */
 	public void setToken(boolean state) {
-		this.token = state;
+		token = state;
 		
-		// Token has been altered, re-form the tile string
-		this.tileString = formTileString();
+		// Token has been altered, reform the tile string
+		tileString = formTileString();
 	}
 	
 	/**
-	 * Get the String representation of the Tile. A tile consists of 7x5 characters.
-	 * The tile is separated into 5 row sections (top, top-middle, middle, middle-bottom, bottom).
-	 * As such, a String array of 5 elements is returned containing the aforementioned
-	 * sections.
+	 * Check whether or not the tile is movable.
+	 */
+	public boolean isMovable() {
+		return movable;
+	}
+	
+	/**
+	 * Set whether or not the tile is movable.
+	 */
+	public void setMovable(boolean state) {
+		movable = state;
+		
+		// Reform tile string to reflect new state
+		tileString = formTileString();
+	}
+	
+	/**
+	 * Get the string representation of the tile in the form of an array.
 	 * 
-	 * @return The String array of the Tile
+	 * @return The string array formation of the tile split up into top, top-middle,
+	 * middle, middle-bottom and bottom respectively.
 	 */
 	public String[] getTileString() {
 		return tileString;
 	}
 	
 	/**
-	 * Form a tile string in accordance to its current type and rotation.
-	 * This forms a String array, consisting of 5 sections: top, top-middle, middle,
-	 * middle-bottom, and bottom.
+	 * Form the tile string array in accordance to the tile type.
 	 * 
-	 * @return The String array of the Tile
+	 * @return The string array formation of the tile split up into top, top-middle,
+	 * middle, middle-bottom and bottom respectively.
 	 */
 	private String[] formTileString() {
 		String[] tile = new String[5];
 		
 		switch(type) {
 		case CROSS:
-			tile[0] = "XX   XX";
-			tile[1] = "XX   XX";
+			tile[0] = "██   ██";
+			tile[1] = "██   ██";
 			tile[2] = "       ";
-			tile[3] = "XX   XX";
-			tile[4] = "XX   XX";
+			tile[3] = "██   ██";
+			tile[4] = "██   ██";
 			
 			break;
 		case TSHAPE:
 			if(rotation == RotationAngle.DEFAULT) {
-				tile[0] = "XX   XX";
-				tile[1] = "XX   XX";
-				tile[2] = "XX     ";
-				tile[3] = "XX   XX";
-				tile[4] = "XX   XX";
+				tile[0] = "██   ██";
+				tile[1] = "██   ██";
+				tile[2] = "██     ";
+				tile[3] = "██   ██";
+				tile[4] = "██   ██";
 			} else if(rotation == RotationAngle.NINETY) {
-				tile[0] = "XXXXXXX";
-				tile[1] = "XXXXXXX";
+				tile[0] = "███████";
+				tile[1] = "███████";
 				tile[2] = "       ";
-				tile[3] = "XX   XX";
-				tile[4] = "XX   XX";
+				tile[3] = "██   ██";
+				tile[4] = "██   ██";
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
-				tile[0] = "XX   XX";
-				tile[1] = "XX   XX";
-				tile[2] = "     XX";
-				tile[3] = "XX   XX";
-				tile[4] = "XX   XX";
+				tile[0] = "██   ██";
+				tile[1] = "██   ██";
+				tile[2] = "     ██";
+				tile[3] = "██   ██";
+				tile[4] = "██   ██";
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
-				tile[0] = "XX   XX";
-				tile[1] = "XX   XX";
+				tile[0] = "██   ██";
+				tile[1] = "██   ██";
 				tile[2] = "       ";
-				tile[3] = "XXXXXXX";
-				tile[4] = "XXXXXXX";
+				tile[3] = "███████";
+				tile[4] = "███████";
 			}
 			
 			break;
 		case LINE:
 			if(rotation == RotationAngle.DEFAULT) {
-				tile[0] = "XX   XX";
-				tile[1] = "XX   XX";
-				tile[2] = "XX   XX";
-				tile[3] = "XX   XX";
-				tile[4] = "XX   XX";
+				tile[0] = "██   ██";
+				tile[1] = "██   ██";
+				tile[2] = "██   ██";
+				tile[3] = "██   ██";
+				tile[4] = "██   ██";
 			} else if(rotation == RotationAngle.NINETY) {
-				tile[0] = "XXXXXXX";
-				tile[1] = "XXXXXXX";
+				tile[0] = "███████";
+				tile[1] = "███████";
 				tile[2] = "       ";
-				tile[3] = "XXXXXXX";
-				tile[4] = "XXXXXXX";
+				tile[3] = "███████";
+				tile[4] = "███████";
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
-				tile[0] = "XX   XX";
-				tile[1] = "XX   XX";
-				tile[2] = "XX   XX";
-				tile[3] = "XX   XX";
-				tile[4] = "XX   XX";
+				tile[0] = "██   ██";
+				tile[1] = "██   ██";
+				tile[2] = "██   ██";
+				tile[3] = "██   ██";
+				tile[4] = "██   ██";
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
-				tile[0] = "XXXXXXX";
-				tile[1] = "XXXXXXX";
+				tile[0] = "███████";
+				tile[1] = "███████";
 				tile[2] = "       ";
-				tile[3] = "XXXXXXX";
-				tile[4] = "XXXXXXX";
+				tile[3] = "███████";
+				tile[4] = "███████";
 			}
 			
 			break;
 		case CORNER:
 			if(rotation == RotationAngle.DEFAULT) {
-				tile[0] = "XXXXXXX";
-				tile[1] = "XXXXXXX";
-				tile[2] = "XX     ";
-				tile[3] = "XX   XX";
-				tile[4] = "XX   XX";
+				tile[0] = "███████";
+				tile[1] = "███████";
+				tile[2] = "██     ";
+				tile[3] = "██   ██";
+				tile[4] = "██   ██";
 			} else if(rotation == RotationAngle.NINETY) {
-				tile[0] = "XXXXXXX";
-				tile[1] = "XXXXXXX";
-				tile[2] = "     XX";
-				tile[3] = "XX   XX";
-				tile[4] = "XX   XX";
+				tile[0] = "███████";
+				tile[1] = "███████";
+				tile[2] = "     ██";
+				tile[3] = "██   ██";
+				tile[4] = "██   ██";
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
-				tile[0] = "XX   XX";
-				tile[1] = "XX   XX";
-				tile[2] = "     XX";
-				tile[3] = "XXXXXXX";
-				tile[4] = "XXXXXXX";
+				tile[0] = "██   ██";
+				tile[1] = "██   ██";
+				tile[2] = "     ██";
+				tile[3] = "███████";
+				tile[4] = "███████";
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
-				tile[0] = "XX   XX";
-				tile[1] = "XX   XX";
-				tile[2] = "XX     ";
-				tile[3] = "XXXXXXX";
-				tile[4] = "XXXXXXX";
+				tile[0] = "██   ██";
+				tile[1] = "██   ██";
+				tile[2] = "██     ";
+				tile[3] = "███████";
+				tile[4] = "███████";
 			}
 			
 			break;
@@ -241,6 +263,13 @@ public class Tile {
 			char[] tileMiddle = tile[2].toCharArray();
 			tileMiddle[3] = 'T'; // Set to token
 			tile[2] = new String(tileMiddle);
+		}
+		
+		// Check if tile is immovable
+		if(!isMovable()) {
+			// Change tile string to fixed representation
+			for(int i = 0; i < 5; i++)
+				tile[i] = tile[i].replace(' ', '▒');
 		}
 		
 		return tile;
