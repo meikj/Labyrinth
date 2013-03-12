@@ -6,7 +6,7 @@ import java.util.Scanner;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version v0.1.11032013
+ * @version v0.1.12032013
  *
  */
 public class UserInterface {
@@ -62,28 +62,45 @@ public class UserInterface {
 	 */
 	public void parse(String[] inputArgs) throws NumberFormatException, IndexOutOfBoundsException {
 		if(inputArgs[0].toLowerCase().equals("insert")) {
+			// Insertion command called
 			if(inputArgs.length < 3) {
-				System.out.println("Usage: insert <column> <row>");
+				System.out.println("Usage:\tinsert column <column_no>\n\tinsert row <row_no>");
 				return;
 			}
-		
-			// Insert spare tile command
-			int column, row;
 			
-			try {
-				column = Integer.parseInt(inputArgs[1]);
-				row = Integer.parseInt(inputArgs[2]);
+			// Check if insertion into row or column
+			if(inputArgs[1].equals("column")) {
+				int column_no = 0;
+				
+				try {
+					column_no = Integer.parseInt(inputArgs[2]);
+				}
+				catch(NumberFormatException e) {
+					throw new NumberFormatException("Invalid column number entered");
+				}
+				
+				game.insertColumn(column_no);
 			}
-			catch(NumberFormatException e) {
-				throw new NumberFormatException("Invalid coordinates entered\n");
+			else if(inputArgs[1].equals("row")) {
+				int row_no = 0;
+				
+				try {
+					row_no = Integer.parseInt(inputArgs[2]);
+				}
+				catch(NumberFormatException e) {
+					throw new NumberFormatException("Invalid row number entered");
+				}
+				
+				game.insertRow(row_no);
 			}
-			catch(IndexOutOfBoundsException e) {
-				throw new IndexOutOfBoundsException("Not enough arguments\n");
+			else {
+				// Invalid argument passed
+				System.out.println("Usage:\tinsert column <column_no>\n\tinsert row <row_no>");
+				return;
 			}
-			
-			game.replaceTile(column, row);
 		}
 		else if(inputArgs[0].toLowerCase().equals("rotate")) {
+			// Rotation command called
 			if(inputArgs.length == 2) {
 				// Rotate spare tile
 				try {
@@ -108,7 +125,7 @@ public class UserInterface {
 				}
 			}
 			else {
-				System.out.println("Usage: rotate <degrees> (rotate spare tile) or rotate <column> <row> <degrees>");
+				System.out.println("Usage:\trotate <degrees> (rotate spare tile)\n\trotate <column_no> <row_no> <degrees>");
 			}
 		}
 		else if(inputArgs[0].toLowerCase().equals("exit")) {
@@ -116,13 +133,16 @@ public class UserInterface {
 			running = false;
 		}
 		else if(inputArgs[0].toLowerCase().equals("help")) {
-			System.out.println("insert \t Insert spare tile to specified location");
-			System.out.println("rotate \t Rotate either spare tile or specified tile by a number of degrees");
-			System.out.println("exit \t Exit the game");
-			System.out.println("help \t Display available game options");
+			// Help command called
+			System.out.println("insert \t Insert spare tile to specified location.");
+			System.out.println("rotate \t Rotate either spare tile or specified tile by a number of degrees.");
+			System.out.println("exit \t Exit the game.");
+			System.out.println("help \t Display available game options. Type help <command_name> for more info.");
+			
+			// TODO: Implement specific command help dialogue
 		}
 		else {
-			System.out.println("Invalid command: please enter 'help' for more information");
+			System.out.println("Invalid command: please enter 'help' for more information.");
 		}
 	}
 	

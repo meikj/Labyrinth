@@ -5,7 +5,7 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.11032013
+ * @version 0.1.12032013
  *
  */
 public interface GameMode {
@@ -17,16 +17,6 @@ public interface GameMode {
 	 * @param column The column coordinate of the tile.
 	 */
 	public void moveToken(int row, int column);
-	
-	/**
-	 * Move an existing tile on the board to a new location.
-	 * 
-	 * @param currRow The current row coordinate of the tile.
-	 * @param currColumn The current column coordinate of the tile.
-	 * @param newRow The new row coordinate of the tile.
-	 * @param newColumn The new column coordinate of the tile.
-	 */
-	public void moveTile(int currRow, int currColumn, int newRow, int newColumn);
 	
 	/**
 	 * Rotate the spare tile by a particular angle.
@@ -45,22 +35,18 @@ public interface GameMode {
 	public void rotateTile(int row, int column, int angle);
 	
 	/**
-	 * Replace an existing tile on the board with the Player's spare tile.
+	 * Insert the spare tile into the specified row.
 	 * 
-	 * @param row The row coordinate of the existing tile.
-	 * @param column The column coordinate of the existing tile.
+	 * @param row The row to insert the spare tile into.
 	 */
-	public void replaceTile(int row, int column);
+	public void insertRow(int row);
 	
 	/**
-	 * Replace an existing tile on the board with a new tile.
+	 * Insert the spare tile into the specified column.
 	 * 
-	 * @param row The row coordinate of the existing tile.
-	 * @param column The column coordinate of the existing tile.
-	 * @param newTile The new tile to place over an existing tile.
-	 * @return The tile that has been pushed off the board. Returns null on error.
+	 * @param column The column to insert the spare tile into.
 	 */
-	public Tile replaceTile(int row, int column, Tile newTile);
+	public void insertColumn(int column);
 	
 	/**
 	 * Update the interface.

@@ -192,6 +192,17 @@ public class Board {
 	}
 	
 	/**
+	 * Set the current token position as a board coordinate.
+	 * 
+	 * @param column The column number of the token.
+	 * @param row The row number of the token.
+	 */
+	public void setTokenPos(int column, int row) {
+		tokenPos[0] = column;
+		tokenPos[1] = row;
+	}
+	
+	/**
 	 * Convert a row to its internal array equivalent.
 	 * 
 	 * @param row The row as labelled on the board.

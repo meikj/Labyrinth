@@ -3,7 +3,7 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.11032013
+ * @version 0.1.12032013
  *
  */
 public class TreasureChase implements GameMode {
@@ -40,7 +40,6 @@ public class TreasureChase implements GameMode {
 	}
 	
 	public void moveToken(int row, int column) { return; }
-	public void moveTile(int currRow, int currColumn, int newRow, int newColumn) { return; }
 	
 	/**
 	 * Rotate the spare tile by a particular angle.
@@ -95,80 +94,113 @@ public class TreasureChase implements GameMode {
 	}
 	
 	/**
-	 * Replace an existing tile on the board with the player's spare tile.
+	 * Insert the spare tile into the specified row.
 	 * 
-	 * @param column The column coordinate of the existing tile.
-	 * @param row The row coordinate of the existing tile.
+	 * @param row The row to insert the spare tile into.
 	 */
-	public void replaceTile(int column, int row) {
-		Tile newSpareTile = replaceTile(column, row, player.getSpareTile());
+	public void insertRow(int row) {
+		Tile newSpareTile = insertTileRow(row, player.getSpareTile());
 		
 		if(newSpareTile != null) {
+			// Success! New spare tile returned
 			player.setSpareTile(newSpareTile);
 		}
-		else {
-			System.out.println("Can't push spare tile here!");
-		}
-	}
-	
-	/**
-	 * Replace an existing tile on the board with a new tile.
-	 * 
-	 * @param column The column coordinate of the existing tile.
-	 * @param row The row coordinate of the existing tile.
-	 * @param newTile The new tile to place over an existing tile.
-	 * @return The tile that has been pushed off the board. Returns null on error.
-	 */
-	public Tile replaceTile(int column, int row, Tile newTile) {
-		// TODO: Row and column insertion
-		
-		// Check if tile is immovable/fixed
-		if(!board.getTile(column, row).isMovable())
-			return null;
-		
-		Tile spareTile;
-		boolean rowImmovable = false;
-		boolean colImmovable = false;
-		
-		// Check if any immovable tiles reside in row
-		for(int i = 1; i <= board.getWidth(); i++) {
-			if(!board.getTile(i, row).isMovable())
-				rowImmovable = true;
-		}
-		
-		// Check if any immovable tiles reside in column
-		for(int i = 1; i <= board.getHeight(); i++) {
-			if(!board.getTile(column, i).isMovable())
-				colImmovable = true;
-		}
-		
-		if(!rowImmovable) {
-			spareTile = board.getTile(board.getWidth(), row);
-			
-			for(int i = board.getWidth(); i > column; i--) {
-				// Get the preceding tile and push it along
-				Tile t = board.getTile(i - 1, row);
-				board.setTile(i, row, t);
-			}
-		}
-		else if(!colImmovable) {
-			spareTile = board.getTile(column, board.getHeight());
-			
-			for(int i = board.getHeight(); i > row; i--) {
-				// Get the preceding tile and push it along
-				Tile t = board.getTile(column, i - 1);
-				board.setTile(column, i, t);
-			}
-		}
-		else {
-			// Can't place a tile here
-			return null;
-		}
-		
-		board.setTile(column, row, newTile);
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
+	}
+	
+	/**
+	 * Insert a specific tile into the specified row.
+	 * 
+	 * @param row The row to insert the tile to.
+	 * @param newTile The tile to insert into the row.
+	 * @return The tile that falls off the side of the board. Returns null on error.
+	 */
+	private Tile insertTileRow(int row, Tile newTile) {
+		// Check if any tiles on row are immovable/fixed
+		for(int i = 1; i < board.getWidth(); i++) {
+			if(!board.getTile(i, row).isMovable()) {
+				// Found an immovable tile
+				return null;
+			}
+		}
+		
+		// Set the spare tile to the tile that will fall off
+		Tile spareTile = board.getTile(board.getWidth(), row);
+		
+		if(spareTile.hasToken()) {
+			// The tile that is going to fall off contains the token, so set token to new tile
+			spareTile.setToken(false);
+			newTile.setToken(true);
+			board.setTokenPos(1, row);
+		}
+		
+		// Push all tiles across
+		for(int i = board.getWidth(); i > 1; i--) {
+			// Set tile to preceding tile
+			Tile t = board.getTile(i - 1, row);
+			board.setTile(i, row, t);
+		}
+		
+		// Set the first tile in row to new tile
+		board.setTile(1, row, newTile);
+		
+		return spareTile;
+	}
+	
+	/**
+	 * Insert the spare tile into the specified column.
+	 * 
+	 * @param column The column to insert the spare tile into.
+	 */
+	public void insertColumn(int column) {
+		Tile newSpareTile = insertTileColumn(column, player.getSpareTile());
+		
+		if(newSpareTile != null) {
+			// Success! New spare tile returned
+			player.setSpareTile(newSpareTile);
+		}
+		
+		player.setMoves(player.getMoves() + 1);
+		round++;
+	}
+	
+	/**
+	 * Insert a specific tile into the specified column.
+	 * 
+	 * @param column The column to insert the tile to.
+	 * @param newTile The tile to insert into the column.
+	 * @return The tile that falls off the side of the board. Returns null on error.
+	 */
+	private Tile insertTileColumn(int column, Tile newTile) {
+		// Check if any tiles in column are immovable/fixed
+		for(int i = 1; i < board.getHeight(); i++) {
+			if(!board.getTile(column, i).isMovable()) {
+				// Found an immovable tile
+				return null;
+			}
+		}
+		
+		// Set the spare tile to the tile that will fall off
+		Tile spareTile = board.getTile(column, board.getHeight());
+		
+		if(spareTile.hasToken()) {
+			// The tile that is going to fall off contains the token, so set token to new tile
+			spareTile.setToken(false);
+			newTile.setToken(true);
+			board.setTokenPos(column, 1);
+		}
+		
+		// Push all tiles across
+		for(int i = board.getHeight(); i > 1; i--) {
+			// Set tile to preceding tile
+			Tile t = board.getTile(column, i - 1);
+			board.setTile(column, i, t);
+		}
+		
+		// Set the first tile in row to new tile
+		board.setTile(column, 1, newTile);
 		
 		return spareTile;
 	}
