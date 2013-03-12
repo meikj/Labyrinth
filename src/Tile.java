@@ -15,6 +15,12 @@ public class Tile {
 	private boolean movable;
 	private String[] tileString;
 	
+	// Entry points
+	private boolean north;
+	private boolean east;
+	private boolean south;
+	private boolean west;
+	
 	/**
 	 * Construct a tile of a particular type.
 	 * 
@@ -156,6 +162,12 @@ public class Tile {
 			tile[3] = "██   ██";
 			tile[4] = "██   ██";
 			
+			// Set entry points
+			north = true;
+			east = true;
+			south = true;
+			west = true;
+			
 			break;
 		case TSHAPE:
 			if(rotation == RotationAngle.DEFAULT) {
@@ -164,24 +176,48 @@ public class Tile {
 				tile[2] = "██     ";
 				tile[3] = "██   ██";
 				tile[4] = "██   ██";
+				
+				// Set entry points
+				north = true;
+				east = true;
+				south = true;
+				west = false;
 			} else if(rotation == RotationAngle.NINETY) {
 				tile[0] = "███████";
 				tile[1] = "███████";
 				tile[2] = "       ";
 				tile[3] = "██   ██";
 				tile[4] = "██   ██";
+				
+				// Set entry points
+				north = false;
+				east = true;
+				south = true;
+				west = true;
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
 				tile[0] = "██   ██";
 				tile[1] = "██   ██";
 				tile[2] = "     ██";
 				tile[3] = "██   ██";
 				tile[4] = "██   ██";
+				
+				// Set entry points
+				north = true;
+				east = false;
+				south = true;
+				west = true;
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
 				tile[0] = "██   ██";
 				tile[1] = "██   ██";
 				tile[2] = "       ";
 				tile[3] = "███████";
 				tile[4] = "███████";
+				
+				// Set entry points
+				north = true;
+				east = true;
+				south = false;
+				west = true;
 			}
 			
 			break;
@@ -192,24 +228,48 @@ public class Tile {
 				tile[2] = "██   ██";
 				tile[3] = "██   ██";
 				tile[4] = "██   ██";
+				
+				// Set entry points
+				north = true;
+				east = false;
+				south = true;
+				west = false;
 			} else if(rotation == RotationAngle.NINETY) {
 				tile[0] = "███████";
 				tile[1] = "███████";
 				tile[2] = "       ";
 				tile[3] = "███████";
 				tile[4] = "███████";
+				
+				// Set entry points
+				north = false;
+				east = true;
+				south = false;
+				west = true;
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
 				tile[0] = "██   ██";
 				tile[1] = "██   ██";
 				tile[2] = "██   ██";
 				tile[3] = "██   ██";
 				tile[4] = "██   ██";
+				
+				// Set entry points
+				north = true;
+				east = false;
+				south = true;
+				west = false;
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
 				tile[0] = "███████";
 				tile[1] = "███████";
 				tile[2] = "       ";
 				tile[3] = "███████";
 				tile[4] = "███████";
+				
+				// Set entry points
+				north = false;
+				east = true;
+				south = false;
+				west = true;
 			}
 			
 			break;
@@ -220,24 +280,48 @@ public class Tile {
 				tile[2] = "██     ";
 				tile[3] = "██   ██";
 				tile[4] = "██   ██";
+				
+				// Set entry points
+				north = false;
+				east = true;
+				south = true;
+				west = false;
 			} else if(rotation == RotationAngle.NINETY) {
 				tile[0] = "███████";
 				tile[1] = "███████";
 				tile[2] = "     ██";
 				tile[3] = "██   ██";
 				tile[4] = "██   ██";
+				
+				// Set entry points
+				north = false;
+				east = false;
+				south = true;
+				west = true;
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
 				tile[0] = "██   ██";
 				tile[1] = "██   ██";
 				tile[2] = "     ██";
 				tile[3] = "███████";
 				tile[4] = "███████";
+				
+				// Set entry points
+				north = true;
+				east = false;
+				south = false;
+				west = true;
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
 				tile[0] = "██   ██";
 				tile[1] = "██   ██";
 				tile[2] = "██     ";
 				tile[3] = "███████";
 				tile[4] = "███████";
+				
+				// Set entry points
+				north = true;
+				east = true;
+				south = false;
+				west = false;
 			}
 			
 			break;
@@ -247,6 +331,12 @@ public class Tile {
 			tile[2] = "     ";
 			tile[3] = "     ";
 			tile[4] = "     ";
+			
+			// Set entry points
+			north = true;
+			east = true;
+			south = true;
+			west = true;
 			
 			break;
 		}
@@ -274,5 +364,10 @@ public class Tile {
 		
 		return tile;
 	}
+	
+	public boolean getNorth() { return north; }
+	public boolean getEast() { return east; }
+	public boolean getSouth() { return south; }
+	public boolean getWest() { return west; }
 
 }

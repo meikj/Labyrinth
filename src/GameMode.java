@@ -11,12 +11,24 @@
 public interface GameMode {
 	
 	/**
-	 * Move the token to a particular tile.
-	 * 
-	 * @param row The row coordinate of the tile.
-	 * @param column The column coordinate of the tile.
+	 * Move the token up a tile.
 	 */
-	public void moveToken(int row, int column);
+	public void moveTokenUp();
+	
+	/**
+	 * Move the token down a tile.
+	 */
+	public void moveTokenDown();
+	
+	/**
+	 * Move the token left a tile.
+	 */
+	public void moveTokenLeft();
+	
+	/**
+	 * Move the token right a tile.
+	 */
+	public void moveTokenRight();
 	
 	/**
 	 * Rotate the spare tile by a particular angle.

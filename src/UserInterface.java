@@ -128,6 +128,33 @@ public class UserInterface {
 				System.out.println("Usage:\trotate <degrees> (rotate spare tile)\n\trotate <column_no> <row_no> <degrees>");
 			}
 		}
+		else if(inputArgs[0].toLowerCase().equals("move")) {
+			// Move command called
+			if(inputArgs.length < 2) {
+				System.out.println("Usage: move <up/down/left/right>");
+			}
+			else {
+				if(inputArgs[1].equals("up")) {
+					// Move up
+					game.moveTokenUp();
+				}
+				else if(inputArgs[1].equals("down")) {
+					// Move down
+					game.moveTokenDown();
+				}
+				else if(inputArgs[1].equals("left")) {
+					// Move left
+					game.moveTokenLeft();
+				}
+				else if(inputArgs[1].equals("right")) {
+					// Move token right
+					game.moveTokenRight();
+				}
+				else {
+					System.out.println("Usage: move <up/down/left/right>");
+				}
+			}
+		}
 		else if(inputArgs[0].toLowerCase().equals("exit")) {
 			// Exit command called
 			running = false;
@@ -136,10 +163,11 @@ public class UserInterface {
 			// Help command called
 			System.out.println("insert \t Insert spare tile to specified location.");
 			System.out.println("rotate \t Rotate either spare tile or specified tile by a number of degrees.");
+			System.out.println("move \t Move token either up, down, left or right.");
 			System.out.println("exit \t Exit the game.");
 			System.out.println("help \t Display available game options. Type help <command_name> for more info.");
 			
-			// TODO: Implement specific command help dialogue
+			// TODO: Implement specific command help dialogue?
 		}
 		else {
 			System.out.println("Invalid command: please enter 'help' for more information.");

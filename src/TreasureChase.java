@@ -39,7 +39,156 @@ public class TreasureChase implements GameMode {
 		this.leaderboard = leaderboard;
 	}
 	
-	public void moveToken(int row, int column) { return; }
+	public void moveTokenUp() {
+		int newRow = 0;
+		int tokenPosCol = board.getTokenPos()[0];
+		int tokenPosRow = board.getTokenPos()[1];
+		
+		// Check if token will go over the board
+		if(tokenPosRow == board.getHeight()) {
+			// Make sure there isn't a wall blocking movement
+			if(!board.getTile(tokenPosCol, tokenPosRow).getNorth() &&
+					!board.getTile(tokenPosCol, 1).getSouth()) {
+				// Can't pass through, failed
+				return;
+			}
+			// Transition token over board Pacman style
+			newRow = 1;
+		}
+		else {
+			// Won't go over board, but we need to check if a wall is blocking movement
+			newRow = tokenPosRow + 1;
+			
+			// Check if current tile north entry is available, and new tile south
+			if(!board.getTile(tokenPosCol, tokenPosRow).getNorth() &&
+					!board.getTile(tokenPosCol, newRow).getSouth()) {
+				// Can't pass through, failed
+				return;
+			}
+		}
+		
+		// Move token :)
+		board.getTile(tokenPosCol, tokenPosRow).setToken(false);
+		board.setTokenPos(tokenPosCol, newRow);
+		board.getTile(board.getTokenPos()[0], board.getTokenPos()[1]).setToken(true);
+		
+		player.setMoves(player.getMoves() + 1);
+		round++;
+	}
+	
+	
+	public void moveTokenDown() {
+		int newRow = 0;
+		int tokenPosCol = board.getTokenPos()[0];
+		int tokenPosRow = board.getTokenPos()[1];
+		
+		// Check if token will go over the board
+		if(tokenPosRow == 1) {
+			// Make sure there isn't a wall blocking movement
+			if(!board.getTile(tokenPosCol, tokenPosRow).getSouth() &&
+					!board.getTile(tokenPosCol, board.getHeight()).getNorth()) {
+				// Can't pass through, failed
+				return;
+			}
+			// Transition token over board Pacman style
+			newRow = board.getHeight();
+		}
+		else {
+			// Won't go over board, but we need to check if a wall is blocking movement
+			newRow = tokenPosRow - 1;
+			
+			// Check if current tile north entry is available, and new tile south
+			if(!board.getTile(tokenPosCol, tokenPosRow).getSouth() &&
+					!board.getTile(tokenPosCol, newRow).getNorth()) {
+				// Can't pass through, failed
+				return;
+			}
+		}
+		
+		// Move token :)
+		board.getTile(tokenPosCol, tokenPosRow).setToken(false);
+		board.setTokenPos(tokenPosCol, newRow);
+		board.getTile(board.getTokenPos()[0], board.getTokenPos()[1]).setToken(true);
+		
+		player.setMoves(player.getMoves() + 1);
+		round++;
+	}
+	
+	
+	public void moveTokenLeft() { 
+		int newCol = 0;
+		int tokenPosCol = board.getTokenPos()[0];
+		int tokenPosRow = board.getTokenPos()[1];
+		
+		// Check if token will go over the board
+		if(tokenPosCol == 1) {
+			// Make sure there isn't a wall blocking movement
+			if(!board.getTile(tokenPosCol, tokenPosRow).getWest() &&
+					!board.getTile(board.getWidth(), tokenPosRow).getEast()) {
+				// Can't pass through, failed
+				return;
+			}
+			// Transition token over board Pacman style
+			newCol = board.getWidth();
+		}
+		else {
+			// Won't go over board, but we need to check if a wall is blocking movement
+			newCol = tokenPosCol - 1;
+			
+			// Check if current tile north entry is available, and new tile south
+			if(!board.getTile(tokenPosCol, tokenPosRow).getWest() &&
+					!board.getTile(newCol, tokenPosRow).getEast()) {
+				// Can't pass through, failed
+				return;
+			}
+		}
+		
+		// Move token :)
+		board.getTile(tokenPosCol, tokenPosRow).setToken(false);
+		board.setTokenPos(newCol, tokenPosRow);
+		board.getTile(board.getTokenPos()[0], board.getTokenPos()[1]).setToken(true);
+		
+		player.setMoves(player.getMoves() + 1);
+		round++;
+	}
+	
+	
+	public void moveTokenRight() { 
+		int newCol = 0;
+		int tokenPosCol = board.getTokenPos()[0];
+		int tokenPosRow = board.getTokenPos()[1];
+		
+		// Check if token will go over the board
+		if(tokenPosCol == board.getWidth()) {
+			// Make sure there isn't a wall blocking movement
+			if(!board.getTile(tokenPosCol, tokenPosRow).getEast() &&
+					!board.getTile(board.getWidth(), tokenPosRow).getWest()) {
+				// Can't pass through, failed
+				return;
+			}
+			// Transition token over board Pacman style
+			newCol = 1;
+		}
+		else {
+			// Won't go over board, but we need to check if a wall is blocking movement
+			newCol = tokenPosCol + 1;
+			
+			// Check if current tile north entry is available, and new tile south
+			if(!board.getTile(tokenPosCol, tokenPosRow).getEast() &&
+					!board.getTile(newCol, tokenPosRow).getWest()) {
+				// Can't pass through, failed
+				return;
+			}
+		}
+		
+		// Move token :)
+		board.getTile(tokenPosCol, tokenPosRow).setToken(false);
+		board.setTokenPos(newCol, tokenPosRow);
+		board.getTile(board.getTokenPos()[0], board.getTokenPos()[1]).setToken(true);
+		
+		player.setMoves(player.getMoves() + 1);
+		round++;
+	}
 	
 	/**
 	 * Rotate the spare tile by a particular angle.
