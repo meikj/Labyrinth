@@ -58,8 +58,9 @@ public interface GameMode {
 	 * @param row The row coordinate of the existing tile.
 	 * @param column The column coordinate of the existing tile.
 	 * @param newTile The new tile to place over an existing tile.
+	 * @return The tile that has been pushed off the board. Returns null on error.
 	 */
-	public void replaceTile(int row, int column, Tile newTile);
+	public Tile replaceTile(int row, int column, Tile newTile);
 	
 	/**
 	 * Update the interface.

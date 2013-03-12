@@ -101,17 +101,14 @@ public class TreasureChase implements GameMode {
 	 * @param row The row coordinate of the existing tile.
 	 */
 	public void replaceTile(int column, int row) {
-		// Check if tile is immovable/fixed
-		if(!board.getTile(column, row).isMovable())
-			return;
+		Tile newSpareTile = replaceTile(column, row, player.getSpareTile());
 		
-		Tile oldTile = board.getTile(column, row);
-		
-		board.setTile(column, row, player.getSpareTile());
-		player.setSpareTile(oldTile);
-		
-		player.setMoves(player.getMoves() + 1);
-		round++;
+		if(newSpareTile != null) {
+			player.setSpareTile(newSpareTile);
+		}
+		else {
+			System.out.println("Can't push spare tile here!");
+		}
 	}
 	
 	/**
@@ -120,16 +117,60 @@ public class TreasureChase implements GameMode {
 	 * @param column The column coordinate of the existing tile.
 	 * @param row The row coordinate of the existing tile.
 	 * @param newTile The new tile to place over an existing tile.
+	 * @return The tile that has been pushed off the board. Returns null on error.
 	 */
-	public void replaceTile(int column, int row, Tile newTile) {
+	public Tile replaceTile(int column, int row, Tile newTile) {
+		// TODO: Row and column insertion
+		
 		// Check if tile is immovable/fixed
 		if(!board.getTile(column, row).isMovable())
-			return;
+			return null;
+		
+		Tile spareTile;
+		boolean rowImmovable = false;
+		boolean colImmovable = false;
+		
+		// Check if any immovable tiles reside in row
+		for(int i = 1; i <= board.getWidth(); i++) {
+			if(!board.getTile(i, row).isMovable())
+				rowImmovable = true;
+		}
+		
+		// Check if any immovable tiles reside in column
+		for(int i = 1; i <= board.getHeight(); i++) {
+			if(!board.getTile(column, i).isMovable())
+				colImmovable = true;
+		}
+		
+		if(!rowImmovable) {
+			spareTile = board.getTile(board.getWidth(), row);
+			
+			for(int i = board.getWidth(); i > column; i--) {
+				// Get the preceding tile and push it along
+				Tile t = board.getTile(i - 1, row);
+				board.setTile(i, row, t);
+			}
+		}
+		else if(!colImmovable) {
+			spareTile = board.getTile(column, board.getHeight());
+			
+			for(int i = board.getHeight(); i > row; i--) {
+				// Get the preceding tile and push it along
+				Tile t = board.getTile(column, i - 1);
+				board.setTile(column, i, t);
+			}
+		}
+		else {
+			// Can't place a tile here
+			return null;
+		}
 		
 		board.setTile(column, row, newTile);
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
+		
+		return spareTile;
 	}
 	
 	/**
