@@ -1,11 +1,16 @@
 Labyrinth
 =========
 
-Labyrinth is a University of Strathclyde CS207 semester two paired programming project by Gareth Gill and John Meikle. This project is being developed in strict conformance with the description and specification as outlined by Clemens Kupke.
+Labyrinth is a University of Strathclyde CS207 semester two paired programming project by Gareth Gill and John Meikle. This project is being developed in strict accordance with the description and specification as outlined by Clemens Kupke. This can be viewed [here](http://classes.myplace.strath.ac.uk/mod/resource/view.php?id=508775).
 
-It is a puzzle game in which there are two ways of winning: finding a treasure chest or forming a word. The game takes place on a fixed size maze in which the player is able to travel. They are able to turn each tile on the grid by 90 degrees, however there are a certain number of tiles on the board which are fixed, thus not movable. The player has a choice of two moves: the tile move and the token move. The former allows a spare tile to be pushed into one row of the grid which results in another tile on the opposite side to fall off, thereby becoming the new spare tile. The latter involves the token moving to an arbitrary tile that is reachable from the token's current position without crossing through any wall. There is both a one player and a two player game mode.
+It is a puzzle game in which there are two game modes: Treasure Chase and Letter Chase. At the moment only Treasure Chase is being developed, however there is no doubt Letter Chase will be developed later on in the development stages. The game takes place on a fixed size maze in which the player is able to travel using their token to go about completing the objective. The main objective of Treasure Chase is to find and collect the treasure, where as with Letter Chase the main objective is to collect letters and form a word. The player is able to rotate each **non-fixed** tile on the board in 90 degree increments - there exists a number of fixed tiles on the board which cannot be moved or manipulated. The player has a choice of two moves: the tile move and the token move. The former allows a spare tile to be pushed into either a row or column (the row or column **must not** contain any fixed/immovable tiles) which results in a tile from the opposite end falling off, thus becoming the new spare tile. The latter involves the token either moving up, down, left or right assuming that the move is valid (i.e. there are no walls obstructing the way). At the moment this is only a one player game with a planned simple computer AI opponent.
 
-Waiting on requirements elicitation from Clemens. Will no doubt be updated as we go along.
+As it stands, the project is still under heavy development, but is progressing very well.
+
+## Progress
+* [Move Tile Use Case](https://github.com/meikj/Labyrinth/wiki/Move-Tile-Use-Case).
+* [Move Token Use Case](https://github.com/meikj/Labyrinth/wiki/Move-Token-Use-Case).
+* [Treasure Chase Use Case](https://github.com/meikj/Labyrinth/wiki/Treasure-Chase-Use-Case).
 
 ## Authors
 * Gareth Gill - <gareth.gill@strath.ac.uk>
