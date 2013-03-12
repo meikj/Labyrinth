@@ -29,52 +29,20 @@ public class Board {
 		this.height = height;
 		this.tiles = new Tile[width][height];
 		
-		// Set outside tiles to "walled" tiles
-		
-		// Top and bottom row tiles
-		for(int i = 0; i < width; i++) {
-			// Top row
-			tiles[0][i] = new Tile(TileType.TSHAPE, RotationAngle.NINETY);;
-			
-			// Bottom row
-			tiles[height - 1][i] = new Tile(TileType.TSHAPE, RotationAngle.TWOHUNDREDANDSEVENTY);
-		}
-		
-		// Side tiles (skip top and bottom row)
-		for(int i = 1; i < (height - 1); i++) {
-			// Left side
-			tiles[i][0] = new Tile(TileType.TSHAPE);
-			
-			// Right side
-			tiles[i][width - 1] = new Tile(TileType.TSHAPE, RotationAngle.HUNDREDANDEIGHTY);
-		}
-		
-		// Corners
-		tiles[0][0] = new Tile(TileType.CORNER);
-		tiles[0][width - 1] = new Tile(TileType.CORNER, RotationAngle.NINETY);
-		tiles[height - 1][width - 1] = new Tile(TileType.CORNER, RotationAngle.HUNDREDANDEIGHTY);
-		tiles[height - 1][0] = new Tile(TileType.CORNER, RotationAngle.TWOHUNDREDANDSEVENTY);
-		
-		// Set inside tiles to random
-		// Skip top row and bottom row
-		for(int i = 1; i < (height - 1); i++) {
+		// Randomise tiles
+		for(int i = 0; i < height; i++) {
 			// Skip far left and far right columns
-			for(int j = 1; j < (width - 1); j++) {
+			for(int j = 0; j < width; j++) {
 				Tile randomTile;
 				int rNumber = r.nextInt(4); // CORNER, LINE, TSHAPE, CROSS
+				int rotation = r.nextInt(4); // DEFAULT, NINETY, HUNDREDANDEIGHTY, TWOHUNDREDANDSEVENTY
 				TileType[] tileTypes = TileType.values();
+				RotationAngle[] rotationAngles = RotationAngle.values();
 				
-				randomTile = new Tile(tileTypes[rNumber]);
+				randomTile = new Tile(tileTypes[rNumber], rotationAngles[rotation]);
 				tiles[i][j] = randomTile;
 			}
 		}
-		
-		// Set token position (bottom left corner)
-		this.tokenPos = new int[2];
-		this.tokenPos[0] = 1; // column
-		this.tokenPos[1] = 1; // row
-		
-		tiles[getInternalRow(tokenPos[1])][getInternalColumn(tokenPos[1])].setToken(true);
 		
 		// Set immovable tiles (i,j) where i and j are odd
 		for(int i = 0; i < height; i++) {
@@ -84,9 +52,80 @@ public class Board {
 				if(((i + 1) % 2 != 0) && ((j + 1) % 2 != 0)) {
 					// Found an odd combination
 					tiles[i][j].setMovable(false);
+					
+					// Check if not on the edge (must be cross in this case)
+					if(i != 0 && i != height - 1 && j != 0 && j != width - 1) {
+						tiles[i][j].setType(TileType.CROSS);
+					}
+					else {
+						// Tile is on the edge, determine which edge
+						if(i == 0 && j == 0) {
+							// Top left hand corner
+							tiles[i][j] = new Tile(TileType.CORNER, RotationAngle.DEFAULT, false);
+						}
+						else if(i == 0 && j == width - 1) {
+							// Top right hand corner
+							tiles[i][j] = new Tile(TileType.CORNER, RotationAngle.NINETY, false);
+						}
+						else if(i == height - 1 && j == width - 1) {
+							// Bottom right hand corner
+							tiles[i][j] = new Tile(TileType.CORNER, RotationAngle.HUNDREDANDEIGHTY, false);
+						}
+						else if(i == height - 1 && j == 0) {
+							// Bottom left hand corner
+							tiles[i][j] = new Tile(TileType.CORNER, RotationAngle.TWOHUNDREDANDSEVENTY, false);
+						}
+						else if(i == 0) {
+							// Top most row
+							// Set to either horizontal line or horizontal T-shape
+							int type = r.nextInt(2); // LINE, TSHAPE
+							
+							if(type == 0)
+								tiles[i][j] = new Tile(TileType.LINE, RotationAngle.NINETY, false);
+							else
+								tiles[i][j] = new Tile(TileType.TSHAPE, RotationAngle.NINETY, false);
+						}
+						else if(i == height - 1) {
+							// Bottom most row
+							// Set to either horizontal line or horizontal T-shape
+							int type = r.nextInt(2); // LINE, TSHAPE
+							
+							if(type == 0)
+								tiles[i][j] = new Tile(TileType.LINE, RotationAngle.NINETY, false);
+							else
+								tiles[i][j] = new Tile(TileType.TSHAPE, RotationAngle.TWOHUNDREDANDSEVENTY, false);
+						}
+						else if(j == 0) {
+							// Left most column
+							// Set to either horizontal line or horizontal T-shape
+							int type = r.nextInt(2); // LINE, TSHAPE
+							
+							if(type == 0)
+								tiles[i][j] = new Tile(TileType.LINE, RotationAngle.DEFAULT, false);
+							else
+								tiles[i][j] = new Tile(TileType.TSHAPE, RotationAngle.DEFAULT, false);
+						}
+						else if(j == width - 1) {
+							// Right most column
+							// Set to either horizontal line or horizontal T-shape
+							int type = r.nextInt(2); // LINE, TSHAPE
+							
+							if(type == 0)
+								tiles[i][j] = new Tile(TileType.LINE, RotationAngle.DEFAULT, false);
+							else
+								tiles[i][j] = new Tile(TileType.TSHAPE, RotationAngle.HUNDREDANDEIGHTY, false);
+						}
+					}
 				}
 			}
 		}
+		
+		// Set token position (bottom left corner)
+		this.tokenPos = new int[2];
+		this.tokenPos[0] = 1; // column
+		this.tokenPos[1] = 1; // row
+		
+		tiles[getInternalRow(tokenPos[1])][getInternalColumn(tokenPos[1])].setToken(true);
 	}
 	
 	/**

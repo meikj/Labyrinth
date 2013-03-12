@@ -24,10 +24,12 @@ public class Player {
 		// Generate a random spare tile
 		Random r = new Random();
 		int randomSelection = r.nextInt(4); // CORNER, LINE, TSHAPE, CROSS
+		int rotation = r.nextInt(4); // DEFAULT, NINETY, HUNDREDANDEIGHTY, TWOHUNDREDANDSEVENTY
 		
 		TileType[] tileTypes = TileType.values();
+		RotationAngle[] rotationAngles = RotationAngle.values();
 		
-		this.spareTile = new Tile(tileTypes[randomSelection]);
+		this.spareTile = new Tile(tileTypes[randomSelection], rotationAngles[rotation]);
 	}
 	
 	public void setScore(int newScore) { score = newScore; }

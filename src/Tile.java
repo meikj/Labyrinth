@@ -47,6 +47,12 @@ public class Tile {
 		this.tileString = formTileString();
 	}
 	
+	public Tile(TileType type, RotationAngle rotation, boolean movable) {
+		this(type, rotation);
+		this.movable = movable;
+		this.tileString = formTileString();
+	}
+	
 	/**
 	 * Get the tile type.
 	 */
