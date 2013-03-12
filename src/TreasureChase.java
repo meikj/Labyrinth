@@ -50,7 +50,7 @@ public class TreasureChase implements GameMode {
 		// Check if token will go over the board
 		if(tokenPosRow == board.getHeight()) {
 			// Make sure there isn't a wall blocking movement
-			if(!board.getTile(tokenPosCol, tokenPosRow).getNorth() &&
+			if(!board.getTile(tokenPosCol, tokenPosRow).getNorth() ||
 					!board.getTile(tokenPosCol, 1).getSouth()) {
 				// Can't pass through, failed
 				return;
@@ -63,7 +63,7 @@ public class TreasureChase implements GameMode {
 			newRow = tokenPosRow + 1;
 			
 			// Check if current tile north entry is available, and new tile south
-			if(!board.getTile(tokenPosCol, tokenPosRow).getNorth() &&
+			if(!board.getTile(tokenPosCol, tokenPosRow).getNorth() ||
 					!board.getTile(tokenPosCol, newRow).getSouth()) {
 				// Can't pass through, failed
 				return;
@@ -90,7 +90,7 @@ public class TreasureChase implements GameMode {
 		// Check if token will go over the board
 		if(tokenPosRow == 1) {
 			// Make sure there isn't a wall blocking movement
-			if(!board.getTile(tokenPosCol, tokenPosRow).getSouth() &&
+			if(!board.getTile(tokenPosCol, tokenPosRow).getSouth() ||
 					!board.getTile(tokenPosCol, board.getHeight()).getNorth()) {
 				// Can't pass through, failed
 				return;
@@ -103,7 +103,7 @@ public class TreasureChase implements GameMode {
 			newRow = tokenPosRow - 1;
 			
 			// Check if current tile north entry is available, and new tile south
-			if(!board.getTile(tokenPosCol, tokenPosRow).getSouth() &&
+			if(!board.getTile(tokenPosCol, tokenPosRow).getSouth() ||
 					!board.getTile(tokenPosCol, newRow).getNorth()) {
 				// Can't pass through, failed
 				return;
@@ -130,7 +130,7 @@ public class TreasureChase implements GameMode {
 		// Check if token will go over the board
 		if(tokenPosCol == 1) {
 			// Make sure there isn't a wall blocking movement
-			if(!board.getTile(tokenPosCol, tokenPosRow).getWest() &&
+			if(!board.getTile(tokenPosCol, tokenPosRow).getWest() ||
 					!board.getTile(board.getWidth(), tokenPosRow).getEast()) {
 				// Can't pass through, failed
 				return;
@@ -143,7 +143,7 @@ public class TreasureChase implements GameMode {
 			newCol = tokenPosCol - 1;
 			
 			// Check if current tile north entry is available, and new tile south
-			if(!board.getTile(tokenPosCol, tokenPosRow).getWest() &&
+			if(!board.getTile(tokenPosCol, tokenPosRow).getWest() ||
 					!board.getTile(newCol, tokenPosRow).getEast()) {
 				// Can't pass through, failed
 				return;
@@ -170,7 +170,7 @@ public class TreasureChase implements GameMode {
 		// Check if token will go over the board
 		if(tokenPosCol == board.getWidth()) {
 			// Make sure there isn't a wall blocking movement
-			if(!board.getTile(tokenPosCol, tokenPosRow).getEast() &&
+			if(!board.getTile(tokenPosCol, tokenPosRow).getEast() ||
 					!board.getTile(board.getWidth(), tokenPosRow).getWest()) {
 				// Can't pass through, failed
 				return;
@@ -183,7 +183,7 @@ public class TreasureChase implements GameMode {
 			newCol = tokenPosCol + 1;
 			
 			// Check if current tile north entry is available, and new tile south
-			if(!board.getTile(tokenPosCol, tokenPosRow).getEast() &&
+			if(!board.getTile(tokenPosCol, tokenPosRow).getEast() ||
 					!board.getTile(newCol, tokenPosRow).getWest()) {
 				// Can't pass through, failed
 				return;

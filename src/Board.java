@@ -76,8 +76,17 @@ public class Board {
 		
 		tiles[getInternalRow(tokenPos[1])][getInternalColumn(tokenPos[1])].setToken(true);
 		
-		// Set some immovable tiles
-		tiles[2][3].setMovable(false);
+		// Set immovable tiles (i,j) where i and j are odd
+		for(int i = 0; i < height; i++) {
+			for(int j = 0; j < width; j++) {
+				// Internally board starts at 0, but to the user it starts at 1
+				// so we need to perform odd calculations on what the user sees
+				if(((i + 1) % 2 != 0) && ((j + 1) % 2 != 0)) {
+					// Found an odd combination
+					tiles[i][j].setMovable(false);
+				}
+			}
+		}
 	}
 	
 	/**
