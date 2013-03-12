@@ -5,7 +5,7 @@ import java.util.Random;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.11032013
+ * @version 0.1.12032013
  *
  */
 public class Board {

@@ -39,6 +39,9 @@ public class TreasureChase implements GameMode {
 		this.leaderboard = leaderboard;
 	}
 	
+	/**
+	 * Move the token up a tile.
+	 */
 	public void moveTokenUp() {
 		int newRow = 0;
 		int tokenPosCol = board.getTokenPos()[0];
@@ -76,7 +79,9 @@ public class TreasureChase implements GameMode {
 		round++;
 	}
 	
-	
+	/**
+	 * Move the token down a tile.
+	 */
 	public void moveTokenDown() {
 		int newRow = 0;
 		int tokenPosCol = board.getTokenPos()[0];
@@ -114,7 +119,9 @@ public class TreasureChase implements GameMode {
 		round++;
 	}
 	
-	
+	/**
+	 * Move the token left a tile.
+	 */
 	public void moveTokenLeft() { 
 		int newCol = 0;
 		int tokenPosCol = board.getTokenPos()[0];
@@ -152,7 +159,9 @@ public class TreasureChase implements GameMode {
 		round++;
 	}
 	
-	
+	/**
+	 * Move the token right a tile.
+	 */
 	public void moveTokenRight() { 
 		int newCol = 0;
 		int tokenPosCol = board.getTokenPos()[0];
