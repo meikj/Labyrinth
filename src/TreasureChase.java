@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Represents the Treasure Chase game mode.
  * 
@@ -26,6 +28,13 @@ public class TreasureChase implements GameMode {
 		
 		// Generate a board with default settings of 7x7
 		this.board = new Board(7, 7);
+		
+		// Set a random tile on the board to contain treasure
+		Random r = new Random();
+		int rCol = r.nextInt(7);
+		int rRow = r.nextInt(7);
+		
+		this.board.getTile(rCol, rRow).setTreasure(true);
 	}
 	
 	/**
@@ -77,6 +86,11 @@ public class TreasureChase implements GameMode {
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
+		
+		if(checkWin())
+			win = true;
+		
+		computerMove();
 	}
 	
 	/**
@@ -117,6 +131,11 @@ public class TreasureChase implements GameMode {
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
+		
+		if(checkWin())
+			win = true;
+		
+		computerMove();
 	}
 	
 	/**
@@ -157,6 +176,11 @@ public class TreasureChase implements GameMode {
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
+		
+		if(checkWin())
+			win = true;
+		
+		computerMove();
 	}
 	
 	/**
@@ -197,6 +221,11 @@ public class TreasureChase implements GameMode {
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
+		
+		if(checkWin())
+			win = true;
+		
+		computerMove();
 	}
 	
 	/**
@@ -219,6 +248,11 @@ public class TreasureChase implements GameMode {
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
+		
+		if(checkWin())
+			win = true;
+		
+		computerMove();
 	}
 	
 	/**
@@ -249,6 +283,11 @@ public class TreasureChase implements GameMode {
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
+		
+		if(checkWin())
+			win = true;
+		
+		computerMove();
 	}
 	
 	/**
@@ -266,6 +305,11 @@ public class TreasureChase implements GameMode {
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
+		
+		if(checkWin())
+			win = true;
+		
+		computerMove();
 	}
 	
 	/**
@@ -322,6 +366,11 @@ public class TreasureChase implements GameMode {
 		
 		player.setMoves(player.getMoves() + 1);
 		round++;
+		
+		if(checkWin())
+			win = true;
+		
+		computerMove();
 	}
 	
 	/**
@@ -446,6 +495,27 @@ public class TreasureChase implements GameMode {
 		//
 		// TODO: Display leaderboard and do high score checking...
 		//
+	}
+	
+	/**
+	 * Check if the player has won by analysing the token position (i.e. if it contains treasure).
+	 * 
+	 * @return Whether or not the player has satisfied the win conditions.
+	 */
+	private boolean checkWin() {
+		int[] tokenPos = board.getTokenPos();
+		
+		if(board.getTile(tokenPos[0], tokenPos[1]).hasTreasure())
+			return true;
+		else
+			return false;
+	}
+	
+	/**
+	 * Perform a random computer tile move.
+	 */
+	private void computerMove() {
+		return;
 	}
 	
 }
