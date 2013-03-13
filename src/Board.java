@@ -205,7 +205,7 @@ public class Board {
 	 */
 	public Tile getTile(int column, int row) {
 		// Check if tile is within valid bounds
-		if((row < 0 || row >= width) || (column < 0 || column >= height))
+		if((row < 0 || row > width) || (column < 0 || column > height))
 			return null;
 		
 		return tiles[getInternalRow(row)][getInternalColumn(column)];
