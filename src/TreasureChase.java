@@ -31,8 +31,8 @@ public class TreasureChase implements GameMode {
 		
 		// Set a random tile on the board to contain treasure
 		Random r = new Random();
-		int rCol = r.nextInt(7);
-		int rRow = r.nextInt(7);
+		int rCol = r.nextInt(7) + 1;
+		int rRow = r.nextInt(7) + 1;
 		
 		this.board.getTile(rCol, rRow).setTreasure(true);
 	}
