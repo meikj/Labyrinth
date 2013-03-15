@@ -15,24 +15,27 @@ public class TreasureChase implements GameMode {
 	private Leaderboard leaderboard;
 	private int round;
 	private boolean win;
+	private SettingsManager settings;
 	
 	/**
 	 * Construct a TreasureChase game with a specified player.
 	 * 
 	 * @param player The player to play the game.
+	 * @param settings The settings to use for the game.
 	 */
-	public TreasureChase(Player player) {
+	public TreasureChase(Player player, SettingsManager settings) {
 		this.player = player;
 		this.leaderboard = new Leaderboard();
 		this.win = false;
+		this.settings = settings;
 		
 		// Generate a board with default settings of 7x7
-		this.board = new Board(11, 11);
+		this.board = new Board(settings.getRows(), settings.getColumns());
 		
 		// Set a random tile on the board to contain treasure
 		Random r = new Random();
-		int rCol = r.nextInt(11) + 1;
-		int rRow = r.nextInt(11) + 1;
+		int rCol = r.nextInt(settings.getColumns()) + 1;
+		int rRow = r.nextInt(settings.getRows()) + 1;
 		
 		this.board.getTile(rCol, rRow).setTreasure(true);
 	}
@@ -41,10 +44,11 @@ public class TreasureChase implements GameMode {
 	 * Construct a TreasureChase game with a specified player and leaderboard.
 	 * 
 	 * @param player The player to play the game.
+	 * @param settings The settings to use for the game.
 	 * @param leaderboard The leaderboard to use.
 	 */
-	public TreasureChase(Player player, Leaderboard leaderboard) {
-		this(player);
+	public TreasureChase(Player player, SettingsManager settings, Leaderboard leaderboard) {
+		this(player, settings);
 		this.leaderboard = leaderboard;
 	}
 	
@@ -256,75 +260,89 @@ public class TreasureChase implements GameMode {
 	}
 	
 	/**
-	 * Rotate the tile specified by a particular angle.
-	 * 
-	 * @param column The column coordinate of the existing tile.
-	 * @param row The row coordinate of the existing tile.
-	 * @param angle The angle to rotate the spare tile by. Must be either 90, 180 or 270.
-	 */
-	public void rotateTile(int column, int row, int angle) throws NumberFormatException {
-		// Check if tile is immovable/fixed
-		if(!board.getTile(column, row).isMovable())
-			return;
-		
-		if(angle < 0 || angle > 270)
-			// Angle is out of bounds
-			throw new NumberFormatException("Angle must either be 90, 180 or 270");
-		
-		if((angle % 90) != 0)
-			// Angle isn't divisible by 90
-			throw new NumberFormatException("Angle must either be 90, 180 or 270");
-		
-		Tile tile = board.getTile(column, row);
-		int currAngle = RotationAngle.convertToInt(tile.getRotation());
-		RotationAngle newAngle = RotationAngle.convertFromInt((angle + currAngle) % 360);
-		tile.setRotation(newAngle);
-		board.setTile(column, row, tile);
-		
-		player.setMoves(player.getMoves() + 1);
-		round++;
-		
-		if(checkWin())
-			win = true;
-		
-		computerMove();
-	}
-	
-	/**
 	 * Insert the spare tile into the specified row.
 	 * 
 	 * @param row The row to insert the spare tile into.
 	 */
-	public void insertRow(int row) {
-		Tile newSpareTile = insertTileRow(row, player.getSpareTile());
+	public void insertRow(int row, Direction direc) throws IllegalMoveException {
+		Tile newSpareTile = null;
+		
+		if(direc == Direction.LEFT)
+			newSpareTile = insertTileRowLeft(row, player.getSpareTile());
+		else if(direc == Direction.RIGHT)
+			newSpareTile = insertTileRowRight(row, player.getSpareTile());
+		else
+			throw new IllegalMoveException("Invalid direction specified");
 		
 		if(newSpareTile != null) {
 			// Success! New spare tile returned
 			player.setSpareTile(newSpareTile);
+			
+			player.setMoves(player.getMoves() + 1);
+			round++;
+			
+			if(checkWin())
+				win = true;
+			
+			computerMove();
 		}
-		
-		player.setMoves(player.getMoves() + 1);
-		round++;
-		
-		if(checkWin())
-			win = true;
-		
-		computerMove();
+		else {
+			throw new IllegalMoveException("Could not retrieve new spare tile");
+		}
 	}
 	
 	/**
-	 * Insert a specific tile into the specified row.
+	 * Insert a specific tile into the specified row from the left hand side.
 	 * 
 	 * @param row The row to insert the tile to.
 	 * @param newTile The tile to insert into the row.
-	 * @return The tile that falls off the side of the board. Returns null on error.
+	 * @return The tile that falls off the side of the board.
 	 */
-	private Tile insertTileRow(int row, Tile newTile) {
+	private Tile insertTileRowLeft(int row, Tile newTile) throws IllegalMoveException {
 		// Check if any tiles on row are immovable/fixed
 		for(int i = 1; i < board.getWidth(); i++) {
 			if(!board.getTile(i, row).isMovable()) {
 				// Found an immovable tile
-				return null;
+				throw new IllegalMoveException("Specified row contains one or more immovable tiles");
+			}
+		}
+		
+		// Set the spare tile to the tile that will fall off
+		Tile spareTile = board.getTile(board.getWidth(), row);
+		
+		if(spareTile.hasToken()) {
+			// The tile that is going to fall off contains the token, so set token to new tile
+			spareTile.setToken(false);
+			newTile.setToken(true);
+			board.setTokenPos(1, row);
+		}
+		
+		// Push all tiles across
+		for(int i = board.getWidth(); i > 1; i--) {
+			// Set tile to preceding tile
+			Tile t = board.getTile(i - 1, row);
+			board.setTile(i, row, t);
+		}
+		
+		// Set the first tile in row to new tile
+		board.setTile(1, row, newTile);
+		
+		return spareTile;
+	}
+	
+	/**
+	 * Insert a specific tile into the specified row from the right hand side.
+	 * 
+	 * @param row The row to insert the tile to.
+	 * @param newTile The tile to insert into the row.
+	 * @return The tile that falls off the side of the board.
+	 */
+	private Tile insertTileRowRight(int row, Tile newTile) throws IllegalMoveException {
+		// Check if any tiles on row are immovable/fixed
+		for(int i = 1; i < board.getWidth(); i++) {
+			if(!board.getTile(i, row).isMovable()) {
+				// Found an immovable tile
+				throw new IllegalMoveException("Specified row contains one or more immovable tiles");
 			}
 		}
 		
@@ -356,36 +374,85 @@ public class TreasureChase implements GameMode {
 	 * 
 	 * @param column The column to insert the spare tile into.
 	 */
-	public void insertColumn(int column) {
-		Tile newSpareTile = insertTileColumn(column, player.getSpareTile());
+	public void insertColumn(int column, Direction direc) throws IllegalMoveException {
+		Tile newSpareTile = null;
+		
+		if(direc == Direction.BOTTOM)
+			newSpareTile = insertTileColumnBottom(column, player.getSpareTile());
+		else if(direc == Direction.TOP)
+			newSpareTile = insertTileColumnTop(column, player.getSpareTile());
+		else
+			throw new IllegalMoveException("Invalid direction specified");
 		
 		if(newSpareTile != null) {
 			// Success! New spare tile returned
 			player.setSpareTile(newSpareTile);
+			
+			player.setMoves(player.getMoves() + 1);
+			round++;
+			
+			if(checkWin())
+				win = true;
+			
+			computerMove();
 		}
-		
-		player.setMoves(player.getMoves() + 1);
-		round++;
-		
-		if(checkWin())
-			win = true;
-		
-		computerMove();
+		else {
+			throw new IllegalMoveException("Could not retrieve new spare tile");
+		}
 	}
 	
 	/**
-	 * Insert a specific tile into the specified column.
+	 * Insert a specific tile into the specified column from the bottom.
 	 * 
 	 * @param column The column to insert the tile to.
 	 * @param newTile The tile to insert into the column.
-	 * @return The tile that falls off the side of the board. Returns null on error.
+	 * @return The tile that falls off the side of the board.
 	 */
-	private Tile insertTileColumn(int column, Tile newTile) {
+	private Tile insertTileColumnBottom(int column, Tile newTile) throws IllegalMoveException {
 		// Check if any tiles in column are immovable/fixed
 		for(int i = 1; i < board.getHeight(); i++) {
 			if(!board.getTile(column, i).isMovable()) {
 				// Found an immovable tile
-				return null;
+				throw new IllegalMoveException("Specified column contains one or more immovable tiles");
+			}
+		}
+		
+		// Set the spare tile to the tile that will fall off
+		Tile spareTile = board.getTile(column, board.getHeight());
+		
+		if(spareTile.hasToken()) {
+			// The tile that is going to fall off contains the token, so set token to new tile
+			spareTile.setToken(false);
+			newTile.setToken(true);
+			board.setTokenPos(column, 1);
+		}
+		
+		// Push all tiles across
+		for(int i = board.getHeight(); i > 1; i--) {
+			// Set tile to preceding tile
+			Tile t = board.getTile(column, i - 1);
+			board.setTile(column, i, t);
+		}
+		
+		// Set the first tile in row to new tile
+		board.setTile(column, 1, newTile);
+		
+		return spareTile;
+	}
+	
+	/**
+	 * Insert a specific tile into the specified column from the top.
+	 * 
+	 * @param column The column to insert the tile to.
+	 * @param newTile The tile to insert into the column.
+	 * @return The tile that falls off the side of the board.
+	 */
+	private Tile insertTileColumnTop(int column, Tile newTile) throws IllegalMoveException {
+		// Check if any tiles in column are immovable/fixed
+		for(int i = 1; i < board.getHeight(); i++) {
+			if(!board.getTile(column, i).isMovable()) {
+				// Found an immovable tile
+				throw new IllegalMoveException("Specified column contains one or more immovable tiles");
 			}
 		}
 		

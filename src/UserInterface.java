@@ -6,7 +6,7 @@ import java.util.Scanner;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version v0.1.12032013
+ * @version v0.1.15032013
  *
  */
 public class UserInterface {
@@ -42,6 +42,8 @@ public class UserInterface {
 			 
 			System.out.print("\n> ");
 			parse(prompt());
+			
+			clearConsole();
 		}
 		
 		// Game loop closed, call clean up code
@@ -68,7 +70,7 @@ public class UserInterface {
 	public void parse(String[] inputArgs) throws NumberFormatException, IndexOutOfBoundsException {
 		if(inputArgs[0].toLowerCase().equals("insert")) {
 			// Insertion command called
-			if(inputArgs.length < 3) {
+			if(inputArgs.length < 4) {
 				System.out.println("Usage:\tinsert column <column_no>\n\tinsert row <row_no>");
 				return;
 			}
@@ -78,30 +80,51 @@ public class UserInterface {
 				int column_no = 0;
 				
 				try {
-					column_no = Integer.parseInt(inputArgs[2]);
+					column_no = Integer.parseInt(inputArgs[3]);
 				}
 				catch(NumberFormatException e) {
 					throw new NumberFormatException("Invalid column number entered");
 				}
 				
-				game.insertColumn(column_no);
+				// Check whether to push in from top or bottom
+				try {
+					if(inputArgs[2].equals("top"))
+							game.insertColumn(column_no, Direction.TOP);
+					else if(inputArgs[2].equals("bottom"))
+						game.insertColumn(column_no, Direction.BOTTOM);
+				}
+				catch(IllegalMoveException e) {
+					System.out.println(e.getMessage());
+					enterPrompt();
+				}
 			}
 			else if(inputArgs[1].equals("row")) {
 				int row_no = 0;
 				
 				try {
-					row_no = Integer.parseInt(inputArgs[2]);
+					row_no = Integer.parseInt(inputArgs[3]);
 				}
 				catch(NumberFormatException e) {
 					throw new NumberFormatException("Invalid row number entered");
 				}
 				
-				game.insertRow(row_no);
+				// Check whether to push in from left or right
+				try {
+					if(inputArgs[2].equals("left"))
+						game.insertRow(row_no, Direction.LEFT);
+					else if(inputArgs[2].equals("right"))
+						game.insertRow(row_no, Direction.RIGHT);
+				}
+				catch(IllegalMoveException e) {
+					System.out.println(e.getMessage());
+					enterPrompt();
+				}
 			}
 			else {
 				// Invalid argument passed
-				System.out.println("Usage:\tinsert column <column_no>\n\tinsert row <row_no>");
-				return;
+				System.out.println("Usage: insert column <top/bottom> <column_no>");
+				System.out.println("Usage: insert row <left/right> <row_no>");
+				enterPrompt();
 			}
 		}
 		else if(inputArgs[0].toLowerCase().equals("rotate")) {
@@ -112,51 +135,47 @@ public class UserInterface {
 					game.rotateTile(Integer.parseInt(inputArgs[1]));
 				}
 				catch(NumberFormatException e) {
-					System.out.println("Invalid angle: must be 90, 180 or 270");
-					return;
-				}
-			}
-			else if(inputArgs.length == 4) {
-				// Rotate tile on board
-				int column = Integer.parseInt(inputArgs[1]);
-				int row = Integer.parseInt(inputArgs[2]);
-				
-				try {
-					game.rotateTile(column, row, Integer.parseInt(inputArgs[3]));
-				}
-				catch(NumberFormatException e) {
-					System.out.println("Invalid angle: must be 90, 180 or 270");
-					return;
+					System.out.println(e.getMessage());
+					enterPrompt();
 				}
 			}
 			else {
-				System.out.println("Usage:\trotate <degrees> (rotate spare tile)\n\trotate <column_no> <row_no> <degrees>");
+				System.out.println("Usage: rotate <degrees>, where degrees is 90, 180 or 270");
+				enterPrompt();
 			}
 		}
 		else if(inputArgs[0].toLowerCase().equals("move")) {
 			// Move command called
 			if(inputArgs.length < 2) {
 				System.out.println("Usage: move <up/down/left/right>");
+				enterPrompt();
 			}
 			else {
-				if(inputArgs[1].equals("up")) {
-					// Move up
-					game.moveTokenUp();
+				try {
+					if(inputArgs[1].equals("up")) {
+						// Move up
+						game.moveTokenUp();
+					}
+					else if(inputArgs[1].equals("down")) {
+						// Move down
+						game.moveTokenDown();
+					}
+					else if(inputArgs[1].equals("left")) {
+						// Move left
+						game.moveTokenLeft();
+					}
+					else if(inputArgs[1].equals("right")) {
+						// Move token right
+						game.moveTokenRight();
+					}
+					else {
+						System.out.println("Usage: move <up/down/left/right>");
+						enterPrompt();
+					}
 				}
-				else if(inputArgs[1].equals("down")) {
-					// Move down
-					game.moveTokenDown();
-				}
-				else if(inputArgs[1].equals("left")) {
-					// Move left
-					game.moveTokenLeft();
-				}
-				else if(inputArgs[1].equals("right")) {
-					// Move token right
-					game.moveTokenRight();
-				}
-				else {
-					System.out.println("Usage: move <up/down/left/right>");
+				catch(IllegalMoveException e) {
+					System.out.println(e.getMessage());
+					enterPrompt();
 				}
 			}
 		}
@@ -166,16 +185,30 @@ public class UserInterface {
 		}
 		else if(inputArgs[0].toLowerCase().equals("help")) {
 			// Help command called
-			System.out.println("insert \t Insert spare tile to specified location.");
-			System.out.println("rotate \t Rotate either spare tile or specified tile by a number of degrees.");
-			System.out.println("move \t Move token either up, down, left or right.");
-			System.out.println("exit \t Exit the game.");
-			System.out.println("help \t Display available game options. Type help <command_name> for more info.");
-			
-			// TODO: Implement specific command help dialogue?
+			if(inputArgs.length < 2) {
+				System.out.println("insert \t Insert spare tile into a specified row or column from some direction.");
+				System.out.println("rotate \t Rotate spare tile by a number of degrees.");
+				System.out.println("move \t Move token either up, down, left or right.");
+				System.out.println("exit \t Exit the game.");
+				System.out.println("help \t Display available game options, or specific help through 'help <command>'.");
+			}
+			else {
+				if(inputArgs[1].equals("insert")) {
+					System.out.println("Usage: insert column <top/bottom> <column_no>");
+					System.out.println("Usage: insert row <left/right> <row_no>");
+				}
+				else if(inputArgs[1].equals("rotate")) {
+					System.out.println("Usage: rotate <degrees>, where degrees is 90, 180 or 270");
+				}
+				else if(inputArgs[1].equals("move")) {
+					System.out.println("Usage: move <up/down/left/right>");
+				}
+			}
+			enterPrompt();
 		}
 		else {
 			System.out.println("Invalid command: please enter 'help' for more information.");
+			enterPrompt();
 		}
 	}
 	
@@ -221,10 +254,46 @@ public class UserInterface {
 			}
 			catch(NumberFormatException e) {
 				System.out.println("Please enter a valid menu option!");
+				enterPrompt();
 			}
 		}
 		
 		// TODO
+	}
+	
+	/**
+	 * Display and wait for enter. Useful to pause states until user is ready.
+	 */
+	public void enterPrompt() {
+		System.out.print("\nPlease press [ENTER] to continue... ");
+		input.nextLine();
+	}
+	
+	/**
+	 * Clear the console display.
+	 */
+	public void clearConsole() {
+		String os = System.getProperty("os.name").toLowerCase();
+		System.out.println("DEBUG: " + os);
+		
+		if(os.indexOf("win") >= 0) {
+			// Windows
+			try {
+				Runtime.getRuntime().exec("cls");
+			}
+			catch(Exception e) {
+				System.out.println("Error: Couldn't clear console!");
+			}
+		}
+		else if(os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("mac") >= 0) {
+			// UNIX variant such as Unix, Linux and Macintosh
+			try {
+				Runtime.getRuntime().exec("clear");
+			}
+			catch(Exception e) {
+				System.out.println("Error: Couldn't clear console!");
+			}
+		}
 	}
 
 }

@@ -50,5 +50,12 @@ public class Leaderboard {
 	
 	public String[][] getScores() { return scores; }
 	public int getMaxEntries() { return maxEntries; }
+	
+	/**
+	 * Display the leaderboard.
+	 */
+	public void display() {
+		
+	}
 
 }

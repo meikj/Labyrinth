@@ -64,7 +64,7 @@ public class Tile {
 	 * Set the tile type.
 	 */
 	public void setType(TileType newType) {
-		this.type = newType;
+		type = newType;
 		
 		// Type has been altered, reform tile string
 		tileString = formTileString();
@@ -81,10 +81,10 @@ public class Tile {
 	 * Set whether or not the tile contains treasure.
 	 */
 	public void setTreasure(boolean state) {
-		this.treasure = state;
+		treasure = state;
 		
 		// Treasure has been altered, re-form the tile string
-		this.tileString = formTileString();
+		tileString = formTileString();
 	}
 	
 	/**
