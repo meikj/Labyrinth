@@ -27,12 +27,12 @@ public class TreasureChase implements GameMode {
 		this.win = false;
 		
 		// Generate a board with default settings of 7x7
-		this.board = new Board(7, 7);
+		this.board = new Board(11, 11);
 		
 		// Set a random tile on the board to contain treasure
 		Random r = new Random();
-		int rCol = r.nextInt(7) + 1;
-		int rRow = r.nextInt(7) + 1;
+		int rCol = r.nextInt(11) + 1;
+		int rRow = r.nextInt(11) + 1;
 		
 		this.board.getTile(rCol, rRow).setTreasure(true);
 	}

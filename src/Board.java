@@ -133,11 +133,14 @@ public class Board {
 	 */
 	public void draw() {
 		// Form horizontal border
-		String numberTop = "        ";
-		String border = "     =======";
+		String numberTop = "         ";
+		String border = "      =======";
 		
 		for(int i = 0; i < width; i++)
-			numberTop += Integer.toString(i + 1) + "      ";
+			if((i + 1) < 10)
+				numberTop += Integer.toString(i + 1) + "      ";
+			else
+				numberTop += Integer.toString(i + 1) + "     ";
 		
 		for(int i = 1; i < width; i++)
 			border += "=======";
@@ -150,11 +153,20 @@ public class Board {
 			// Form the row by concatenating each tile on the row together
 			// A tile is 7x5, so therefore consists of 5 row sections
 			
-			String rowTop    = "  || ";
-			String rowTM     = "  || ";
-			String rowMiddle = " " + Integer.toString(width - i) + "|| ";
-			String rowMB     = "  || ";
-			String rowBottom = "  || ";
+			String number = "";
+			
+			if((width - i) < 10) {
+				number = Integer.toString(width - i) + " ";
+			}
+			else {
+				number = Integer.toString(width - i);
+			}
+			
+			String rowTop    = "   || ";
+			String rowTM     = "   || ";
+			String rowMiddle = " " + number + "|| ";
+			String rowMB     = "   || ";
+			String rowBottom = "   || ";
 			
 			for(int j = 0; j < height; j++) {
 				// Split the tile up into its relevant sections
