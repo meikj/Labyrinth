@@ -3,7 +3,7 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.15032012
+ * @version 0.1.20032013
  *
  */
 public class IllegalMoveException extends Exception {
@@ -14,14 +14,6 @@ public class IllegalMoveException extends Exception {
 	
 	public IllegalMoveException(String message) {
 		super(message);
-	}
-	
-	public IllegalMoveException(String message, Throwable cause) {
-		super(message, cause);
-	}
-	
-	public IllegalMoveException(Throwable cause) {
-		super(cause);
 	}
 
 }

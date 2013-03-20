@@ -3,22 +3,23 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.11032013
+ * @version 0.1.20032013
  *
  */
 public class Labyrinth {
 	
-	public static final String SETTINGS_PATH = System.getProperty("user.dir") + "\\settings.txt";
+	public static final String SETTINGS_PATH = System.getProperty("user.dir") + "\\settings\\settings.txt";
 	
 	public static void main(String[] args) {
-		Player p = new Player();
-		SettingsManager s = new SettingsManager();
-		Leaderboard l = new Leaderboard();
+		Player player = new Player();
+		SettingsManager settings = new SettingsManager(SETTINGS_PATH);
+		Leaderboard lb = new Leaderboard();
 		
 		// Load settings in from default location
-		System.out.println(SETTINGS_PATH);
+		System.out.println("SETTINGS_PATH = " + SETTINGS_PATH);
 		
-		TreasureChase game = new TreasureChase(p, s, l);
+		// By default just start up a new Treasure Chase game
+		GameMode game = new TreasureChase(player, settings, lb);
 		UserInterface ui = new UserInterface(game);
 		
 		System.out.println("       _           _                _       _   _           \n" +

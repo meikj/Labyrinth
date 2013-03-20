@@ -42,8 +42,6 @@ public class UserInterface {
 			 
 			System.out.print("\n> ");
 			parse(prompt());
-			
-			clearConsole();
 		}
 		
 		// Game loop closed, call clean up code
@@ -267,33 +265,6 @@ public class UserInterface {
 	public void enterPrompt() {
 		System.out.print("\nPlease press [ENTER] to continue... ");
 		input.nextLine();
-	}
-	
-	/**
-	 * Clear the console display.
-	 */
-	public void clearConsole() {
-		String os = System.getProperty("os.name").toLowerCase();
-		System.out.println("DEBUG: " + os);
-		
-		if(os.indexOf("win") >= 0) {
-			// Windows
-			try {
-				Runtime.getRuntime().exec("cls");
-			}
-			catch(Exception e) {
-				System.out.println("Error: Couldn't clear console!");
-			}
-		}
-		else if(os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("mac") >= 0) {
-			// UNIX variant such as Unix, Linux and Macintosh
-			try {
-				Runtime.getRuntime().exec("clear");
-			}
-			catch(Exception e) {
-				System.out.println("Error: Couldn't clear console!");
-			}
-		}
 	}
 
 }
