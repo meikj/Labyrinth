@@ -5,7 +5,7 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.12032013
+ * @version 0.1.20032013
  *
  */
 public interface GameMode {

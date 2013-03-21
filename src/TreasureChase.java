@@ -29,7 +29,7 @@ public class TreasureChase implements GameMode {
 		this.win = false;
 		this.settings = settings;
 		
-		// Generate a board with default settings of 7x7
+		// Generate a board with settings specified in the SettingsManager
 		this.board = new Board(settings.getRows(), settings.getColumns());
 		
 		// Set a random tile on the board to contain treasure
@@ -321,6 +321,13 @@ public class TreasureChase implements GameMode {
 		for(int i = board.getWidth(); i > 1; i--) {
 			// Set tile to preceding tile
 			Tile t = board.getTile(i - 1, row);
+			
+			// Check if preceding tile contains token
+			if(t.hasToken()) {
+				// If so, set token position to new position
+				board.setTokenPos(i, row);
+			}
+			
 			board.setTile(i, row, t);
 		}
 		
@@ -347,24 +354,31 @@ public class TreasureChase implements GameMode {
 		}
 		
 		// Set the spare tile to the tile that will fall off
-		Tile spareTile = board.getTile(board.getWidth(), row);
+		Tile spareTile = board.getTile(1, row);
 		
 		if(spareTile.hasToken()) {
 			// The tile that is going to fall off contains the token, so set token to new tile
 			spareTile.setToken(false);
 			newTile.setToken(true);
-			board.setTokenPos(1, row);
+			board.setTokenPos(board.getWidth(), row);
 		}
 		
 		// Push all tiles across
-		for(int i = board.getWidth(); i > 1; i--) {
-			// Set tile to preceding tile
-			Tile t = board.getTile(i - 1, row);
+		for(int i = 1; i < board.getWidth(); i++) {
+			// Set tile to proceeding tile
+			Tile t = board.getTile(i + 1, row);
+			
+			// Check if proceeding tile contains token
+			if(t.hasToken()) {
+				// If so, set token position to new position
+				board.setTokenPos(i, row);
+			}
+			
 			board.setTile(i, row, t);
 		}
 		
-		// Set the first tile in row to new tile
-		board.setTile(1, row, newTile);
+		// Set the last tile in row to new tile
+		board.setTile(board.getWidth(), row, newTile);
 		
 		return spareTile;
 	}
@@ -431,6 +445,13 @@ public class TreasureChase implements GameMode {
 		for(int i = board.getHeight(); i > 1; i--) {
 			// Set tile to preceding tile
 			Tile t = board.getTile(column, i - 1);
+			
+			// Check if preceding tile contains token
+			if(t.hasToken()) {
+				// If so, set token position to new position
+				board.setTokenPos(column, i);
+			}
+			
 			board.setTile(column, i, t);
 		}
 		
@@ -457,7 +478,7 @@ public class TreasureChase implements GameMode {
 		}
 		
 		// Set the spare tile to the tile that will fall off
-		Tile spareTile = board.getTile(column, board.getHeight());
+		Tile spareTile = board.getTile(column, 1);
 		
 		if(spareTile.hasToken()) {
 			// The tile that is going to fall off contains the token, so set token to new tile
@@ -467,14 +488,21 @@ public class TreasureChase implements GameMode {
 		}
 		
 		// Push all tiles across
-		for(int i = board.getHeight(); i > 1; i--) {
-			// Set tile to preceding tile
-			Tile t = board.getTile(column, i - 1);
+		for(int i = 1; i < board.getHeight(); i++) {
+			// Set tile to proceeding tile
+			Tile t = board.getTile(column, i + 1);
+			
+			// Check if proceeding tile contains token
+			if(t.hasToken()) {
+				// If so, set token position to new position
+				board.setTokenPos(column, i);
+			}
+			
 			board.setTile(column, i, t);
 		}
 		
 		// Set the first tile in row to new tile
-		board.setTile(column, 1, newTile);
+		board.setTile(column, board.getHeight(), newTile);
 		
 		return spareTile;
 	}
@@ -515,6 +543,8 @@ public class TreasureChase implements GameMode {
 		System.out.println("         |    " + tileRows[3] + "    |           |           |");
 		System.out.println("         |    " + tileRows[4] + "    |           |           |");
 		System.out.println("          --------------- ----------- -----------");
+		System.out.println("DEBUG INFO:");
+		System.out.println("\tToken Position: (" + board.getTokenPos()[0] + "," + board.getTokenPos()[1] + ")");
 	}
 	
 	public void save() { return; }
@@ -534,10 +564,6 @@ public class TreasureChase implements GameMode {
 	 * Called in the event the player has won (i.e. completed the game mode objective(s)).
 	 */
 	public void onWin() {
-		//
-		// TODO: Clear console?
-		//
-		
 		System.out.println("__   __             __                      _   _   _            _                                              \n" +
                            "\\ \\ / /            / _|                    | | | | | |          | |                                           \n" +
                            " \\ V /___  _   _  | |_ ___  _   _ _ __   __| | | |_| |__   ___  | |_ _ __ ___  __ _ ___ _   _ _ __ ___         \n" +

@@ -30,7 +30,7 @@ public class SettingsManager {
 	 * @param path The path to the settings file.
 	 */
 	public SettingsManager(String path) {
-		// Set to 'erraneous' values first
+		// Set to 'erroneous' values first
 		rows = 0;
 		columns = 0;
 		leaderboard = null;
