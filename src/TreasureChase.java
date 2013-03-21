@@ -316,6 +316,11 @@ public class TreasureChase implements GameMode {
 			newTile.setToken(true);
 			board.setTokenPos(1, row);
 		}
+		else if(spareTile.hasTreasure()) {
+			// The tile that is going to fall off contains the treasure, so set treasure to new tile
+			spareTile.setTreasure(false);
+			newTile.setTreasure(true);
+		}
 		
 		// Push all tiles across
 		for(int i = board.getWidth(); i > 1; i--) {
@@ -361,6 +366,11 @@ public class TreasureChase implements GameMode {
 			spareTile.setToken(false);
 			newTile.setToken(true);
 			board.setTokenPos(board.getWidth(), row);
+		}
+		else if(spareTile.hasTreasure()) {
+			// The tile that is going to fall off contains the treasure, so set treasure to new tile
+			spareTile.setTreasure(false);
+			newTile.setTreasure(true);
 		}
 		
 		// Push all tiles across
@@ -440,6 +450,11 @@ public class TreasureChase implements GameMode {
 			newTile.setToken(true);
 			board.setTokenPos(column, 1);
 		}
+		else if(spareTile.hasTreasure()) {
+			// The tile that is going to fall off contains the treasure, so set treasure to new tile
+			spareTile.setTreasure(false);
+			newTile.setTreasure(true);
+		}
 		
 		// Push all tiles across
 		for(int i = board.getHeight(); i > 1; i--) {
@@ -485,6 +500,11 @@ public class TreasureChase implements GameMode {
 			spareTile.setToken(false);
 			newTile.setToken(true);
 			board.setTokenPos(column, 1);
+		}
+		else if(spareTile.hasTreasure()) {
+			// The tile that is going to fall off contains the treasure, so set treasure to new tile
+			spareTile.setTreasure(false);
+			newTile.setTreasure(true);
 		}
 		
 		// Push all tiles across
