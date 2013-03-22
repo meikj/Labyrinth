@@ -6,7 +6,7 @@ import java.util.Scanner;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version v0.1.15032013
+ * @version v0.1.22032013
  *
  */
 public class UserInterface {
@@ -33,15 +33,15 @@ public class UserInterface {
 	public void run() {
 		while(running) {
 			// Main game loop
-			game.update();
+			update();
 			
 			if(game.hasWon()) {
-				game.onWin();
-				break;
+				onTreasureChaseWin();
+				setRunning(false);
+			} else {
+				System.out.print("\n> ");
+				parse(prompt());
 			}
-			 
-			System.out.print("\n> ");
-			parse(prompt());
 		}
 		
 		// Game loop closed, call clean up code
@@ -265,6 +265,83 @@ public class UserInterface {
 	public void enterPrompt() {
 		System.out.print("\nPlease press [ENTER] to continue... ");
 		input.nextLine();
+	}
+	
+	/**
+	 * Update the interface.
+	 */
+	public void update() {
+		// Draw the board
+		game.getBoard().draw();
+		
+		// Draw the "HUB"
+		Tile spareTile = game.getPlayer().getSpareTile();
+		String[] tileRows = spareTile.getTileString();
+		
+		String roundString = Integer.toString(game.getRound());
+		
+		// Determine rounding padding
+		if(game.getRound() < 10)
+			// Prepend 4 zeros
+			roundString = "0000" + roundString;
+		else if(game.getRound() < 100)
+			// Prepend 3 zeros
+			roundString = "000" + roundString;
+		else if(game.getRound() < 1000)
+			// Prepend 2 zeros
+			roundString = "00" + roundString;
+		
+		// Score in Treasure Chase is rounds
+		
+		System.out.println();
+		System.out.println("      ------------------- --------------- ---------------");
+		System.out.println("     |    SPARE  TILE    |     ROUND     |     SCORE     |");
+		System.out.println("     |===================|===============|===============|");
+		System.out.println("     |      " + tileRows[0] + "      |               |               |");
+		System.out.println("     |      " + tileRows[1] + "      |               |               |");
+		System.out.println("     |      " + tileRows[2] + "      |     " + roundString + "     |     " + roundString + "     |");
+		System.out.println("     |      " + tileRows[3] + "      |               |               |");
+		System.out.println("     |      " + tileRows[4] + "      |               |               |");
+		System.out.println("      ------------------- --------------- ---------------");
+		System.out.println("     |    LAST COMPUTER MOVE                             |");
+		System.out.println("     |===================================================|");
+		System.out.println("       " + game.getComputerPlayer().getLastMove());
+		System.out.println("     |___________________________________________________|");
+		System.out.println();
+		
+		
+		System.out.println("DEBUG INFO:");
+		System.out.println("\tToken Position: (" + game.getBoard().getTokenPos()[0] + "," + game.getBoard().getTokenPos()[1] + ")");
+	}
+	
+	/**
+	 * Called in the event the player has won (i.e. completed the game mode objective(s)).
+	 */
+	public void onTreasureChaseWin() {
+		System.out.println("__   __             __                      _   _   _            _                                              \n" +
+                           "\\ \\ / /            / _|                    | | | | | |          | |                                           \n" +
+                           " \\ V /___  _   _  | |_ ___  _   _ _ __   __| | | |_| |__   ___  | |_ _ __ ___  __ _ ___ _   _ _ __ ___         \n" +
+                           "  \\ // _ \\| | | | |  _/ _ \\| | | | '_ \\ / _` | | __| '_ \\ / _ \\ | __| '__/ _ \\/ _` / __| | | | '__/ _ \\ \n" +
+                           "  | | (_) | |_| | | || (_) | |_| | | | | (_| | | |_| | | |  __/ | |_| | |  __/ (_| \\__ \\ |_| | | |  __/_ _ _  \n" +
+                           "  \\_/\\___/ \\__,_| |_| \\___/ \\__,_|_| |_|\\__,_|  \\__|_| |_|\\___|  \\__|_|  \\___|\\__,_|___/\\__,_|_|  \\___(_|_|_) \n");
+                                                                                                             
+                                                                                                             
+		
+		// Wait 2 seconds before final congratulation message
+		try { Thread.sleep(2000); } catch(InterruptedException e) {}
+		
+		System.out.println("     _____ _____ _   _ _____ ______  ___ _____ _   _ _       ___ _____ _____ _____ _   _  _____ _ _           \n" +
+                           "    /  __ \\  _  | \\ | |  __ \\| ___ \\/ _ \\_   _| | | | |     / _ \\_   _|_   _|  _  | \\ | |/  ___| | |   \n" +
+                           "    | /  \\/ | | |  \\| | |  \\/| |_/ / /_\\ \\| | | | | | |    / /_\\ \\| |   | | | | | |  \\| |\\ `--.| | | \n" +
+                           "    | |   | | | | . ` | | __ |    /|  _  || | | | | | |    |  _  || |   | | | | | | . ` | `--. \\ | |         \n" +
+                           "    | \\__/\\ \\_/ / |\\  | |_\\ \\| |\\ \\| | | || | | |_| | |____| | | || |  _| |_\\ \\_/ / |\\  |/\\__/ /_|_| \n" +
+                           "     \\____/\\___/\\_| \\_/\\____/\\_| \\_\\_| |_/\\_/  \\___/\\_____/\\_| |_/\\_/  \\___/ \\___/\\_| \\_/\\____/(_|_)  \n");
+                                                                                                
+                                                                                                
+		
+		//
+		// TODO: Display leaderboard and do high score checking...
+		//
 	}
 
 }

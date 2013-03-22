@@ -59,19 +59,9 @@ public interface GameMode {
 	public void insertColumn(int column, Direction direc) throws IllegalMoveException;
 	
 	/**
-	 * Update the interface.
-	 */
-	public void update();
-	
-	/**
 	 * Save the game.
 	 */
 	public void save();
-	
-	/**
-	 * End the game.
-	 */
-	public void end();
 	
 	/**
 	 * Check if the user has won the game.
@@ -79,8 +69,28 @@ public interface GameMode {
 	public boolean hasWon();
 	
 	/**
-	 * Called when the player has won the game.
+	 * Get the active game board.
 	 */
-	public void onWin();
+	public Board getBoard();
+	
+	/**
+	 * Get the active player.
+	 */
+	public Player getPlayer();
+	
+	/**
+	 * Get the active computer player opponent.
+	 */
+	public ComputerPlayer getComputerPlayer();
+	
+	/**
+	 * Get the current round.
+	 */
+	public int getRound();
+	
+	/**
+	 * Get the active leaderboard.
+	 */
+	public Leaderboard getLeaderboard();
 	
 }

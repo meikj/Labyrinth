@@ -5,7 +5,7 @@ import java.util.Random;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.12032013
+ * @version 0.1.22032013
  *
  */
 public class TreasureChase implements GameMode {
@@ -520,87 +520,17 @@ public class TreasureChase implements GameMode {
 	}
 	
 	/**
-	 * Update the interface.
+	 * Save the current progress of the game.
 	 */
-	public void update() {
-		// Draw the board
-		board.draw();
-		
-		// Draw the "HUB"
-		Tile spareTile = player.getSpareTile();
-		String[] tileRows = spareTile.getTileString();
-		
-		String roundString = Integer.toString(round);
-		
-		// Determine rounding padding
-		if(round < 10)
-			// Prepend 4 zeros
-			roundString = "0000" + roundString;
-		else if(round < 100)
-			// Prepend 3 zeros
-			roundString = "000" + roundString;
-		else if(round < 1000)
-			// Prepend 2 zeros
-			roundString = "00" + roundString;
-		
-		// Score in Treasure Chase is rounds
-		
-		System.out.println();
-		System.out.println("          --------------- ----------- -----------");
-		System.out.println("         |  SPARE  TILE  |   ROUND   |   SCORE   |");
-		System.out.println("         |===============|===========|===========|");
-		System.out.println("         |    " + tileRows[0] + "    |           |           |");
-		System.out.println("         |    " + tileRows[1] + "    |           |           |");
-		System.out.println("         |    " + tileRows[2] + "    |   " + roundString + "   |   " + roundString + "   |");
-		System.out.println("         |    " + tileRows[3] + "    |           |           |");
-		System.out.println("         |    " + tileRows[4] + "    |           |           |");
-		System.out.println("          --------------- ----------- -----------");
-		System.out.println("DEBUG INFO:");
-		System.out.println("\tToken Position: (" + board.getTokenPos()[0] + "," + board.getTokenPos()[1] + ")");
-		System.out.println("\tLast Computer Move: " + computer.getLastMove());
+	public void save() {
+		return;
 	}
-	
-	public void save() { return; }
-	public void end() { return; }
-	
-	public int getRound() { return round; }
-	public Player getPlayer() { return player; }
 	
 	/**
 	 * Check if the player has won the game.
 	 */
 	public boolean hasWon() {
 		return win;
-	}
-	
-	/**
-	 * Called in the event the player has won (i.e. completed the game mode objective(s)).
-	 */
-	public void onWin() {
-		System.out.println("__   __             __                      _   _   _            _                                              \n" +
-                           "\\ \\ / /            / _|                    | | | | | |          | |                                           \n" +
-                           " \\ V /___  _   _  | |_ ___  _   _ _ __   __| | | |_| |__   ___  | |_ _ __ ___  __ _ ___ _   _ _ __ ___         \n" +
-                           "  \\ // _ \\| | | | |  _/ _ \\| | | | '_ \\ / _` | | __| '_ \\ / _ \\ | __| '__/ _ \\/ _` / __| | | | '__/ _ \\ \n" +
-                           "  | | (_) | |_| | | || (_) | |_| | | | | (_| | | |_| | | |  __/ | |_| | |  __/ (_| \\__ \\ |_| | | |  __/_ _ _  \n" +
-                           "  \\_/\\___/ \\__,_| |_| \\___/ \\__,_|_| |_|\\__,_|  \\__|_| |_|\\___|  \\__|_|  \\___|\\__,_|___/\\__,_|_|  \\___(_|_|_) \n");
-                                                                                                             
-                                                                                                             
-		
-		// Wait 2 seconds before final congratulation message
-		try { Thread.sleep(2000); } catch(InterruptedException e) {}
-		
-		System.out.println("     _____ _____ _   _ _____ ______  ___ _____ _   _ _       ___ _____ _____ _____ _   _  _____ _ _           \n" +
-                           "    /  __ \\  _  | \\ | |  __ \\| ___ \\/ _ \\_   _| | | | |     / _ \\_   _|_   _|  _  | \\ | |/  ___| | |   \n" +
-                           "    | /  \\/ | | |  \\| | |  \\/| |_/ / /_\\ \\| | | | | | |    / /_\\ \\| |   | | | | | |  \\| |\\ `--.| | | \n" +
-                           "    | |   | | | | . ` | | __ |    /|  _  || | | | | | |    |  _  || |   | | | | | | . ` | `--. \\ | |         \n" +
-                           "    | \\__/\\ \\_/ / |\\  | |_\\ \\| |\\ \\| | | || | | |_| | |____| | | || |  _| |_\\ \\_/ / |\\  |/\\__/ /_|_| \n" +
-                           "     \\____/\\___/\\_| \\_/\\____/\\_| \\_\\_| |_/\\_/  \\___/\\_____/\\_| |_/\\_/  \\___/ \\___/\\_| \\_/\\____/(_|_)  \n");
-                                                                                                
-                                                                                                
-		
-		//
-		// TODO: Display leaderboard and do high score checking...
-		//
 	}
 	
 	/**
@@ -624,4 +554,38 @@ public class TreasureChase implements GameMode {
 		return;
 	}
 	
+	/**
+	 * Get the game board.
+	 */
+	public Board getBoard() {
+		return board;
+	}
+	
+	/**
+	 * Get the player.
+	 */
+	public Player getPlayer() {
+		return player;
+	}
+	
+	/**
+	 * Get the computer player opponent.
+	 */
+	public ComputerPlayer getComputerPlayer() {
+		return computer;
+	}
+	
+	/**
+	 * Get the current round.
+	 */
+	public int getRound() {
+		return round;
+	}
+	
+	/**
+	 * Get the leaderboard.
+	 */
+	public Leaderboard getLeaderboard() {
+		return leaderboard;
+	}
 }
