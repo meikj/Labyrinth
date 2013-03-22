@@ -502,7 +502,7 @@ public class TreasureChase implements GameMode {
 			// The tile that is going to fall off contains the token, so set token to new tile
 			spareTile.setToken(false);
 			newTile.setToken(true);
-			board.setTokenPos(column, 1);
+			board.setTokenPos(column, board.getHeight());
 		}
 		else if(spareTile.hasTreasure()) {
 			// The tile that is going to fall off contains the treasure, so set treasure to new tile
