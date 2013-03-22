@@ -16,8 +16,7 @@ public class TreasureChase implements GameMode {
 	private int round;
 	private boolean win;
 	private SettingsManager settings;
-	
-	private String lastComputerMove;
+	private ComputerPlayer computer;
 	
 	/**
 	 * Construct a TreasureChase game with a specified player.
@@ -30,7 +29,6 @@ public class TreasureChase implements GameMode {
 		this.leaderboard = new Leaderboard();
 		this.win = false;
 		this.settings = settings;
-		this.lastComputerMove = "None recorded";
 		
 		// Generate a board with settings specified in the SettingsManager
 		this.board = new Board(settings.getRows(), settings.getColumns());
@@ -41,18 +39,9 @@ public class TreasureChase implements GameMode {
 		int rRow = r.nextInt(settings.getRows()) + 1;
 		
 		this.board.getTile(rCol, rRow).setTreasure(true);
-	}
-	
-	/**
-	 * Construct a TreasureChase game with a specified player and leaderboard.
-	 * 
-	 * @param player The player to play the game.
-	 * @param settings The settings to use for the game.
-	 * @param leaderboard The leaderboard to use.
-	 */
-	public TreasureChase(Player player, SettingsManager settings, Leaderboard leaderboard) {
-		this(player, settings);
-		this.leaderboard = leaderboard;
+		
+		// Initialise the computer opponent
+		this.computer = new ComputerPlayer(this.board);
 	}
 	
 	/**
@@ -568,7 +557,7 @@ public class TreasureChase implements GameMode {
 		System.out.println("          --------------- ----------- -----------");
 		System.out.println("DEBUG INFO:");
 		System.out.println("\tToken Position: (" + board.getTokenPos()[0] + "," + board.getTokenPos()[1] + ")");
-		System.out.println("\tLast Computer Move: " + lastComputerMove);
+		System.out.println("\tLast Computer Move: " + computer.getLastMove());
 	}
 	
 	public void save() { return; }
@@ -632,91 +621,7 @@ public class TreasureChase implements GameMode {
 	 * Perform a random computer tile move.
 	 */
 	private void computerMove() {
-		// Generate a random tile
-		Tile randomTile;
-		Random r = new Random();
-		
-		TileType[] tileTypes = TileType.values();
-		RotationAngle[] rotationAngles = RotationAngle.values();
-		
-		int randomType = r.nextInt(4);
-		int randomRotation = r.nextInt(4);
-		
-		randomTile = new Tile(tileTypes[randomType], rotationAngles[randomRotation]);
-		
-		// Randomly insert the tile somewhere
-		int r1 = r.nextInt(2); // row or column?
-		int r2 = r.nextInt(2); // top or bottom/left or right?
-		int r3; // random coordinate
-		
-		if(r1 == 0) {
-			// row
-			r3 = r.nextInt(board.getHeight()) + 1;
-			
-			if(r2 == 0) {
-				// left
-				// WARNING: Hacky stuff here!
-				// TODO: Fix
-				try {
-					insertTileRowLeft(r3, randomTile);
-				}
-				catch(IllegalMoveException e) {
-					// An illegal move occurred, so lets try another move :p
-					computerMove();
-					return;
-				}
-				
-				// Update last computer move
-				lastComputerMove = "Inserted random tile from left at row " + r3;
-			}
-			else {
-				// right
-				try {
-					insertTileRowRight(r3, randomTile);
-				}
-				catch(IllegalMoveException e) {
-					// An illegal move occurred, so lets try another move :p
-					computerMove();
-					return;
-				}
-				
-				// Update last computer move
-				lastComputerMove = "Inserted random tile from right at row " + r3;
-			}
-		}
-		else {
-			// column
-			r3 = r.nextInt(board.getWidth()) + 1;
-			
-			if(r2 == 0) {
-				// top
-				try {
-					insertTileColumnTop(r3, randomTile);
-				}
-				catch(IllegalMoveException e) {
-					// An illegal move occurred, so lets try another move :p
-					computerMove();
-					return;
-				}
-				
-				// Update last computer move
-				lastComputerMove = "Inserted random tile from top at column " + r3;
-			}
-			else {
-				// bottom
-				try {
-					insertTileColumnBottom(r3, randomTile);
-				}
-				catch(IllegalMoveException e) {
-					// An illegal move occurred, so lets try another move :p
-					computerMove();
-					return;
-				}
-				
-				// Update last computer move
-				lastComputerMove = "Inserted random tile from bottom at column " + r3;
-			}
-		}
+		return;
 	}
 	
 }

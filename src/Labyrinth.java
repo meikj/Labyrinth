@@ -8,18 +8,17 @@
  */
 public class Labyrinth {
 	
-	public static final String SETTINGS_PATH = System.getProperty("user.dir") + "\\settings\\settings.txt";
+	public static final String SETTINGS_PATH = System.getProperty("user.dir") + "/settings/settings.txt";
 	
 	public static void main(String[] args) {
 		Player player = new Player();
 		SettingsManager settings = new SettingsManager(SETTINGS_PATH);
-		Leaderboard lb = new Leaderboard();
 		
 		// Load settings in from default location
 		System.out.println("SETTINGS_PATH = " + SETTINGS_PATH);
 		
 		// By default just start up a new Treasure Chase game
-		GameMode game = new TreasureChase(player, settings, lb);
+		GameMode game = new TreasureChase(player, settings);
 		UserInterface ui = new UserInterface(game);
 		
 		System.out.println("       _           _                _       _   _           \n" +
