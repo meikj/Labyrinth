@@ -651,7 +651,7 @@ public class TreasureChase implements GameMode {
 		
 		if(r1 == 0) {
 			// row
-			r3 = r.nextInt(board.getHeight() + 1);
+			r3 = r.nextInt(board.getHeight()) + 1;
 			
 			if(r2 == 0) {
 				// left
@@ -686,7 +686,7 @@ public class TreasureChase implements GameMode {
 		}
 		else {
 			// column
-			r3 = r.nextInt(board.getWidth() + 1);
+			r3 = r.nextInt(board.getWidth()) + 1;
 			
 			if(r2 == 0) {
 				// top
