@@ -115,7 +115,6 @@ public class UserInterface {
 	public void promptTokenMove() throws IllegalArgumentException {
 		System.out.println("Commands:");
 		System.out.println("\tmove <up/down/left/right>");
-		System.out.println("\tskip - Skip move");
 		System.out.print("\nToken Move > ");
 		
 		String in = input.nextLine();
