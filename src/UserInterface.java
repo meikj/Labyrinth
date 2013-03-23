@@ -241,35 +241,10 @@ public class UserInterface {
 	 * Display and run the main menu. This implicitly calls run().
 	 */
 	public void runMenu() {
-		System.out.println("1. Play game");
-		System.out.println("2. Load game");
-		System.out.println("3. Options");
-		System.out.println("4. Quit");
-		System.out.println();
-		
-		System.out.print("Choice: ");
-		
-		String choiceInput;
-		int choice;
-		
-		while(true) {
-			choiceInput = input.nextLine();
-			
-			try {
-				choice = Integer.parseInt(choiceInput);
-				
-				if(choice < 0 || choice > 4)
-					throw new NumberFormatException();
-				
-				break;
-			}
-			catch(NumberFormatException e) {
-				System.out.println("Please enter a valid menu option!");
-				enterPrompt();
-			}
-		}
-		
+		//
 		// TODO
+		//
+		return;
 	}
 	
 	/**
