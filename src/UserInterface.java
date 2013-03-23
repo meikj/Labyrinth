@@ -36,20 +36,39 @@ public class UserInterface {
 			update();
 			
 			if(game.hasWon()) {
+				// Check if win condition has been satisfied before continuing
 				onTreasureChaseWin();
 				setRunning(false);
 			} else {
-				try {
-					promptTileMove();
-					update();
-					promptTokenMove();
-				} catch(IllegalArgumentException e) {
-					// Invalid command passed, reset loop
-					System.out.println(e.getMessage());
-					enterPrompt();
-					continue;
+				// Process player tile move
+				while(true) {
+					try {
+						promptTileMove();
+						break;
+					} catch(IllegalArgumentException e ) {
+						System.out.println(e.getMessage());
+						enterPrompt();
+						continue;
+					}
 				}
 				
+				// Update interface to reflect move
+				update();
+				
+				// Process player token move
+				while(true) {
+					try {
+						promptTokenMove();
+						break;
+					} catch(IllegalArgumentException e) {
+						// Invalid command passed, reset loop
+						System.out.println(e.getMessage());
+						enterPrompt();
+						continue;
+					}
+				}
+				
+				// Advance to next round by checking win, processing computer move, etc.
 				game.nextRound();
 			}
 		}
