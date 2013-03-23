@@ -226,21 +226,28 @@ public class TreasureChase implements GameMode {
 	 * @param row The row to insert the spare tile into.
 	 * @param direc The direction from which to insert the tile into.
 	 * @param performer The player who is performing the move.
+	 * @return The newly updated player with increased score/moves and spare tile based on performer.
 	 * @throws IllegalMoveException When the move cannot be accomplished due to immovable tiles, etc.
 	 */
-	public void insertRow(int row, Direction direc, Player performer) throws IllegalMoveException {
+	public Player insertRow(int row, Direction direc, Player performer) throws IllegalMoveException {
 		// Check first if move is inserting back into same place
 		String[] lastPlayerMove = performer.getLastMove().split(" ");
 		
 		if(lastPlayerMove.length == 4) {
 			// Valid insert move was last made, do some further checking
-			if(lastPlayerMove[0].equals("insert") && lastPlayerMove[1].equals("row") && lastPlayerMove[3].equals(Integer.toString(row))) {
+			if(lastPlayerMove[0].equals("insert") && 
+					lastPlayerMove[1].equals("row") && 
+					lastPlayerMove[3].equals(Integer.toString(row))) {
 				if(direc == Direction.LEFT) {
 					// Can't insert from right this time
-					if(lastPlayerMove[2].equals("right")) throw new IllegalMoveException("Can't insert tile back into same position");
+					if(lastPlayerMove[2].equals("right")) {
+						throw new IllegalMoveException("Can't insert tile back into same position");
+					}
 				} else if(direc == Direction.RIGHT) {
 					// Can't insert from left this time
-					if(lastPlayerMove[2].equals("left")) throw new IllegalMoveException("Can't insert tile back into same position");
+					if(lastPlayerMove[2].equals("left")) {
+						throw new IllegalMoveException("Can't insert tile back into same position");
+					}
 				}
 			}
 		}
@@ -248,21 +255,23 @@ public class TreasureChase implements GameMode {
 		Tile newSpareTile = null;
 		
 		if(direc == Direction.LEFT)
-			newSpareTile = insertTileRowLeft(row, player.getSpareTile());
+			newSpareTile = insertTileRowLeft(row, performer.getSpareTile());
 		else if(direc == Direction.RIGHT)
-			newSpareTile = insertTileRowRight(row, player.getSpareTile());
+			newSpareTile = insertTileRowRight(row, performer.getSpareTile());
 		else
 			throw new IllegalMoveException("Invalid direction specified");
 		
 		if(newSpareTile != null) {
 			// Success! New spare tile returned
-			player.setSpareTile(newSpareTile);
+			performer.setSpareTile(newSpareTile);
 			
 			// Update player move
-			player.updateLastMove("insert row " + direc.toString().toLowerCase() + " " + row);
+			performer.updateLastMove("insert row " + direc.toString().toLowerCase() + " " + row);
 		} else {
 			throw new IllegalMoveException("Could not retrieve new spare tile");
 		}
+		
+		return performer;
 	}
 	
 	/**
@@ -373,23 +382,30 @@ public class TreasureChase implements GameMode {
 	 * @param column The column to insert the spare tile into.
 	 * @param direc The direction from which to insert the tile into.
 	 * @param performer The player who is performing the move.
+	 * @return The newly updated player with increased score/moves and spare tile based on performer.
 	 * @throws IllegalMoveException When the move cannot be accomplished due to immovable tiles, etc.
 	 */
-	public void insertColumn(int column, Direction direc, Player performer) throws IllegalMoveException {
+	public Player insertColumn(int column, Direction direc, Player performer) throws IllegalMoveException {
 		// Check first if move is inserting back into same place
 		String[] lastPlayerMove = performer.getLastMove().split(" ");
 		
 		if(lastPlayerMove.length == 4) {
 			// Valid insert move was last made, do some further checking
 			System.out.println("Length is 4");
-			if(lastPlayerMove[0].equals("insert") && lastPlayerMove[1].equals("column") && lastPlayerMove[3].equals(Integer.toString(column))) {
+			if(lastPlayerMove[0].equals("insert") && 
+					lastPlayerMove[1].equals("column") && 
+					lastPlayerMove[3].equals(Integer.toString(column))) {
 				System.out.println("Yes, it's insert column " + column);
 				if(direc == Direction.TOP) {
 					// Can't insert from bottom this time
-					if(lastPlayerMove[2].equals("bottom")) throw new IllegalMoveException("Can't insert tile back into same position");
+					if(lastPlayerMove[2].equals("bottom")) {
+						throw new IllegalMoveException("Can't insert tile back into same position");
+					}
 				} else if(direc == Direction.BOTTOM) {
 					// Can't insert from top this time
-					if(lastPlayerMove[2].equals("top")) throw new IllegalMoveException("Can't insert tile back into same position");
+					if(lastPlayerMove[2].equals("top")) {
+						throw new IllegalMoveException("Can't insert tile back into same position");
+					}
 				}
 			}
 		}
@@ -397,21 +413,23 @@ public class TreasureChase implements GameMode {
 		Tile newSpareTile = null;
 		
 		if(direc == Direction.BOTTOM)
-			newSpareTile = insertTileColumnBottom(column, player.getSpareTile());
+			newSpareTile = insertTileColumnBottom(column, performer.getSpareTile());
 		else if(direc == Direction.TOP)
-			newSpareTile = insertTileColumnTop(column, player.getSpareTile());
+			newSpareTile = insertTileColumnTop(column, performer.getSpareTile());
 		else
 			throw new IllegalMoveException("Invalid direction specified");
 		
 		if(newSpareTile != null) {
 			// Success! New spare tile returned
-			player.setSpareTile(newSpareTile);
+			performer.setSpareTile(newSpareTile);
 			
 			// Update player move
-			player.updateLastMove("insert column " + direc.toString().toLowerCase() + " " + column);
+			performer.updateLastMove("insert column " + direc.toString().toLowerCase() + " " + column);
 		} else {
 			throw new IllegalMoveException("Could not retrieve new spare tile");
 		}
+		
+		return performer;
 	}
 	
 	/**
@@ -517,6 +535,15 @@ public class TreasureChase implements GameMode {
 	}
 	
 	/**
+	 * Update the player with a new player. Useful when performing a tile move.
+	 * 
+	 * @param p The new player.
+	 */
+	public void updatePlayer(Player p) {
+		player = p;
+	}
+	
+	/**
 	 * Transition to the next round.
 	 */
 	public void nextRound() {
@@ -560,7 +587,7 @@ public class TreasureChase implements GameMode {
 	 * Perform a random computer tile move.
 	 */
 	private void computerMove() {
-/*		// Randomly choose between row or column
+		// Randomly choose between row or column
 		int r1 = rand.nextInt(2); // row/column
 		
 		if(r1 == 0) {
@@ -571,10 +598,22 @@ public class TreasureChase implements GameMode {
 			
 			if(r2 == 0) {
 				// Left
-				insertRow(computer.getRandomRow(), Direction.LEFT, computer);
+				try {
+					computer = (ComputerPlayer) insertRow(computer.getRandomRow(), Direction.LEFT, computer);
+				} catch (IllegalMoveException e) {
+					// In the rare case the computer makes an illegal move, redo the move
+					computerMove();
+					return;
+				}
 			} else {
 				// Right
-				insertRow(computer.getRandomColumn(), Direction.RIGHT, computer);
+				try {
+					computer = (ComputerPlayer) insertRow(computer.getRandomRow(), Direction.RIGHT, computer);
+				} catch (IllegalMoveException e) {
+					// In the rare case the computer makes an illegal move, redo the move
+					computerMove();
+					return;
+				}
 			}
 		} else {
 			// Column
@@ -584,13 +623,24 @@ public class TreasureChase implements GameMode {
 			
 			if(r2 == 0) {
 				// Top
-				insert
+				try {
+					computer = (ComputerPlayer) insertColumn(computer.getRandomColumn(), Direction.TOP, computer);
+				} catch (IllegalMoveException e) {
+					// In the rare case the computer makes an illegal move, redo the move
+					computerMove();
+					return;
+				}
 			} else {
 				// Bottom
-				// ...
+				try {
+					computer = (ComputerPlayer) insertColumn(computer.getRandomColumn(), Direction.BOTTOM, computer);
+				} catch (IllegalMoveException e) {
+					// In the rare case the computer makes an illegal move, redo the move
+					computerMove();
+					return;
+				}
 			}
-		}*/
-		return;
+		}
 	}
 	
 	/**

@@ -93,13 +93,13 @@ public class UserInterface {
 		String in = input.nextLine();
 		String[] tokens = in.split(" ");
 		
-		// A tile move is either rotate or insert
+		// A tile move is either rotate, insert or exit
 		if(tokens[0].equals("rotate")) {
 			// When the player does a rotation, it does not count as a move, so ask for another tile move
 			parse(tokens);
 			update();
 			promptTileMove();
-		} else if(tokens[0].equals("insert")) {
+		} else if(tokens[0].equals("insert") || tokens[0].equals("exit")) {
 			parse(tokens);
 		} else {
 			throw new IllegalArgumentException("Invalid tile move command: only rotate and insert allowed");
@@ -121,10 +121,8 @@ public class UserInterface {
 		String in = input.nextLine();
 		String[] tokens = in.split(" ");
 		
-		// A token move is move or skip
-		if(tokens[0].equals("move")) {
-			parse(tokens);
-		} else if(tokens[0].equals("skip")) {
+		// A token move is move, skip or exit
+		if(tokens[0].equals("move") || tokens[0].equals("skip") || tokens[0].equals("exit")) {
 			parse(tokens);
 		} else {
 			throw new IllegalArgumentException("Invalid token move command: only move allowed");
@@ -157,9 +155,9 @@ public class UserInterface {
 				// Check whether to push in from top or bottom
 				try {
 					if(inputArgs[2].equals("top")) {
-						game.insertColumn(column_no, Direction.TOP, game.getPlayer());
+						game.updatePlayer(game.insertColumn(column_no, Direction.TOP, game.getPlayer()));
 					} else if(inputArgs[2].equals("bottom")) {
-						game.insertColumn(column_no, Direction.BOTTOM, game.getPlayer());
+						game.updatePlayer(game.insertColumn(column_no, Direction.BOTTOM, game.getPlayer()));
 					}
 				} catch(IllegalMoveException e) {
 					throw new IllegalArgumentException(e.getMessage());
@@ -176,9 +174,9 @@ public class UserInterface {
 				// Check whether to push in from left or right
 				try {
 					if(inputArgs[2].equals("left")) {
-						game.insertRow(row_no, Direction.LEFT, game.getPlayer());
+						game.updatePlayer(game.insertRow(row_no, Direction.LEFT, game.getPlayer()));
 					} else if(inputArgs[2].equals("right")) {
-						game.insertRow(row_no, Direction.RIGHT, game.getPlayer());
+						game.updatePlayer(game.insertRow(row_no, Direction.RIGHT, game.getPlayer()));
 					}
 				} catch(IllegalMoveException e) {
 					throw new IllegalArgumentException(e.getMessage());
