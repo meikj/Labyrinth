@@ -79,14 +79,6 @@ public class TreasureChase implements GameMode {
 		board.getTile(tokenPosCol, tokenPosRow).setToken(false);
 		board.setTokenPos(tokenPosCol, newRow);
 		board.getTile(board.getTokenPos()[0], board.getTokenPos()[1]).setToken(true);
-		
-		player.setMoves(player.getMoves() + 1);
-		round++;
-		
-		if(checkWin())
-			win = true;
-		
-		computerMove();
 	}
 	
 	/**
@@ -124,14 +116,6 @@ public class TreasureChase implements GameMode {
 		board.getTile(tokenPosCol, tokenPosRow).setToken(false);
 		board.setTokenPos(tokenPosCol, newRow);
 		board.getTile(board.getTokenPos()[0], board.getTokenPos()[1]).setToken(true);
-		
-		player.setMoves(player.getMoves() + 1);
-		round++;
-		
-		if(checkWin())
-			win = true;
-		
-		computerMove();
 	}
 	
 	/**
@@ -169,14 +153,6 @@ public class TreasureChase implements GameMode {
 		board.getTile(tokenPosCol, tokenPosRow).setToken(false);
 		board.setTokenPos(newCol, tokenPosRow);
 		board.getTile(board.getTokenPos()[0], board.getTokenPos()[1]).setToken(true);
-		
-		player.setMoves(player.getMoves() + 1);
-		round++;
-		
-		if(checkWin())
-			win = true;
-		
-		computerMove();
 	}
 	
 	/**
@@ -214,14 +190,6 @@ public class TreasureChase implements GameMode {
 		board.getTile(tokenPosCol, tokenPosRow).setToken(false);
 		board.setTokenPos(newCol, tokenPosRow);
 		board.getTile(board.getTokenPos()[0], board.getTokenPos()[1]).setToken(true);
-		
-		player.setMoves(player.getMoves() + 1);
-		round++;
-		
-		if(checkWin())
-			win = true;
-		
-		computerMove();
 	}
 	
 	/**
@@ -241,14 +209,6 @@ public class TreasureChase implements GameMode {
 		int currAngle = RotationAngle.convertToInt(player.getSpareTile().getRotation());
 		RotationAngle newAngle = RotationAngle.convertFromInt((angle + currAngle) % 360);
 		player.getSpareTile().setRotation(newAngle);
-		
-		player.setMoves(player.getMoves() + 1);
-		round++;
-		
-		if(checkWin())
-			win = true;
-		
-		computerMove();
 	}
 	
 	/**
@@ -269,16 +229,7 @@ public class TreasureChase implements GameMode {
 		if(newSpareTile != null) {
 			// Success! New spare tile returned
 			player.setSpareTile(newSpareTile);
-			
-			player.setMoves(player.getMoves() + 1);
-			round++;
-			
-			if(checkWin())
-				win = true;
-			
-			computerMove();
-		}
-		else {
+		} else {
 			throw new IllegalMoveException("Could not retrieve new spare tile");
 		}
 	}
@@ -403,16 +354,7 @@ public class TreasureChase implements GameMode {
 		if(newSpareTile != null) {
 			// Success! New spare tile returned
 			player.setSpareTile(newSpareTile);
-			
-			player.setMoves(player.getMoves() + 1);
-			round++;
-			
-			if(checkWin())
-				win = true;
-			
-			computerMove();
-		}
-		else {
+		} else {
 			throw new IllegalMoveException("Could not retrieve new spare tile");
 		}
 	}
@@ -517,6 +459,23 @@ public class TreasureChase implements GameMode {
 		board.setTile(column, board.getHeight(), newTile);
 		
 		return spareTile;
+	}
+	
+	/**
+	 * Transition to the next round.
+	 */
+	public void nextRound() {
+		// Increment round and score
+		round++;
+		player.setScore(player.getScore() + 1);
+		
+		// Check if win condition is satisfied
+		if(checkWin()) {
+			win = true;
+		} else {
+			// Make computer move
+			computerMove();
+		}
 	}
 	
 	/**

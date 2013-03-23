@@ -5,7 +5,7 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.20032013
+ * @version 0.1.22032013
  *
  */
 public interface GameMode {
@@ -62,6 +62,11 @@ public interface GameMode {
 	 * Save the game.
 	 */
 	public void save();
+	
+	/**
+	 * Transition to the next round.
+	 */
+	public void nextRound();
 	
 	/**
 	 * Check if the user has won the game.

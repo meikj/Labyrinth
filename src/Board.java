@@ -5,7 +5,7 @@ import java.util.Random;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.12032013
+ * @version 0.1.22032013
  *
  */
 public class Board {
@@ -129,86 +129,6 @@ public class Board {
 	}
 	
 	/**
-	 * Draw the game board.
-	 */
-	public void draw() {
-		// Form horizontal border
-		String numberTop = "         ";
-		String border = "      =======";
-		
-		for(int i = 0; i < width; i++)
-			if((i + 1) < 10)
-				numberTop += Integer.toString(i + 1) + "      ";
-			else
-				numberTop += Integer.toString(i + 1) + "     ";
-		
-		for(int i = 1; i < width; i++)
-			border += "=======";
-		
-		// Display top border
-		System.out.println(border);
-		
-		// Display each tile
-		for(int i = 0; i < width; i++) {
-			// Form the row by concatenating each tile on the row together
-			// A tile is 7x5, so therefore consists of 5 row sections
-			
-			String number = "";
-			
-			if((width - i) < 10) {
-				number = Integer.toString(width - i) + " ";
-			}
-			else {
-				number = Integer.toString(width - i);
-			}
-			
-			String rowTop    = "   || ";
-			String rowTM     = "   || ";
-			String rowMiddle = " " + number + "|| ";
-			String rowMB     = "   || ";
-			String rowBottom = "   || ";
-			
-			for(int j = 0; j < height; j++) {
-				// Split the tile up into its relevant sections
-				// tile[0] = top, tile[1] = top-middle
-				// tile[2] = middle, tile[3] = middle-bottom
-				// tile[4] = bottom
-				
-				String[] tile = tiles[i][j].getTileString();
-				
-				// Check which tile it is for correct border placement
-				if(j == (height - 1)) {
-					// Last tile on row requires a border
-					rowTop    += tile[0] + " ||";
-					rowTM     += tile[1] + " ||";
-					rowMiddle += tile[2] + " ||";
-					rowMB     += tile[3] + " ||";
-					rowBottom += tile[4] + " ||";
-				}
-				else {
-					// A tile will be placed to the right of this tile, so skip border
-					rowTop    += tile[0];
-					rowTM     += tile[1];
-					rowMiddle += tile[2];
-					rowMB     += tile[3];
-					rowBottom += tile[4];
-				}
-			}
-			
-			// Output full row now
-			System.out.println(rowTop);
-			System.out.println(rowTM);
-			System.out.println(rowMiddle);
-			System.out.println(rowMB);
-			System.out.println(rowBottom);
-		}
-		
-		// Display bottom border
-		System.out.println(border);
-		System.out.println(numberTop);
-	}
-	
-	/**
 	 * Get the tile at the specified location.
 	 * 
 	 * @param column The column coordinate of the tile.
@@ -216,10 +136,7 @@ public class Board {
 	 * @return The particular tile at the specified location. Returns null on error.
 	 */
 	public Tile getTile(int column, int row) {
-		// Check if tile is within valid bounds
-		if((row < 0 || row > width) || (column < 0 || column > height))
-			return null;
-		
+		// Calculate internal coordinates and return corresponding tile
 		return tiles[getInternalRow(row)][getInternalColumn(column)];
 	}
 	
@@ -231,15 +148,9 @@ public class Board {
 	 * @param newTile The new tile for replacing the existing tile with.
 	 */
 	public void setTile(int column, int row, Tile newTile) {
-		// Check if tile is within valid bounds
-		if((row < 0 || row > width) || (column < 0 || column > height))
-			return;
-		
+		// Calculate internal coordinates and return corresponding tile
 		tiles[getInternalRow(row)][getInternalColumn(column)] = newTile;
 	}
-	
-	public int getWidth() { return width; }
-	public int getHeight() { return height; }
 	
 	/**
 	 * Get the current token position as a board coordinate.
@@ -280,6 +191,29 @@ public class Board {
 	 */
 	public int getInternalColumn(int column) {
 		return column - 1;
+	}
+	
+	/**
+	 * Get the width of the board.
+	 */
+	public int getWidth() {
+		return width;
+	}
+	
+	/**
+	 * Get the height of the board.
+	 */
+	public int getHeight() {
+		return height;
+	}
+	
+	/**
+	 * Get all the tiles on the board.
+	 * 
+	 * @return All the tiles on the board in the form of an array.
+	 */
+	public Tile[][] getTiles() {
+		return tiles;
 	}
 
 }

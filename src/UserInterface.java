@@ -39,8 +39,18 @@ public class UserInterface {
 				onTreasureChaseWin();
 				setRunning(false);
 			} else {
-				System.out.print("\n> ");
-				parse(prompt());
+				try {
+					promptTileMove();
+					update();
+					promptTokenMove();
+				} catch(IllegalArgumentException e) {
+					// Invalid command passed, reset loop
+					System.out.println(e.getMessage());
+					enterPrompt();
+					continue;
+				}
+				
+				game.nextRound();
 			}
 		}
 		
@@ -49,28 +59,59 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Prompt the user for input.
+	 * Prompt the user for their tile move input.
 	 * 
 	 * @return The users input in a tokenized form.
+	 * @throws IllegalArgumentException Thrown when an invalid command is passed as a value.
 	 */
-	public String[] prompt() {
+	public void promptTileMove() throws IllegalArgumentException {
+		System.out.print("\nTile Move > ");
 		String in = input.nextLine();
 		String[] tokens = in.split(" ");
 		
-		return tokens;
+		// A tile move is either rotate or insert
+		if(tokens[0].equals("rotate")) {
+			// When the player does a rotation, it does not count as a move, so ask for another tile move
+			parse(tokens);
+			update();
+			promptTileMove();
+		} else if(tokens[0].equals("insert")) {
+			parse(tokens);
+		} else {
+			throw new IllegalArgumentException("Invalid tile move command: only rotate and insert allowed");
+		}
+	}
+	
+	/**
+	 * Prompt the user for their token move input.
+	 * 
+	 * @return The users input in a tokenized form.
+	 * @throws IllegalArgumentException Thrown when an invalid command is passed as a value.
+	 */
+	public void promptTokenMove() throws IllegalArgumentException {
+		System.out.print("\nToken Move > ");
+		String in = input.nextLine();
+		String[] tokens = in.split(" ");
+		
+		// A token move is move
+		if(tokens[0].equals("move")) {
+			parse(tokens);
+		} else {
+			throw new IllegalArgumentException("Invalid token move command: only move allowed");
+		}
 	}
 	
 	/**
 	 * Parse user input and perform appropriate operation(s)
 	 * 
 	 * @param inputArgs The list of arguments the user passed
+	 * @throw IllegalArgumentException Thrown when an invalid argument is passed with a command.
 	 */
-	public void parse(String[] inputArgs) throws NumberFormatException, IndexOutOfBoundsException {
+	public void parse(String[] inputArgs) throws IllegalArgumentException {
 		if(inputArgs[0].toLowerCase().equals("insert")) {
 			// Insertion command called
 			if(inputArgs.length < 4) {
-				System.out.println("Usage:\tinsert column <column_no>\n\tinsert row <row_no>");
-				return;
+				throw new IllegalArgumentException("Usage:\tinsert column <top/bottom> <no>\n\tinsert row <left/right> <no>");
 			}
 			
 			// Check if insertion into row or column
@@ -79,134 +120,87 @@ public class UserInterface {
 				
 				try {
 					column_no = Integer.parseInt(inputArgs[3]);
-				}
-				catch(NumberFormatException e) {
-					throw new NumberFormatException("Invalid column number entered");
+				} catch(NumberFormatException e) {
+					throw new IllegalArgumentException("Invalid column number entered");
 				}
 				
 				// Check whether to push in from top or bottom
 				try {
-					if(inputArgs[2].equals("top"))
-							game.insertColumn(column_no, Direction.TOP);
-					else if(inputArgs[2].equals("bottom"))
+					if(inputArgs[2].equals("top")) {
+						game.insertColumn(column_no, Direction.TOP);
+					} else if(inputArgs[2].equals("bottom")) {
 						game.insertColumn(column_no, Direction.BOTTOM);
+					}
+				} catch(IllegalMoveException e) {
+					throw new IllegalArgumentException(e.getMessage());
 				}
-				catch(IllegalMoveException e) {
-					System.out.println(e.getMessage());
-					enterPrompt();
-				}
-			}
-			else if(inputArgs[1].equals("row")) {
+			} else if(inputArgs[1].equals("row")) {
 				int row_no = 0;
 				
 				try {
 					row_no = Integer.parseInt(inputArgs[3]);
-				}
-				catch(NumberFormatException e) {
-					throw new NumberFormatException("Invalid row number entered");
+				} catch(NumberFormatException e) {
+					throw new IllegalArgumentException("Invalid row number entered");
 				}
 				
 				// Check whether to push in from left or right
 				try {
-					if(inputArgs[2].equals("left"))
+					if(inputArgs[2].equals("left")) {
 						game.insertRow(row_no, Direction.LEFT);
-					else if(inputArgs[2].equals("right"))
+					} else if(inputArgs[2].equals("right")) {
 						game.insertRow(row_no, Direction.RIGHT);
+					}
+				} catch(IllegalMoveException e) {
+					throw new IllegalArgumentException(e.getMessage());
 				}
-				catch(IllegalMoveException e) {
-					System.out.println(e.getMessage());
-					enterPrompt();
-				}
-			}
-			else {
+			} else {
 				// Invalid argument passed
-				System.out.println("Usage: insert column <top/bottom> <column_no>");
-				System.out.println("Usage: insert row <left/right> <row_no>");
-				enterPrompt();
+				throw new IllegalArgumentException("Usage:\tinsert column <top/bottom> <no>\n\tinsert row <left/right> <no>");
 			}
-		}
-		else if(inputArgs[0].toLowerCase().equals("rotate")) {
+		} else if(inputArgs[0].toLowerCase().equals("rotate")) {
 			// Rotation command called
 			if(inputArgs.length == 2) {
 				// Rotate spare tile
 				try {
 					game.rotateTile(Integer.parseInt(inputArgs[1]));
-				}
-				catch(NumberFormatException e) {
+				} catch(NumberFormatException e) {
 					System.out.println(e.getMessage());
 					enterPrompt();
 				}
+			} else {
+				throw new IllegalArgumentException("Usage: rotate <degrees>, where degrees is 90, 180 or 270");
 			}
-			else {
-				System.out.println("Usage: rotate <degrees>, where degrees is 90, 180 or 270");
-				enterPrompt();
-			}
-		}
-		else if(inputArgs[0].toLowerCase().equals("move")) {
+		} else if(inputArgs[0].toLowerCase().equals("move")) {
 			// Move command called
 			if(inputArgs.length < 2) {
 				System.out.println("Usage: move <up/down/left/right>");
 				enterPrompt();
-			}
-			else {
+			} else {
 				try {
 					if(inputArgs[1].equals("up")) {
 						// Move up
 						game.moveTokenUp();
-					}
-					else if(inputArgs[1].equals("down")) {
+					} else if(inputArgs[1].equals("down")) {
 						// Move down
 						game.moveTokenDown();
-					}
-					else if(inputArgs[1].equals("left")) {
+					} else if(inputArgs[1].equals("left")) {
 						// Move left
 						game.moveTokenLeft();
-					}
-					else if(inputArgs[1].equals("right")) {
+					} else if(inputArgs[1].equals("right")) {
 						// Move token right
 						game.moveTokenRight();
+					} else {
+						throw new IllegalArgumentException("Usage: move <up/down/left/right>");
 					}
-					else {
-						System.out.println("Usage: move <up/down/left/right>");
-						enterPrompt();
-					}
-				}
-				catch(IllegalMoveException e) {
-					System.out.println(e.getMessage());
-					enterPrompt();
+				} catch(IllegalMoveException e) {
+					throw new IllegalArgumentException(e.getMessage());
 				}
 			}
-		}
-		else if(inputArgs[0].toLowerCase().equals("exit")) {
+		} else if(inputArgs[0].toLowerCase().equals("exit")) {
 			// Exit command called
-			running = false;
-		}
-		else if(inputArgs[0].toLowerCase().equals("help")) {
-			// Help command called
-			if(inputArgs.length < 2) {
-				System.out.println("insert \t Insert spare tile into a specified row or column from some direction.");
-				System.out.println("rotate \t Rotate spare tile by a number of degrees.");
-				System.out.println("move \t Move token either up, down, left or right.");
-				System.out.println("exit \t Exit the game.");
-				System.out.println("help \t Display available game options, or specific help through 'help <command>'.");
-			}
-			else {
-				if(inputArgs[1].equals("insert")) {
-					System.out.println("Usage: insert column <top/bottom> <column_no>");
-					System.out.println("Usage: insert row <left/right> <row_no>");
-				}
-				else if(inputArgs[1].equals("rotate")) {
-					System.out.println("Usage: rotate <degrees>, where degrees is 90, 180 or 270");
-				}
-				else if(inputArgs[1].equals("move")) {
-					System.out.println("Usage: move <up/down/left/right>");
-				}
-			}
-			enterPrompt();
-		}
-		else {
-			System.out.println("Invalid command: please enter 'help' for more information.");
-			enterPrompt();
+			setRunning(false);
+		} else {
+			throw new IllegalArgumentException("Invalid command passed: " + inputArgs[0]);
 		}
 	}
 	
@@ -268,11 +262,98 @@ public class UserInterface {
 	}
 	
 	/**
+	 * Draw the game board.
+	 */
+	public void drawGameBoard() {
+		// Get board details from game
+		int width = game.getBoard().getWidth();
+		int height = game.getBoard().getHeight();
+		
+		// Get the tiles from the board
+		Tile[][] tiles = game.getBoard().getTiles();
+		
+		// Form horizontal border
+		String numberTop = "         ";
+		String border = "      =======";
+		
+		for(int i = 0; i < width; i++)
+			if((i + 1) < 10)
+				numberTop += Integer.toString(i + 1) + "      ";
+			else
+				numberTop += Integer.toString(i + 1) + "     ";
+		
+		for(int i = 1; i < width; i++)
+			border += "=======";
+		
+		// Display top border
+		System.out.println(border);
+		
+		// Display each tile
+		for(int i = 0; i < width; i++) {
+			// Form the row by concatenating each tile on the row together
+			// A tile is 7x5, so therefore consists of 5 row sections
+			
+			String number = "";
+			
+			if((width - i) < 10) {
+				number = Integer.toString(width - i) + " ";
+			}
+			else {
+				number = Integer.toString(width - i);
+			}
+			
+			String rowTop    = "   || ";
+			String rowTM     = "   || ";
+			String rowMiddle = " " + number + "|| ";
+			String rowMB     = "   || ";
+			String rowBottom = "   || ";
+			
+			for(int j = 0; j < height; j++) {
+				// Split the tile up into its relevant sections
+				// tile[0] = top, tile[1] = top-middle
+				// tile[2] = middle, tile[3] = middle-bottom
+				// tile[4] = bottom
+				
+				String[] tile = tiles[i][j].getTileString();
+				
+				// Check which tile it is for correct border placement
+				if(j == (height - 1)) {
+					// Last tile on row requires a border
+					rowTop    += tile[0] + " ||";
+					rowTM     += tile[1] + " ||";
+					rowMiddle += tile[2] + " ||";
+					rowMB     += tile[3] + " ||";
+					rowBottom += tile[4] + " ||";
+				}
+				else {
+					// A tile will be placed to the right of this tile, so skip border
+					rowTop    += tile[0];
+					rowTM     += tile[1];
+					rowMiddle += tile[2];
+					rowMB     += tile[3];
+					rowBottom += tile[4];
+				}
+			}
+			
+			// Output full row now
+			System.out.println(rowTop);
+			System.out.println(rowTM);
+			System.out.println(rowMiddle);
+			System.out.println(rowMB);
+			System.out.println(rowBottom);
+		}
+		
+		// Display bottom border
+		System.out.println(border);
+		System.out.println(numberTop);
+	}
+	
+	/**
 	 * Update the interface.
 	 */
 	public void update() {
 		// Draw the board
-		game.getBoard().draw();
+		drawGameBoard();
 		
 		// Draw the "HUB"
 		Tile spareTile = game.getPlayer().getSpareTile();

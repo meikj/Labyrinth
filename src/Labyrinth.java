@@ -3,7 +3,7 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.20032013
+ * @version 0.1.22032013
  *
  */
 public class Labyrinth {
