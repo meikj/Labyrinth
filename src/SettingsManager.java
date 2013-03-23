@@ -82,6 +82,13 @@ public class SettingsManager {
 
 					try {
 						r = scanner.nextInt();
+						
+						if((r % 2 == 0) || (r < 5) || (r > 15)) {
+							// Violates row rules
+							scanner.close();
+							reader.close();
+							throw new IOException("Rows must be odd, and between 5 and 15 (inclusive)");
+						}
 					}
 					catch(NumberFormatException e) {
 						scanner.close();
@@ -98,6 +105,13 @@ public class SettingsManager {
 
 					try {
 						c = scanner.nextInt();
+						
+						if((c % 2 == 0) || (c < 5) || (c > 15)) {
+							// Violates row rules
+							scanner.close();
+							reader.close();
+							throw new IOException("Columns must be odd, and between 5 and 15 (inclusive)");
+						}
 					}
 					catch(NumberFormatException e) {
 						scanner.close();
