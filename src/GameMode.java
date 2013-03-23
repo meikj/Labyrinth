@@ -12,25 +12,29 @@ public interface GameMode {
 	
 	/**
 	 * Move the token up a tile.
-	 * @throws IllegalMoveException When a wall is encountered.
+	 * 
+	 * @throws IllegalMoveException Thrown when a wall is encountered.
 	 */
 	public void moveTokenUp() throws IllegalMoveException;
 	
 	/**
 	 * Move the token down a tile.
-	 * @throws IllegalMoveException When a wall is encountered.
+	 * 
+	 * @throws IllegalMoveException Thrown when a wall is encountered.
 	 */
 	public void moveTokenDown() throws IllegalMoveException;
 	
 	/**
 	 * Move the token left a tile.
-	 * @throws IllegalMoveException When a wall is encountered.
+	 * 
+	 * @throws IllegalMoveException Thrown when a wall is encountered.
 	 */
 	public void moveTokenLeft() throws IllegalMoveException;
 	
 	/**
 	 * Move the token right a tile.
-	 * @throws IllegalMoveException When a wall is encountered.
+	 * 
+	 * @throws IllegalMoveException Thrown when a wall is encountered.
 	 */
 	public void moveTokenRight() throws IllegalMoveException;
 	
@@ -60,8 +64,10 @@ public interface GameMode {
 	
 	/**
 	 * Save the game.
+	 * 
+	 * @param name The name of the saved game.
 	 */
-	public void save();
+	public void save(String name);
 	
 	/**
 	 * Transition to the next round.
@@ -97,5 +103,11 @@ public interface GameMode {
 	 * Get the active leaderboard.
 	 */
 	public Leaderboard getLeaderboard();
+	
+	/**
+	 * Get the active settings.
+	 * @return
+	 */
+	public SettingsManager getSettings();
 	
 }

@@ -14,9 +14,6 @@ public class Labyrinth {
 		Player player = new Player();
 		SettingsManager settings = new SettingsManager(SETTINGS_PATH);
 		
-		// Load settings in from default location
-		System.out.println("SETTINGS_PATH = " + SETTINGS_PATH);
-		
 		// By default just start up a new Treasure Chase game
 		GameMode game = new TreasureChase(player, settings);
 		UserInterface ui = new UserInterface(game);

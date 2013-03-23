@@ -14,7 +14,6 @@ public class TreasureChase implements GameMode {
 	private Board board;
 	private Leaderboard leaderboard;
 	private int round;
-	private boolean win;
 	private SettingsManager settings;
 	private ComputerPlayer computer;
 	
@@ -27,7 +26,6 @@ public class TreasureChase implements GameMode {
 	public TreasureChase(Player player, SettingsManager settings) {
 		this.player = player;
 		this.leaderboard = new Leaderboard();
-		this.win = false;
 		this.settings = settings;
 		
 		// Generate a board with settings specified in the SettingsManager
@@ -37,7 +35,6 @@ public class TreasureChase implements GameMode {
 		Random r = new Random();
 		int rCol = r.nextInt(settings.getColumns()) + 1;
 		int rRow = r.nextInt(settings.getRows()) + 1;
-		
 		this.board.getTile(rCol, rRow).setTreasure(true);
 		
 		// Initialise the computer opponent
@@ -46,8 +43,10 @@ public class TreasureChase implements GameMode {
 	
 	/**
 	 * Move the token up a tile.
+	 * 
+	 * @throws IllegalMoveException Thrown when a wall is encountered.
 	 */
-	public void moveTokenUp() {
+	public void moveTokenUp() throws IllegalMoveException {
 		int newRow = 0;
 		int tokenPosCol = board.getTokenPos()[0];
 		int tokenPosRow = board.getTokenPos()[1];
@@ -58,7 +57,7 @@ public class TreasureChase implements GameMode {
 			if(!board.getTile(tokenPosCol, tokenPosRow).getNorth() ||
 					!board.getTile(tokenPosCol, 1).getSouth()) {
 				// Can't pass through, failed
-				return;
+				throw new IllegalMoveException("Can't pass through walls!");
 			}
 			// Transition token over board Pacman style
 			newRow = 1;
@@ -71,7 +70,7 @@ public class TreasureChase implements GameMode {
 			if(!board.getTile(tokenPosCol, tokenPosRow).getNorth() ||
 					!board.getTile(tokenPosCol, newRow).getSouth()) {
 				// Can't pass through, failed
-				return;
+				throw new IllegalMoveException("Can't pass through walls!");
 			}
 		}
 		
@@ -83,8 +82,10 @@ public class TreasureChase implements GameMode {
 	
 	/**
 	 * Move the token down a tile.
+	 * 
+	 * @throws IllegalMoveException Thrown when a wall is encountered.
 	 */
-	public void moveTokenDown() {
+	public void moveTokenDown() throws IllegalMoveException {
 		int newRow = 0;
 		int tokenPosCol = board.getTokenPos()[0];
 		int tokenPosRow = board.getTokenPos()[1];
@@ -95,7 +96,7 @@ public class TreasureChase implements GameMode {
 			if(!board.getTile(tokenPosCol, tokenPosRow).getSouth() ||
 					!board.getTile(tokenPosCol, board.getHeight()).getNorth()) {
 				// Can't pass through, failed
-				return;
+				throw new IllegalMoveException("Can't pass through walls!");
 			}
 			// Transition token over board Pacman style
 			newRow = board.getHeight();
@@ -108,7 +109,7 @@ public class TreasureChase implements GameMode {
 			if(!board.getTile(tokenPosCol, tokenPosRow).getSouth() ||
 					!board.getTile(tokenPosCol, newRow).getNorth()) {
 				// Can't pass through, failed
-				return;
+				throw new IllegalMoveException("Can't pass through walls!");
 			}
 		}
 		
@@ -120,8 +121,10 @@ public class TreasureChase implements GameMode {
 	
 	/**
 	 * Move the token left a tile.
+	 * 
+	 * @throws IllegalMoveException Thrown when a wall is encountered.
 	 */
-	public void moveTokenLeft() { 
+	public void moveTokenLeft() throws IllegalMoveException { 
 		int newCol = 0;
 		int tokenPosCol = board.getTokenPos()[0];
 		int tokenPosRow = board.getTokenPos()[1];
@@ -132,7 +135,7 @@ public class TreasureChase implements GameMode {
 			if(!board.getTile(tokenPosCol, tokenPosRow).getWest() ||
 					!board.getTile(board.getWidth(), tokenPosRow).getEast()) {
 				// Can't pass through, failed
-				return;
+				throw new IllegalMoveException("Can't pass through walls!");
 			}
 			// Transition token over board Pacman style
 			newCol = board.getWidth();
@@ -145,7 +148,7 @@ public class TreasureChase implements GameMode {
 			if(!board.getTile(tokenPosCol, tokenPosRow).getWest() ||
 					!board.getTile(newCol, tokenPosRow).getEast()) {
 				// Can't pass through, failed
-				return;
+				throw new IllegalMoveException("Can't pass through walls!");
 			}
 		}
 		
@@ -157,8 +160,10 @@ public class TreasureChase implements GameMode {
 	
 	/**
 	 * Move the token right a tile.
+	 * 
+	 * @throws IllegalMoveException Thrown when a wall is encountered.
 	 */
-	public void moveTokenRight() { 
+	public void moveTokenRight() throws IllegalMoveException { 
 		int newCol = 0;
 		int tokenPosCol = board.getTokenPos()[0];
 		int tokenPosRow = board.getTokenPos()[1];
@@ -169,7 +174,7 @@ public class TreasureChase implements GameMode {
 			if(!board.getTile(tokenPosCol, tokenPosRow).getEast() ||
 					!board.getTile(board.getWidth(), tokenPosRow).getWest()) {
 				// Can't pass through, failed
-				return;
+				throw new IllegalMoveException("Can't pass through walls!");
 			}
 			// Transition token over board Pacman style
 			newCol = 1;
@@ -182,7 +187,7 @@ public class TreasureChase implements GameMode {
 			if(!board.getTile(tokenPosCol, tokenPosRow).getEast() ||
 					!board.getTile(newCol, tokenPosRow).getWest()) {
 				// Can't pass through, failed
-				return;
+				throw new IllegalMoveException("Can't pass through walls!");
 			}
 		}
 		
@@ -469,27 +474,22 @@ public class TreasureChase implements GameMode {
 		round++;
 		player.setScore(player.getScore() + 1);
 		
-		// Check if win condition is satisfied
-		if(checkWin()) {
-			win = true;
-		} else {
-			// Make computer move
+		if(!hasWon()) {
+			// Make computer move if win condition not satisfied
 			computerMove();
 		}
 	}
 	
 	/**
 	 * Save the current progress of the game.
+	 * 
+	 * @param name The name of the saved game.
 	 */
-	public void save() {
+	public void save(String name) {
+		//
+		// TODO
+		//
 		return;
-	}
-	
-	/**
-	 * Check if the player has won the game.
-	 */
-	public boolean hasWon() {
-		return win;
 	}
 	
 	/**
@@ -497,7 +497,7 @@ public class TreasureChase implements GameMode {
 	 * 
 	 * @return Whether or not the player has satisfied the win conditions.
 	 */
-	private boolean checkWin() {
+	public boolean hasWon() {
 		int[] tokenPos = board.getTokenPos();
 		
 		if(board.getTile(tokenPos[0], tokenPos[1]).hasTreasure())
@@ -510,6 +510,9 @@ public class TreasureChase implements GameMode {
 	 * Perform a random computer tile move.
 	 */
 	private void computerMove() {
+		//
+		// TODO
+		//
 		return;
 	}
 	
@@ -546,5 +549,12 @@ public class TreasureChase implements GameMode {
 	 */
 	public Leaderboard getLeaderboard() {
 		return leaderboard;
+	}
+	
+	/**
+	 * Get the settings.
+	 */
+	public SettingsManager getSettings() {
+		return settings;
 	}
 }
