@@ -230,6 +230,8 @@ public class UserInterface {
 		} else if(inputArgs[0].toLowerCase().equals("exit")) {
 			// Exit command called
 			setRunning(false);
+			input.close();
+			System.exit(0);
 		} else {
 			throw new IllegalArgumentException("Invalid command passed: " + inputArgs[0]);
 		}
