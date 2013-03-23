@@ -428,6 +428,10 @@ public class UserInterface {
                                                                                                 
                                                                                                 
 		
+		System.out.println();
+		System.out.println("Your final score: " + game.getPlayer().getScore());
+		System.out.println();
+		
 		//
 		// TODO: Display leaderboard and do high score checking...
 		//
