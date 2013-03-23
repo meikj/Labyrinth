@@ -1,9 +1,9 @@
 /**
- * Represents the possible directions for tile insertion on the board.
- * For example, insert into left of row 5, or insert into top of column
- * 6.
+ * Represents a number of possible directions.
  * 
- * @author John
+ * @author Gareth Gill
+ * @author John Meikle
+ * @version v0.1.22032013
  *
  */
 public enum Direction {
