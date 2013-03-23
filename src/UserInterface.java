@@ -84,7 +84,12 @@ public class UserInterface {
 	 * @throws IllegalArgumentException Thrown when an invalid command is passed as a value.
 	 */
 	public void promptTileMove() throws IllegalArgumentException {
+		System.out.println("Commands:");
+		System.out.println("\trotate <degrees> - Rotate spare tile by a number of degrees (90, 180 or 270)");
+		System.out.println("\tinsert row <left/right> <no> - Insert spare tile from a specific direction into specified row");
+		System.out.println("\tinsert column <top/bottom> <no> - Insert spare tile from a specific direction into specified column");
 		System.out.print("\nTile Move > ");
+		
 		String in = input.nextLine();
 		String[] tokens = in.split(" ");
 		
@@ -108,12 +113,18 @@ public class UserInterface {
 	 * @throws IllegalArgumentException Thrown when an invalid command is passed as a value.
 	 */
 	public void promptTokenMove() throws IllegalArgumentException {
+		System.out.println("Commands:");
+		System.out.println("\tmove <up/down/left/right> - Move token");
+		System.out.println("\tskip - Skip move");
 		System.out.print("\nToken Move > ");
+		
 		String in = input.nextLine();
 		String[] tokens = in.split(" ");
 		
-		// A token move is move
+		// A token move is move or skip
 		if(tokens[0].equals("move")) {
+			parse(tokens);
+		} else if(tokens[0].equals("skip")) {
 			parse(tokens);
 		} else {
 			throw new IllegalArgumentException("Invalid token move command: only move allowed");
@@ -146,9 +157,9 @@ public class UserInterface {
 				// Check whether to push in from top or bottom
 				try {
 					if(inputArgs[2].equals("top")) {
-						game.insertColumn(column_no, Direction.TOP);
+						game.insertColumn(column_no, Direction.TOP, game.getPlayer());
 					} else if(inputArgs[2].equals("bottom")) {
-						game.insertColumn(column_no, Direction.BOTTOM);
+						game.insertColumn(column_no, Direction.BOTTOM, game.getPlayer());
 					}
 				} catch(IllegalMoveException e) {
 					throw new IllegalArgumentException(e.getMessage());
@@ -165,9 +176,9 @@ public class UserInterface {
 				// Check whether to push in from left or right
 				try {
 					if(inputArgs[2].equals("left")) {
-						game.insertRow(row_no, Direction.LEFT);
+						game.insertRow(row_no, Direction.LEFT, game.getPlayer());
 					} else if(inputArgs[2].equals("right")) {
-						game.insertRow(row_no, Direction.RIGHT);
+						game.insertRow(row_no, Direction.RIGHT, game.getPlayer());
 					}
 				} catch(IllegalMoveException e) {
 					throw new IllegalArgumentException(e.getMessage());
@@ -215,6 +226,9 @@ public class UserInterface {
 					throw new IllegalArgumentException(e.getMessage());
 				}
 			}
+		} else if(inputArgs[0].toLowerCase().equals("skip")) {
+			// Skip move
+			return;
 		} else if(inputArgs[0].toLowerCase().equals("exit")) {
 			// Exit command called
 			setRunning(false);

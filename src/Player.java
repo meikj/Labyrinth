@@ -5,7 +5,7 @@ import java.util.Random;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.04032013
+ * @version 0.1.22032013
  *
  */
 public class Player {
@@ -13,6 +13,7 @@ public class Player {
 	private int score;
 	private int moves;
 	private Tile spareTile;
+	private String lastMove;
 	
 	/**
 	 * Construct a player object.
@@ -20,6 +21,7 @@ public class Player {
 	public Player() {
 		this.score = 0;
 		this.moves = 0;
+		this.lastMove = "N/A";
 		
 		// Generate a random spare tile
 		Random r = new Random();
@@ -39,5 +41,21 @@ public class Player {
 	public int getScore() { return score; }
 	public int getMoves() { return moves; }
 	public Tile getSpareTile() { return spareTile; }
+	
+	/**
+	 * Get the last move made by this computer player.
+	 */
+	public String getLastMove() {
+		return lastMove;
+	}
+	
+	/**
+	 * Update the last move string.
+	 * 
+	 * @param s The last move performed.
+	 */
+	public void updateLastMove(String s) {
+		lastMove = s;
+	}
 
 }

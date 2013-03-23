@@ -214,14 +214,36 @@ public class TreasureChase implements GameMode {
 		int currAngle = RotationAngle.convertToInt(player.getSpareTile().getRotation());
 		RotationAngle newAngle = RotationAngle.convertFromInt((angle + currAngle) % 360);
 		player.getSpareTile().setRotation(newAngle);
+		
+		// Update player move
+		player.updateLastMove("rotate " + angle);
 	}
 	
 	/**
 	 * Insert the spare tile into the specified row.
 	 * 
 	 * @param row The row to insert the spare tile into.
+	 * @param direc The direction from which to insert the tile into.
+	 * @param performer The player who is performing the move.
+	 * @throws IllegalMoveException When the move cannot be accomplished due to immovable tiles, etc.
 	 */
-	public void insertRow(int row, Direction direc) throws IllegalMoveException {
+	public void insertRow(int row, Direction direc, Player performer) throws IllegalMoveException {
+		// Check first if move is inserting back into same place
+		String[] lastPlayerMove = performer.getLastMove().split(" ");
+		
+		if(lastPlayerMove.length == 4) {
+			// Valid insert move was last made, do some further checking
+			if(lastPlayerMove[0].equals("insert") && lastPlayerMove[1].equals("row") && lastPlayerMove[3].equals(Integer.toString(row))) {
+				if(direc == Direction.LEFT) {
+					// Can't insert from right this time
+					if(lastPlayerMove[2].equals("right")) throw new IllegalMoveException("Can't insert tile back into same position");
+				} else if(direc == Direction.RIGHT) {
+					// Can't insert from left this time
+					if(lastPlayerMove[2].equals("left")) throw new IllegalMoveException("Can't insert tile back into same position");
+				}
+			}
+		}
+			
 		Tile newSpareTile = null;
 		
 		if(direc == Direction.LEFT)
@@ -234,6 +256,9 @@ public class TreasureChase implements GameMode {
 		if(newSpareTile != null) {
 			// Success! New spare tile returned
 			player.setSpareTile(newSpareTile);
+			
+			// Update player move
+			player.updateLastMove("insert row " + direc.toString().toLowerCase() + " " + row);
 		} else {
 			throw new IllegalMoveException("Could not retrieve new spare tile");
 		}
@@ -345,8 +370,29 @@ public class TreasureChase implements GameMode {
 	 * Insert the spare tile into the specified column.
 	 * 
 	 * @param column The column to insert the spare tile into.
+	 * @param direc The direction from which to insert the tile into.
+	 * @param performer The player who is performing the move.
+	 * @throws IllegalMoveException When the move cannot be accomplished due to immovable tiles, etc.
 	 */
-	public void insertColumn(int column, Direction direc) throws IllegalMoveException {
+	public void insertColumn(int column, Direction direc, Player performer) throws IllegalMoveException {
+		// Check first if move is inserting back into same place
+		String[] lastPlayerMove = performer.getLastMove().split(" ");
+		
+		if(lastPlayerMove.length == 4) {
+			// Valid insert move was last made, do some further checking
+			System.out.println("Length is 4");
+			if(lastPlayerMove[0].equals("insert") && lastPlayerMove[1].equals("column") && lastPlayerMove[3].equals(Integer.toString(column))) {
+				System.out.println("Yes, it's insert column " + column);
+				if(direc == Direction.TOP) {
+					// Can't insert from bottom this time
+					if(lastPlayerMove[2].equals("bottom")) throw new IllegalMoveException("Can't insert tile back into same position");
+				} else if(direc == Direction.BOTTOM) {
+					// Can't insert from top this time
+					if(lastPlayerMove[2].equals("top")) throw new IllegalMoveException("Can't insert tile back into same position");
+				}
+			}
+		}
+		
 		Tile newSpareTile = null;
 		
 		if(direc == Direction.BOTTOM)
@@ -359,6 +405,9 @@ public class TreasureChase implements GameMode {
 		if(newSpareTile != null) {
 			// Success! New spare tile returned
 			player.setSpareTile(newSpareTile);
+			
+			// Update player move
+			player.updateLastMove("insert column " + direc.toString().toLowerCase() + " " + column);
 		} else {
 			throw new IllegalMoveException("Could not retrieve new spare tile");
 		}

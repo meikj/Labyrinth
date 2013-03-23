@@ -50,17 +50,21 @@ public interface GameMode {
 	 * Insert the spare tile into the specified row.
 	 * 
 	 * @param row The row to insert the spare tile into.
+	 * @param direc The direction from which to insert the tile into.
+	 * @param performer The player who is performing the move.
 	 * @throws IllegalMoveException When the move cannot be accomplished due to immovable tiles, etc.
 	 */
-	public void insertRow(int row, Direction direc) throws IllegalMoveException;
+	public void insertRow(int row, Direction direc, Player performer) throws IllegalMoveException;
 	
 	/**
 	 * Insert the spare tile into the specified column.
 	 * 
 	 * @param column The column to insert the spare tile into.
+	 * @param direc The direction from which to insert the tile into.
+	 * @param performer The player who is performing the move.
 	 * @throws IllegalMoveException When the move cannot be accomplished due to immovable tiles, etc.
 	 */
-	public void insertColumn(int column, Direction direc) throws IllegalMoveException;
+	public void insertColumn(int column, Direction direc, Player performer) throws IllegalMoveException;
 	
 	/**
 	 * Save the game.

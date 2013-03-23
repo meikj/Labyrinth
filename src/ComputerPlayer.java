@@ -14,7 +14,6 @@ public class ComputerPlayer extends Player {
 	
 	private ArrayList<Integer> columns;
 	private ArrayList<Integer> rows;
-	private String lastMove;
 	private Random rand;
 	
 	/**
@@ -26,10 +25,9 @@ public class ComputerPlayer extends Player {
 	public ComputerPlayer(Board board) {
 		this.columns = new ArrayList<Integer>();
 		this.rows = new ArrayList<Integer>();
-		this.lastMove = "N/A";
 		this.rand = new Random();
 		
-		// Add available rows and columns (odd tiles are immovable)
+		// Add available rows and columns (odd tiles are immovable, so get even)
 		for(int i = 1; i <= board.getHeight(); i++) {
 			if(i % 2 == 0) {
 				rows.add(i);
@@ -56,22 +54,6 @@ public class ComputerPlayer extends Player {
 	public Integer getRandomRow() {
 		int r = rand.nextInt(rows.size());
 		return rows.get(r);
-	}
-	
-	/**
-	 * Get the last move made by this computer player.
-	 */
-	public String getLastMove() {
-		return lastMove;
-	}
-	
-	/**
-	 * Update the last move string.
-	 * 
-	 * @param s The last move performed.
-	 */
-	public void updateLastMove(String s) {
-		lastMove = s;
 	}
 
 }
