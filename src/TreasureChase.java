@@ -16,6 +16,7 @@ public class TreasureChase implements GameMode {
 	private int round;
 	private SettingsManager settings;
 	private ComputerPlayer computer;
+	private Random rand;
 	
 	/**
 	 * Construct a TreasureChase game with a specified player.
@@ -32,9 +33,9 @@ public class TreasureChase implements GameMode {
 		this.board = new Board(settings.getRows(), settings.getColumns());
 		
 		// Set a random tile on the board to contain treasure
-		Random r = new Random();
-		int rCol = r.nextInt(settings.getColumns()) + 1;
-		int rRow = r.nextInt(settings.getRows()) + 1;
+		this.rand = new Random();
+		int rCol = rand.nextInt(settings.getColumns()) + 1;
+		int rRow = rand.nextInt(settings.getRows()) + 1;
 		this.board.getTile(rCol, rRow).setTreasure(true);
 		
 		// Initialise the computer opponent
@@ -559,9 +560,36 @@ public class TreasureChase implements GameMode {
 	 * Perform a random computer tile move.
 	 */
 	private void computerMove() {
-		//
-		// TODO
-		//
+/*		// Randomly choose between row or column
+		int r1 = rand.nextInt(2); // row/column
+		
+		if(r1 == 0) {
+			// Row
+			
+			// Randomly choose between left or right insertion
+			int r2 = rand.nextInt(2);
+			
+			if(r2 == 0) {
+				// Left
+				insertRow(computer.getRandomRow(), Direction.LEFT, computer);
+			} else {
+				// Right
+				insertRow(computer.getRandomColumn(), Direction.RIGHT, computer);
+			}
+		} else {
+			// Column
+			
+			// Randomly choose between top or bottom insertion
+			int r2 = rand.nextInt(2);
+			
+			if(r2 == 0) {
+				// Top
+				insert
+			} else {
+				// Bottom
+				// ...
+			}
+		}*/
 		return;
 	}
 	

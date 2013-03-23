@@ -16,6 +16,10 @@ public class ComputerPlayer extends Player {
 	private ArrayList<Integer> rows;
 	private Random rand;
 	
+	// Save RotationAngle and TileType arrays for "caching" purposes
+	private RotationAngle[] angles;
+	private TileType[] types;
+	
 	/**
 	 * Generate a computer player opponent using the board
 	 * settings as information on moving tiles.
@@ -38,6 +42,9 @@ public class ComputerPlayer extends Player {
 				columns.add(i);
 			}
 		}
+		
+		angles = RotationAngle.values();
+		types = TileType.values();
 	}
 	
 	/**
@@ -54,6 +61,22 @@ public class ComputerPlayer extends Player {
 	public Integer getRandomRow() {
 		int r = rand.nextInt(rows.size());
 		return rows.get(r);
+	}
+	
+	/**
+	 * Get a random tile rotation.
+	 */
+	public RotationAngle getRandomRotation() {
+		int r = rand.nextInt(angles.length);
+		return angles[r];
+	}
+	
+	/**
+	 * Get a random tile type.
+	 */
+	public TileType getRandomTileType() {
+		int r = rand.nextInt(types.length);
+		return types[r];
 	}
 
 }
