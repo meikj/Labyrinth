@@ -85,9 +85,9 @@ public class UserInterface {
 	 */
 	public void promptTileMove() throws IllegalArgumentException {
 		System.out.println("Commands:");
-		System.out.println("\trotate <degrees> - Rotate spare tile by a number of degrees (90, 180 or 270)");
-		System.out.println("\tinsert row <left/right> <no> - Insert spare tile from a specific direction into specified row");
-		System.out.println("\tinsert column <top/bottom> <no> - Insert spare tile from a specific direction into specified column");
+		System.out.println("\trotate <degrees>");
+		System.out.println("\tinsert row <left/right> <no>");
+		System.out.println("\tinsert column <top/bottom> <no>");
 		System.out.print("\nTile Move > ");
 		
 		String in = input.nextLine();
@@ -114,15 +114,15 @@ public class UserInterface {
 	 */
 	public void promptTokenMove() throws IllegalArgumentException {
 		System.out.println("Commands:");
-		System.out.println("\tmove <up/down/left/right> - Move token");
+		System.out.println("\tmove <up/down/left/right>");
 		System.out.println("\tskip - Skip move");
 		System.out.print("\nToken Move > ");
 		
 		String in = input.nextLine();
 		String[] tokens = in.split(" ");
 		
-		// A token move is move, skip or exit
-		if(tokens[0].equals("move") || tokens[0].equals("skip") || tokens[0].equals("exit")) {
+		// A token move is move or exit
+		if(tokens[0].equals("move") || tokens[0].equals("exit")) {
 			parse(tokens);
 		} else {
 			throw new IllegalArgumentException("Invalid token move command: only move allowed");
@@ -224,9 +224,6 @@ public class UserInterface {
 					throw new IllegalArgumentException(e.getMessage());
 				}
 			}
-		} else if(inputArgs[0].toLowerCase().equals("skip")) {
-			// Skip move
-			return;
 		} else if(inputArgs[0].toLowerCase().equals("exit")) {
 			// Exit command called
 			setRunning(false);
