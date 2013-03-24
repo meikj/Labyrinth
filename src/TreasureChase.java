@@ -399,11 +399,9 @@ public class TreasureChase implements GameMode {
 		
 		if(lastPlayerMove.length == 4) {
 			// Valid insert move was last made, do some further checking
-			System.out.println("Length is 4");
 			if(lastPlayerMove[0].equals("insert") && 
 					lastPlayerMove[1].equals("column") && 
 					lastPlayerMove[3].equals(Integer.toString(column))) {
-				System.out.println("Yes, it's insert column " + column);
 				if(direc == Direction.TOP) {
 					// Can't insert from bottom this time
 					if(lastPlayerMove[2].equals("bottom")) {
