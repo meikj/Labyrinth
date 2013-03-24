@@ -3,7 +3,7 @@
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.11032013
+ * @version 0.1.24032013
  *
  */
 public class Tile {
@@ -20,6 +20,12 @@ public class Tile {
 	private boolean east;
 	private boolean south;
 	private boolean west;
+	
+	// Tile style
+	private static final Character wallChar = '\u2588'; // Solid block
+	private static final Character immovableChar = '\u2592'; // Light black block
+	private static final Character tokenChar = 'O';
+	private static final Character treasureChar = 'T';
 	
 	/**
 	 * Construct a tile of a particular type.
@@ -152,6 +158,40 @@ public class Tile {
 	}
 	
 	/**
+	 * Convert a tile pattern to its final string representation.
+	 * 
+	 * @param pattern The tile pattern. For example, a cross:
+	 * 
+	 * pattern[0] = "1100011"
+	 * pattern[1] = "1100011"
+	 * pattern[2] = "0000000"
+	 * pattern[3] = "1100011"
+	 * pattern[4] = "1100011"
+	 * 
+	 * @return The converted string equivalent.
+	 */
+	private String[] convertFromPattern(String[] pattern) {
+		for(int i = 0; i < pattern.length; i++) {
+			char[] line = pattern[i].toCharArray();
+			
+			for(int j = 0; j < line.length; j++) {
+				if(line[j] == '1') {
+					// Replace with wall
+					line[j] = wallChar;
+				} else if(line[j] == '0') {
+					// Replace with space
+					line[j] = ' ';
+				}
+			}
+			
+			// Update line
+			pattern[i] = new String(line);
+		}
+		
+		return pattern;
+	}
+	
+	/**
 	 * Form the tile string array in accordance to the tile type.
 	 * 
 	 * @return The string array formation of the tile split up into top, top-middle,
@@ -162,11 +202,11 @@ public class Tile {
 		
 		switch(type) {
 		case CROSS:
-			tile[0] = "██   ██";
-			tile[1] = "██   ██";
-			tile[2] = "       ";
-			tile[3] = "██   ██";
-			tile[4] = "██   ██";
+			tile[0] = "1100011";
+			tile[1] = "1100011";
+			tile[2] = "0000000";
+			tile[3] = "1100011";
+			tile[4] = "1100011";
 			
 			// Set entry points
 			north = true;
@@ -177,11 +217,11 @@ public class Tile {
 			break;
 		case TSHAPE:
 			if(rotation == RotationAngle.DEFAULT) {
-				tile[0] = "██   ██";
-				tile[1] = "██   ██";
-				tile[2] = "██     ";
-				tile[3] = "██   ██";
-				tile[4] = "██   ██";
+				tile[0] = "1100011";
+				tile[1] = "1100011";
+				tile[2] = "1100000";
+				tile[3] = "1100011";
+				tile[4] = "1100011";
 				
 				// Set entry points
 				north = true;
@@ -189,11 +229,11 @@ public class Tile {
 				south = true;
 				west = false;
 			} else if(rotation == RotationAngle.NINETY) {
-				tile[0] = "███████";
-				tile[1] = "███████";
-				tile[2] = "       ";
-				tile[3] = "██   ██";
-				tile[4] = "██   ██";
+				tile[0] = "1111111";
+				tile[1] = "1111111";
+				tile[2] = "0000000";
+				tile[3] = "1100011";
+				tile[4] = "1100011";
 				
 				// Set entry points
 				north = false;
@@ -201,11 +241,11 @@ public class Tile {
 				south = true;
 				west = true;
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
-				tile[0] = "██   ██";
-				tile[1] = "██   ██";
-				tile[2] = "     ██";
-				tile[3] = "██   ██";
-				tile[4] = "██   ██";
+				tile[0] = "1100011";
+				tile[1] = "1100011";
+				tile[2] = "0000011";
+				tile[3] = "1100011";
+				tile[4] = "1100011";
 				
 				// Set entry points
 				north = true;
@@ -213,11 +253,11 @@ public class Tile {
 				south = true;
 				west = true;
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
-				tile[0] = "██   ██";
-				tile[1] = "██   ██";
-				tile[2] = "       ";
-				tile[3] = "███████";
-				tile[4] = "███████";
+				tile[0] = "1100011";
+				tile[1] = "1100011";
+				tile[2] = "0000000";
+				tile[3] = "1111111";
+				tile[4] = "1111111";
 				
 				// Set entry points
 				north = true;
@@ -229,11 +269,11 @@ public class Tile {
 			break;
 		case LINE:
 			if(rotation == RotationAngle.DEFAULT) {
-				tile[0] = "██   ██";
-				tile[1] = "██   ██";
-				tile[2] = "██   ██";
-				tile[3] = "██   ██";
-				tile[4] = "██   ██";
+				tile[0] = "1100011";
+				tile[1] = "1100011";
+				tile[2] = "1100011";
+				tile[3] = "1100011";
+				tile[4] = "1100011";
 				
 				// Set entry points
 				north = true;
@@ -241,11 +281,11 @@ public class Tile {
 				south = true;
 				west = false;
 			} else if(rotation == RotationAngle.NINETY) {
-				tile[0] = "███████";
-				tile[1] = "███████";
-				tile[2] = "       ";
-				tile[3] = "███████";
-				tile[4] = "███████";
+				tile[0] = "1111111";
+				tile[1] = "1111111";
+				tile[2] = "0000000";
+				tile[3] = "1111111";
+				tile[4] = "1111111";
 				
 				// Set entry points
 				north = false;
@@ -253,11 +293,11 @@ public class Tile {
 				south = false;
 				west = true;
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
-				tile[0] = "██   ██";
-				tile[1] = "██   ██";
-				tile[2] = "██   ██";
-				tile[3] = "██   ██";
-				tile[4] = "██   ██";
+				tile[0] = "1100011";
+				tile[1] = "1100011";
+				tile[2] = "1100011";
+				tile[3] = "1100011";
+				tile[4] = "1100011";
 				
 				// Set entry points
 				north = true;
@@ -265,11 +305,11 @@ public class Tile {
 				south = true;
 				west = false;
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
-				tile[0] = "███████";
-				tile[1] = "███████";
-				tile[2] = "       ";
-				tile[3] = "███████";
-				tile[4] = "███████";
+				tile[0] = "1111111";
+				tile[1] = "1111111";
+				tile[2] = "0000000";
+				tile[3] = "1111111";
+				tile[4] = "1111111";
 				
 				// Set entry points
 				north = false;
@@ -281,11 +321,11 @@ public class Tile {
 			break;
 		case CORNER:
 			if(rotation == RotationAngle.DEFAULT) {
-				tile[0] = "███████";
-				tile[1] = "███████";
-				tile[2] = "██     ";
-				tile[3] = "██   ██";
-				tile[4] = "██   ██";
+				tile[0] = "1111111";
+				tile[1] = "1111111";
+				tile[2] = "1100000";
+				tile[3] = "1100011";
+				tile[4] = "1100011";
 				
 				// Set entry points
 				north = false;
@@ -293,11 +333,11 @@ public class Tile {
 				south = true;
 				west = false;
 			} else if(rotation == RotationAngle.NINETY) {
-				tile[0] = "███████";
-				tile[1] = "███████";
-				tile[2] = "     ██";
-				tile[3] = "██   ██";
-				tile[4] = "██   ██";
+				tile[0] = "1111111";
+				tile[1] = "1111111";
+				tile[2] = "0000011";
+				tile[3] = "1100011";
+				tile[4] = "1100011";
 				
 				// Set entry points
 				north = false;
@@ -305,11 +345,11 @@ public class Tile {
 				south = true;
 				west = true;
 			} else if(rotation == RotationAngle.HUNDREDANDEIGHTY) {
-				tile[0] = "██   ██";
-				tile[1] = "██   ██";
-				tile[2] = "     ██";
-				tile[3] = "███████";
-				tile[4] = "███████";
+				tile[0] = "1100011";
+				tile[1] = "1100011";
+				tile[2] = "0000011";
+				tile[3] = "1111111";
+				tile[4] = "1111111";
 				
 				// Set entry points
 				north = true;
@@ -317,11 +357,11 @@ public class Tile {
 				south = false;
 				west = true;
 			} else if(rotation == RotationAngle.TWOHUNDREDANDSEVENTY) {
-				tile[0] = "██   ██";
-				tile[1] = "██   ██";
-				tile[2] = "██     ";
-				tile[3] = "███████";
-				tile[4] = "███████";
+				tile[0] = "1100011";
+				tile[1] = "1100011";
+				tile[2] = "1100000";
+				tile[3] = "1111111";
+				tile[4] = "1111111";
 				
 				// Set entry points
 				north = true;
@@ -332,11 +372,11 @@ public class Tile {
 			
 			break;
 		case EMPTY:
-			tile[0] = "     ";
-			tile[1] = "     ";
-			tile[2] = "     ";
-			tile[3] = "     ";
-			tile[4] = "     ";
+			tile[0] = "0000000";
+			tile[1] = "0000000";
+			tile[2] = "0000000";
+			tile[3] = "0000000";
+			tile[4] = "0000000";
 			
 			// Set entry points
 			north = true;
@@ -347,17 +387,20 @@ public class Tile {
 			break;
 		}
 		
+		// Convert pattern to appropriate characters
+		tile = convertFromPattern(tile);
+		
 		// Check if tile contains treasure or token
 		if(hasToken()) {
 			// Change middle section, middle element to token
 			char[] tileMiddle = tile[2].toCharArray();
-			tileMiddle[3] = 'O'; // Set to token
+			tileMiddle[3] = tokenChar; // Set to token
 			tile[2] = new String(tileMiddle);
 		}
 		else if(hasTreasure()) {
 			// Change middle section, middle element to treasure
 			char[] tileMiddle = tile[2].toCharArray();
-			tileMiddle[3] = 'T'; // Set to token
+			tileMiddle[3] = treasureChar; // Set to token
 			tile[2] = new String(tileMiddle);
 		}
 		
@@ -365,15 +408,38 @@ public class Tile {
 		if(!isMovable()) {
 			// Change tile string to fixed representation
 			for(int i = 0; i < 5; i++)
-				tile[i] = tile[i].replace(' ', '▒');
+				tile[i] = tile[i].replace(' ', immovableChar);
 		}
 		
 		return tile;
 	}
 	
-	public boolean getNorth() { return north; }
-	public boolean getEast() { return east; }
-	public boolean getSouth() { return south; }
-	public boolean getWest() { return west; }
+	/**
+	 * Check whether or not the north access point is available.
+	 */
+	public boolean getNorth() {
+		return north;
+	}
+	
+	/**
+	 * Check whether or not the north access point is available.
+	 */
+	public boolean getEast() {
+		return east;
+	}
+	
+	/**
+	 * Check whether or not the north access point is available.
+	 */
+	public boolean getSouth() {
+		return south;
+	}
+	
+	/**
+	 * Check whether or not the north access point is available.
+	 */
+	public boolean getWest() {
+		return west;
+	}
 
 }

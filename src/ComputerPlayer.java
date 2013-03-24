@@ -2,12 +2,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Computer opponent for the player to play against in the Labyrinth
+ * Represents a computer opponent for a player to play against in the Labyrinth
  * game.
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.22032013
+ * @version 0.1.24032013
  *
  */
 public class ComputerPlayer extends Player {
@@ -22,7 +22,7 @@ public class ComputerPlayer extends Player {
 	
 	/**
 	 * Generate a computer player opponent using the board
-	 * settings as information on moving tiles.
+	 * settings as information on the computers tile moves.
 	 * 
 	 * @param board The board to gather information from.
 	 */

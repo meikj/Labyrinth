@@ -1,11 +1,11 @@
 import java.util.Random;
 
 /**
- * Represents the player in the Labyrinth game.
+ * Represents a player.
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.22032013
+ * @version 0.1.24032013
  *
  */
 public class Player {
@@ -16,7 +16,7 @@ public class Player {
 	private String lastMove;
 	
 	/**
-	 * Construct a player object.
+	 * Construct a player object with a random spare tile.
 	 */
 	public Player() {
 		this.score = 0;
@@ -34,13 +34,49 @@ public class Player {
 		this.spareTile = new Tile(tileTypes[randomSelection], rotationAngles[rotation]);
 	}
 	
-	public void setScore(int newScore) { score = newScore; }
-	public void setMoves(int newMoves) { moves = newMoves; }
-	public void setSpareTile(Tile newTile) { spareTile = newTile; }
+	/**
+	 * Set the current score of the player.
+	 */
+	public void setScore(int newScore) {
+		score = newScore;
+	}
 	
-	public int getScore() { return score; }
-	public int getMoves() { return moves; }
-	public Tile getSpareTile() { return spareTile; }
+	/**
+	 * Set the current number of moves the player has made.
+	 */
+	public void setMoves(int newMoves) {
+		moves = newMoves;
+	}
+	
+	/**
+	 * Set the current spare tile of the player.
+	 * 
+	 * @param newTile The new spare tile.
+	 */
+	public void setSpareTile(Tile newTile) {
+		spareTile = newTile;
+	}
+	
+	/**
+	 * Get the current score of the player.
+	 */
+	public int getScore() {
+		return score;
+	}
+	
+	/**
+	 * Get the current number of moves the player has made.
+	 */
+	public int getMoves() {
+		return moves;
+	}
+	
+	/**
+	 * Get the current spare tile of the player.
+	 */
+	public Tile getSpareTile() {
+		return spareTile;
+	}
 	
 	/**
 	 * Get the last move made by this computer player.

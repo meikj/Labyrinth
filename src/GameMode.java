@@ -119,7 +119,6 @@ public interface GameMode {
 	
 	/**
 	 * Get the active settings.
-	 * @return
 	 */
 	public SettingsManager getSettings();
 	

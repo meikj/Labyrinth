@@ -1,12 +1,12 @@
 import java.util.Scanner;
 
 /**
- * Represents a text based user interface for use in the Labyrinth game. This user interface
- * works with a GameMode object.
+ * Represents a text based user interface for use as a front-end for the Labyrinth game.
+ * This user interface works with a valid conforming GameMode object (e.g. TreasureChase).
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version v0.1.22032013
+ * @version v0.1.24032013
  *
  */
 public class UserInterface {
@@ -80,11 +80,10 @@ public class UserInterface {
 	/**
 	 * Prompt the user for their tile move input.
 	 * 
-	 * @return The users input in a tokenized form.
 	 * @throws IllegalArgumentException Thrown when an invalid command is passed as a value.
 	 */
 	public void promptTileMove() throws IllegalArgumentException {
-		System.out.println("Commands:");
+		System.out.println("Tile Move Commands:");
 		System.out.println("\trotate <degrees>");
 		System.out.println("\tinsert row <left/right> <no>");
 		System.out.println("\tinsert column <top/bottom> <no>");
@@ -109,11 +108,10 @@ public class UserInterface {
 	/**
 	 * Prompt the user for their token move input.
 	 * 
-	 * @return The users input in a tokenized form.
 	 * @throws IllegalArgumentException Thrown when an invalid command is passed as a value.
 	 */
 	public void promptTokenMove() throws IllegalArgumentException {
-		System.out.println("Commands:");
+		System.out.println("Token Move Commands:");
 		System.out.println("\tmove <up/down/left/right>");
 		System.out.print("\nToken Move > ");
 		
@@ -129,10 +127,10 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Parse user input and perform appropriate operation(s)
+	 * Parse user input and perform appropriate operation(s).
 	 * 
-	 * @param inputArgs The list of arguments the user passed
-	 * @throw IllegalArgumentException Thrown when an invalid argument is passed with a command.
+	 * @param inputArgs The list of arguments the user passed.
+	 * @throws IllegalArgumentException Thrown when an invalid argument is passed with a command.
 	 */
 	public void parse(String[] inputArgs) throws IllegalArgumentException {
 		if(inputArgs[0].toLowerCase().equals("insert")) {

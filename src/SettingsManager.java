@@ -3,11 +3,12 @@ import java.util.Scanner;
 
 /**
  * Manages settings and configurations for the Labyrinth game. Allows for the loading
- * and saving of configuration files.
+ * and saving of configuration files. If an invalid or non-existant file is passed, the
+ * default settings are used.
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.22032013
+ * @version 0.1.24032013
  *
  */
 public class SettingsManager {
@@ -25,7 +26,9 @@ public class SettingsManager {
 	}
 	
 	/**
-	 * Construct a SettingsManager with predefined settings.
+	 * Construct a SettingsManager with predefined settings. If the file
+	 * is invalid or does not exist, then default settings are used.
+	 * The user is notified of this via the standard output.
 	 * 
 	 * @param path The path to the settings file.
 	 */
@@ -56,7 +59,7 @@ public class SettingsManager {
 	}
 	
 	/**
-	 * Load settings in from a specified file path. Must be in the format:
+	 * Explicitly load settings in from a specified file path. Must be in the format:
 	 * 
 	 * ROWS <no_rows>
 	 * COLUMNS <no_columns>
@@ -191,27 +194,45 @@ public class SettingsManager {
 
 		writer.close();
 	}
-
+	
+	/**
+	 * Get the number of rows.
+	 */
 	public int getRows() {
 		return rows;
 	}
-
+	
+	/**
+	 * Get the number of columns.
+	 */
 	public int getColumns() {
 		return columns;
 	}
-
+	
+	/**
+	 * Get the leaderboard path.
+	 */
 	public String getLeaderboard() {
 		return leaderboard;
 	}
-
+	
+	/**
+	 * Set the number of rows.
+	 */
 	public void setRows(int rows) {
 		this.rows = rows;
 	}
-
+	
+	/**
+	 * Set the number of columns.
+	 */
 	public void setColumns(int columns) {
 		this.columns = columns;
 	}
-
+	
+	/**
+	 * Set the leaderboard path.
+	 */
 	public void setLeaderboard(String leaderboard) {
 		this.leaderboard = leaderboard;
 	}
