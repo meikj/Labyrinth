@@ -273,8 +273,6 @@ public class UserInterface {
 		int width = game.getBoard().getWidth();
 		int height = game.getBoard().getHeight();
 		
-		System.out.println("Height = " + height + ", Width = " + width);
-		
 		// Get the tiles from the board
 		Tile[][] tiles = game.getBoard().getTiles();
 		
