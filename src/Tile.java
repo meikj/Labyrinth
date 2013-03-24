@@ -422,21 +422,21 @@ public class Tile {
 	}
 	
 	/**
-	 * Check whether or not the north access point is available.
+	 * Check whether or not the east access point is available.
 	 */
 	public boolean getEast() {
 		return east;
 	}
 	
 	/**
-	 * Check whether or not the north access point is available.
+	 * Check whether or not the south access point is available.
 	 */
 	public boolean getSouth() {
 		return south;
 	}
 	
 	/**
-	 * Check whether or not the north access point is available.
+	 * Check whether or not the west access point is available.
 	 */
 	public boolean getWest() {
 		return west;
