@@ -27,7 +27,7 @@ public class Board {
 		
 		this.width = width;
 		this.height = height;
-		this.tiles = new Tile[width][height];
+		this.tiles = new Tile[height][width];
 		
 		// Randomise tiles
 		for(int i = 0; i < height; i++) {
@@ -125,7 +125,7 @@ public class Board {
 		this.tokenPos[0] = 1; // column
 		this.tokenPos[1] = 1; // row
 		
-		tiles[getInternalRow(tokenPos[1])][getInternalColumn(tokenPos[1])].setToken(true);
+		tiles[getInternalRow(tokenPos[1])][getInternalColumn(tokenPos[0])].setToken(true);
 	}
 	
 	/**

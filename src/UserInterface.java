@@ -273,6 +273,8 @@ public class UserInterface {
 		int width = game.getBoard().getWidth();
 		int height = game.getBoard().getHeight();
 		
+		System.out.println("Height = " + height + ", Width = " + width);
+		
 		// Get the tiles from the board
 		Tile[][] tiles = game.getBoard().getTiles();
 		
@@ -293,17 +295,17 @@ public class UserInterface {
 		System.out.println(border);
 		
 		// Display each tile
-		for(int i = 0; i < width; i++) {
+		for(int i = 0; i < height; i++) {
 			// Form the row by concatenating each tile on the row together
 			// A tile is 7x5, so therefore consists of 5 row sections
 			
 			String number = "";
 			
-			if((width - i) < 10) {
-				number = Integer.toString(width - i) + " ";
+			if((height - i) < 10) {
+				number = Integer.toString(height - i) + " ";
 			}
 			else {
-				number = Integer.toString(width - i);
+				number = Integer.toString(height - i);
 			}
 			
 			String rowTop    = "   || ";
@@ -312,7 +314,7 @@ public class UserInterface {
 			String rowMB     = "   || ";
 			String rowBottom = "   || ";
 			
-			for(int j = 0; j < height; j++) {
+			for(int j = 0; j < width; j++) {
 				// Split the tile up into its relevant sections
 				// tile[0] = top, tile[1] = top-middle
 				// tile[2] = middle, tile[3] = middle-bottom
@@ -321,7 +323,7 @@ public class UserInterface {
 				String[] tile = tiles[i][j].getTileString();
 				
 				// Check which tile it is for correct border placement
-				if(j == (height - 1)) {
+				if(j == (width - 1)) {
 					// Last tile on row requires a border
 					rowTop    += tile[0] + " ||";
 					rowTM     += tile[1] + " ||";

@@ -11,6 +11,11 @@ public class Labyrinth {
 	public static final String SETTINGS_PATH = System.getProperty("user.dir") + "/settings/settings.txt";
 	
 	public static void main(String[] args) {
+		int[][] test = { {1, 2, 3, 4},
+				         {5, 6, 7, 8}};
+		
+		System.out.println(test[0][1]);
+		
 		Player player = new Player();
 		SettingsManager settings = new SettingsManager(SETTINGS_PATH);
 		

@@ -30,7 +30,7 @@ public class TreasureChase implements GameMode {
 		this.settings = settings;
 		
 		// Generate a board with settings specified in the SettingsManager
-		this.board = new Board(settings.getRows(), settings.getColumns());
+		this.board = new Board(settings.getColumns(), settings.getRows());
 		
 		// Set a random tile on the board to contain treasure
 		this.rand = new Random();
