@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.Scanner;
+import java.nio.charset.Charset;
 
 /**
  * Manages settings and configurations for the Labyrinth game. Allows for the loading
@@ -16,6 +17,9 @@ public class SettingsManager {
 	private int rows;
 	private int columns;
 	private String leaderboard;
+	
+	// Store the charset in use
+	public static final String charSet = Charset.defaultCharset().toString().toLowerCase();
 	
 	/**
 	 * Construct a SettingsManager with default settings.

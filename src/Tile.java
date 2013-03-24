@@ -22,10 +22,10 @@ public class Tile {
 	private boolean west;
 	
 	// Tile style
-	private static final Character wallChar = '\u2588'; // Solid block
-	private static final Character immovableChar = '\u2592'; // Light black block
-	private static final Character tokenChar = 'O';
-	private static final Character treasureChar = 'T';
+	private static Character wallChar = '?';
+	private static Character immovableChar = '?';
+	private static Character tokenChar = '?';
+	private static Character treasureChar = '?';
 	
 	/**
 	 * Construct a tile of a particular type.
@@ -33,6 +33,21 @@ public class Tile {
 	 * @param type The type of tile to construct.
 	 */
 	public Tile(TileType type) {
+		// Initialise the tile characters in accordance to the charset
+		if(SettingsManager.charSet.contains("utf")) {
+			// UTF charset available
+			wallChar = '\u2588'; // Solid block
+			immovableChar = '\u2592'; // Light black block
+			tokenChar = 'O';
+			treasureChar = 'T';
+		} else {
+			// Most likely ASCII on Windows CMD
+			wallChar = (char) 219; // Solid block
+			immovableChar = (char) 177; // Light black block
+			tokenChar = 'O';
+			treasureChar = 'T';
+		}
+		
 		this.type = type;
 		this.rotation = RotationAngle.DEFAULT;
 		this.treasure = false;
