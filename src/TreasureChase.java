@@ -284,9 +284,13 @@ public class TreasureChase implements GameMode {
 	private Tile insertTileRowLeft(int row, Tile newTile) throws IllegalMoveException {
 		// Check if any tiles on row are immovable/fixed
 		for(int i = 1; i < board.getWidth(); i++) {
-			if(!board.getTile(i, row).isMovable()) {
-				// Found an immovable tile
-				throw new IllegalMoveException("Specified row contains one or more immovable tiles");
+			try {
+				if(!board.getTile(i, row).isMovable()) {
+					// Found an immovable tile
+					throw new IllegalMoveException("Specified row contains one or more immovable tiles");
+				}
+			} catch(IllegalArgumentException e) {
+				throw new IllegalMoveException(e.getMessage());
 			}
 		}
 		
@@ -335,9 +339,13 @@ public class TreasureChase implements GameMode {
 	private Tile insertTileRowRight(int row, Tile newTile) throws IllegalMoveException {
 		// Check if any tiles on row are immovable/fixed
 		for(int i = 1; i < board.getWidth(); i++) {
-			if(!board.getTile(i, row).isMovable()) {
-				// Found an immovable tile
-				throw new IllegalMoveException("Specified row contains one or more immovable tiles");
+			try {
+				if(!board.getTile(i, row).isMovable()) {
+					// Found an immovable tile
+					throw new IllegalMoveException("Specified row contains one or more immovable tiles");
+				}
+			} catch(IllegalArgumentException e) {
+				throw new IllegalMoveException(e.getMessage());
 			}
 		}
 		
@@ -442,9 +450,13 @@ public class TreasureChase implements GameMode {
 	private Tile insertTileColumnBottom(int column, Tile newTile) throws IllegalMoveException {
 		// Check if any tiles in column are immovable/fixed
 		for(int i = 1; i < board.getHeight(); i++) {
-			if(!board.getTile(column, i).isMovable()) {
-				// Found an immovable tile
-				throw new IllegalMoveException("Specified column contains one or more immovable tiles");
+			try {
+				if(!board.getTile(column, i).isMovable()) {
+					// Found an immovable tile
+					throw new IllegalMoveException("Specified column contains one or more immovable tiles");
+				}
+			} catch(IllegalArgumentException e) {
+				throw new IllegalMoveException(e.getMessage());
 			}
 		}
 		
@@ -493,9 +505,13 @@ public class TreasureChase implements GameMode {
 	private Tile insertTileColumnTop(int column, Tile newTile) throws IllegalMoveException {
 		// Check if any tiles in column are immovable/fixed
 		for(int i = 1; i < board.getHeight(); i++) {
-			if(!board.getTile(column, i).isMovable()) {
-				// Found an immovable tile
-				throw new IllegalMoveException("Specified column contains one or more immovable tiles");
+			try {
+				if(!board.getTile(column, i).isMovable()) {
+					// Found an immovable tile
+					throw new IllegalMoveException("Specified column contains one or more immovable tiles");
+				}
+			} catch(IllegalArgumentException e) {
+				throw new IllegalMoveException(e.getMessage());
 			}
 		}
 		

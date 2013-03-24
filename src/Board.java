@@ -134,8 +134,16 @@ public class Board {
 	 * @param column The column coordinate of the tile.
 	 * @param row The row coordinate of the tile.
 	 * @return The particular tile at the specified location. Returns null on error.
+	 * @throws IllegalArgumentException If either the row or column is not within range.
 	 */
-	public Tile getTile(int column, int row) {
+	public Tile getTile(int column, int row) throws IllegalArgumentException {
+		// Check if arguments are valid
+		if(column < 1 || column > width) {
+			throw new IllegalArgumentException("Specified column not within range");
+		} else if(row < 1 || row > height) {
+			throw new IllegalArgumentException("Specified row not within range");
+		}
+		
 		// Calculate internal coordinates and return corresponding tile
 		return tiles[getInternalRow(row)][getInternalColumn(column)];
 	}
@@ -146,8 +154,16 @@ public class Board {
 	 * @param column The column coordinate of the tile.
 	 * @param row The row coordinate of the tile.
 	 * @param newTile The new tile for replacing the existing tile with.
+	 * @throws IllegalArgumentException If either the row or column is not within range.
 	 */
-	public void setTile(int column, int row, Tile newTile) {
+	public void setTile(int column, int row, Tile newTile) throws IllegalArgumentException{
+		// Check if arguments are valid
+		if(column < 1 || column > width) {
+			throw new IllegalArgumentException("Specified column not within range");
+		} else if(row < 1 || row > height) {
+			throw new IllegalArgumentException("Specified row not within range");
+		}
+		
 		// Calculate internal coordinates and return corresponding tile
 		tiles[getInternalRow(row)][getInternalColumn(column)] = newTile;
 	}
