@@ -32,14 +32,12 @@ public class Leaderboard {
 		this.scores = new ArrayList<Integer>();
 		this.path = path;
 		
-		System.out.println(path);
-		
 		try {
 			load(path);
 		} catch(FileNotFoundException e) {
-			System.out.println("Error: Leaderboard file not found");
+			System.out.println("Error: Leaderboard file not found: " + path);
 		} catch(IOException e) {
-			System.out.println("Error: Leaderboard IO error");
+			System.out.println("Error: Leaderboard IO error: " + path);
 		}
 	}
 	

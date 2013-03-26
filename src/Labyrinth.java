@@ -16,16 +16,7 @@ public class Labyrinth {
 		// By default just start up a new Treasure Chase game
 		GameMode game = new TreasureChase(settings);
 		UserInterface ui = new UserInterface(game);
-		
-		System.out.println("       _           _                _       _   _           \n" +
-                           "      | |         | |              (_)     | | | |          \n" +
-                           "      | |     __ _| |__  _   _ _ __ _ _ __ | |_| |__        \n" + 
-                           "      | |    / _` | '_ \\| | | | '__| | '_ \\| __| '_ \\    \n" +
-                           "      | |___| (_| | |_) | |_| | |  | | | | | |_| | | |      \n" +
-                           "      \\_____/\\__,_|_.__/ \\__, |_|  |_|_| |_|\\__|_| |_|  \n" +
-                           "                          __/ |                             \n" +
-                           "                         |___/                              \n");
-		ui.run();
+		ui.runMenu();
 	}
 
 }

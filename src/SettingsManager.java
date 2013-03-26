@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.nio.charset.Charset;
 
@@ -21,11 +22,24 @@ public class SettingsManager {
 	// Store the charset in use
 	public static final String charSet = Charset.defaultCharset().toString().toLowerCase();
 	
+	// Static characters
+	public static Character charBlock;
+	public static Character charImmovable;
+	public static Character charToken;
+	public static Character charTreasure;
+	public static Character charBorderVertical;
+	public static Character charBorderHorizontal;
+	public static Character charBorderCornerTopLeft;
+	public static Character charBorderCornerTopRight;
+	public static Character charBorderCornerBottomLeft;
+	public static Character charBorderCornerBottomRight;
+	
 	/**
 	 * Construct a SettingsManager with default settings.
 	 */
 	public SettingsManager() {
 		// Set to default
+		setChars();
 		setDefault();
 	}
 	
@@ -37,6 +51,8 @@ public class SettingsManager {
 	 * @param path The path to the settings file.
 	 */
 	public SettingsManager(String path) {
+		setChars();
+		
 		// Set to 'erroneous' values first
 		rows = 0;
 		columns = 0;
@@ -50,6 +66,38 @@ public class SettingsManager {
 			System.out.println(e.getMessage());
 			System.out.println("Note: Using default settings instead");
 			setDefault();
+		}
+	}
+	
+	/**
+	 * Set the characters in accordance to the character set.
+	 */
+	private void setChars() { 
+		// Initialise the tile characters in accordance to the charset
+		if(SettingsManager.charSet.contains("utf")) {
+			// UTF charset available
+			charBlock = '\u2588'; // Solid block
+			charImmovable = '\u2592'; // Light black block
+			charToken = 'O';
+			charTreasure = 'T';
+			charBorderVertical = '\u2551';
+			charBorderHorizontal = '\u2550';
+			charBorderCornerTopLeft = '\u2554';
+			charBorderCornerTopRight = '\u2557';
+			charBorderCornerBottomLeft = '\u255A';
+			charBorderCornerBottomRight = '\u255D';
+		} else {
+			// Most likely ASCII on Windows CMD
+			charBlock = (char) 219; // Solid block
+			charImmovable = (char) 177; // Light black block
+			charToken = 'O';
+			charTreasure = 'T';
+			charBorderVertical = (char) 186;
+			charBorderHorizontal = (char) 205;
+			charBorderCornerTopLeft = (char) 201;
+			charBorderCornerTopRight = (char) 187;
+			charBorderCornerBottomLeft = (char) 200;
+			charBorderCornerBottomRight = (char) 188;
 		}
 	}
 	
@@ -81,7 +129,15 @@ public class SettingsManager {
 
 			while(line != null) {
 				scanner = new Scanner(line);
-				String[] entry = scanner.nextLine().split(" ");
+				String[] entry = null;
+				
+				try {
+					entry = scanner.nextLine().split(" ");
+				} catch(NoSuchElementException e) {
+					// Empty line, just skip
+					line = reader.readLine();
+					continue;
+				}
 				
 				if(entry.length < 2) {
 					scanner.close();

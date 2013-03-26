@@ -21,33 +21,12 @@ public class Tile {
 	private boolean south;
 	private boolean west;
 	
-	// Tile style
-	private static Character wallChar = '?';
-	private static Character immovableChar = '?';
-	private static Character tokenChar = '?';
-	private static Character treasureChar = '?';
-	
 	/**
 	 * Construct a tile of a particular type.
 	 * 
 	 * @param type The type of tile to construct.
 	 */
 	public Tile(TileType type) {
-		// Initialise the tile characters in accordance to the charset
-		if(SettingsManager.charSet.contains("utf")) {
-			// UTF charset available
-			wallChar = '\u2588'; // Solid block
-			immovableChar = '\u2592'; // Light black block
-			tokenChar = 'O';
-			treasureChar = 'T';
-		} else {
-			// Most likely ASCII on Windows CMD
-			wallChar = (char) 219; // Solid block
-			immovableChar = (char) 177; // Light black block
-			tokenChar = 'O';
-			treasureChar = 'T';
-		}
-		
 		this.type = type;
 		this.rotation = RotationAngle.DEFAULT;
 		this.treasure = false;
@@ -187,20 +166,8 @@ public class Tile {
 	 */
 	private String[] convertFromPattern(String[] pattern) {
 		for(int i = 0; i < pattern.length; i++) {
-			char[] line = pattern[i].toCharArray();
-			
-			for(int j = 0; j < line.length; j++) {
-				if(line[j] == '1') {
-					// Replace with wall
-					line[j] = wallChar;
-				} else if(line[j] == '0') {
-					// Replace with space
-					line[j] = ' ';
-				}
-			}
-			
-			// Update line
-			pattern[i] = new String(line);
+			pattern[i] = pattern[i].replace('1', SettingsManager.charBlock);
+			pattern[i] = pattern[i].replace('0', ' ');
 		}
 		
 		return pattern;
@@ -409,13 +376,13 @@ public class Tile {
 		if(hasToken()) {
 			// Change middle section, middle element to token
 			char[] tileMiddle = tile[2].toCharArray();
-			tileMiddle[3] = tokenChar; // Set to token
+			tileMiddle[3] = SettingsManager.charToken; // Set to token
 			tile[2] = new String(tileMiddle);
 		}
 		else if(hasTreasure()) {
 			// Change middle section, middle element to treasure
 			char[] tileMiddle = tile[2].toCharArray();
-			tileMiddle[3] = treasureChar; // Set to token
+			tileMiddle[3] = SettingsManager.charTreasure; // Set to token
 			tile[2] = new String(tileMiddle);
 		}
 		
@@ -423,7 +390,7 @@ public class Tile {
 		if(!isMovable()) {
 			// Change tile string to fixed representation
 			for(int i = 0; i < 5; i++)
-				tile[i] = tile[i].replace(' ', immovableChar);
+				tile[i] = tile[i].replace(' ', SettingsManager.charImmovable);
 		}
 		
 		return tile;

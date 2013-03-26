@@ -1,4 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -32,7 +36,6 @@ public class UserInterface {
 	 * Run the user interface.
 	 */
 	public void run() {
-		displayLeaderboard(10);
 		while(running) {
 			// Main game loop
 			update();
@@ -40,7 +43,7 @@ public class UserInterface {
 			if(game.hasWon()) {
 				// Check if win condition has been satisfied before continuing
 				onTreasureChaseWin();
-				setRunning(false);
+				return;
 			} else {
 				// Process player tile move
 				while(true) {
@@ -248,13 +251,84 @@ public class UserInterface {
 	}
 	
 	/**
+	 * Display the help file.
+	 */
+	public void displayHelp() {
+		outputFile(System.getProperty("user.dir") + "/media/help.txt");
+		enterPrompt();
+	}
+	
+	/**
+	 * Parse a menu option.
+	 * 
+	 * 1 - Play game
+	 * 2 - Load game
+	 * 3 - Options
+	 * 4 - Help
+	 * 5 - Exit
+	 * 
+	 * @param choice The menu option.
+	 * @throws IllegalArgumentException When an invalid menu option is passed.
+	 */
+	public void parseMenu(int choice) throws IllegalArgumentException {
+		switch(choice) {
+		case 1:
+			// Play game
+			System.out.println("\nStarting new Treasure Chase game...\n");
+			run();
+			break;
+		case 2:
+			// Load game
+			// TODO
+			break;
+		case 3:
+			// Options
+			// TODO
+			break;
+		case 4:
+			// Help
+			displayHelp();
+			break;
+		case 5:
+			// Exit
+			setRunning(false);
+			System.exit(0);
+		default:
+			throw new IllegalArgumentException("Please enter an option between 1-5 (inclusive).");
+		}
+	}
+	
+	/**
+	 * Display the menu.
+	 */
+	public void displayMenu() {
+		outputFile(System.getProperty("user.dir") + "/media/menu.txt");
+	}
+	
+	/**
 	 * Display and run the main menu. This implicitly calls run().
 	 */
 	public void runMenu() {
-		//
-		// TODO
-		//
-		return;
+		while(running) {
+			displayMenu();
+			
+			System.out.print("\n    Option: ");
+			int option = 0;
+			
+			try {
+				option = Integer.parseInt(input.nextLine());
+			} catch(NumberFormatException e) {
+				System.out.println("Please enter a valid menu option.");
+				continue;
+			}
+			
+			try {
+				parseMenu(option);
+			} catch(IllegalArgumentException e) {
+				System.out.println(e.getMessage());
+				continue;
+			}
+		}
 	}
 	
 	/**
@@ -262,6 +336,7 @@ public class UserInterface {
 	 */
 	public void enterPrompt() {
 		System.out.print("\nPlease press [ENTER] to continue... ");
+		
 		input.nextLine();
 	}
 	
@@ -276,21 +351,17 @@ public class UserInterface {
 		// Get the tiles from the board
 		Tile[][] tiles = game.getBoard().getTiles();
 		
-		// Form horizontal border
-		String numberTop = "         ";
-		String border = "      =======";
-		
-		for(int i = 0; i < width; i++)
-			if((i + 1) < 10)
-				numberTop += Integer.toString(i + 1) + "      ";
-			else
-				numberTop += Integer.toString(i + 1) + "     ";
+		// Form horizontal top border
+		String borderTop = "   " + Character.toString(SettingsManager.charBorderCornerTopLeft) +
+				new String(new char[9]).replace('\0', SettingsManager.charBorderHorizontal);
 		
 		for(int i = 1; i < width; i++)
-			border += "=======";
+			borderTop += new String(new char[7]).replace('\0', SettingsManager.charBorderHorizontal);
+		
+		borderTop += Character.toString(SettingsManager.charBorderCornerTopRight);
 		
 		// Display top border
-		System.out.println(border);
+		System.out.println(borderTop);
 		
 		// Display each tile
 		for(int i = 0; i < height; i++) {
@@ -306,11 +377,11 @@ public class UserInterface {
 				number = Integer.toString(height - i);
 			}
 			
-			String rowTop    = "   || ";
-			String rowTM     = "   || ";
-			String rowMiddle = " " + number + "|| ";
-			String rowMB     = "   || ";
-			String rowBottom = "   || ";
+			String rowTop    = "   " + Character.toString(SettingsManager.charBorderVertical) + " ";
+			String rowTM     = "   " + Character.toString(SettingsManager.charBorderVertical) + " ";
+			String rowMiddle = " " + number + Character.toString(SettingsManager.charBorderVertical) + " ";
+			String rowMB     = "   " + Character.toString(SettingsManager.charBorderVertical) + " ";
+			String rowBottom = "   " + Character.toString(SettingsManager.charBorderVertical) + " ";
 			
 			for(int j = 0; j < width; j++) {
 				// Split the tile up into its relevant sections
@@ -323,11 +394,11 @@ public class UserInterface {
 				// Check which tile it is for correct border placement
 				if(j == (width - 1)) {
 					// Last tile on row requires a border
-					rowTop    += tile[0] + " ||";
-					rowTM     += tile[1] + " ||";
-					rowMiddle += tile[2] + " ||";
-					rowMB     += tile[3] + " ||";
-					rowBottom += tile[4] + " ||";
+					rowTop    += tile[0] + " " + Character.toString(SettingsManager.charBorderVertical);
+					rowTM     += tile[1] + " " + Character.toString(SettingsManager.charBorderVertical);
+					rowMiddle += tile[2] + " " + Character.toString(SettingsManager.charBorderVertical);
+					rowMB     += tile[3] + " " + Character.toString(SettingsManager.charBorderVertical);
+					rowBottom += tile[4] + " " + Character.toString(SettingsManager.charBorderVertical);
 				}
 				else {
 					// A tile will be placed to the right of this tile, so skip border
@@ -348,8 +419,19 @@ public class UserInterface {
 		}
 		
 		// Display bottom border
-		System.out.println(border);
-		System.out.println(numberTop);
+		String numberBottom = "        ";
+		
+		for(int i = 0; i < width; i++)
+			if((i + 1) < 10)
+				numberBottom += Integer.toString(i + 1) + "      ";
+			else
+				numberBottom += Integer.toString(i + 1) + "     ";
+		
+		String borderBottom = borderTop.replace(SettingsManager.charBorderCornerTopLeft, SettingsManager.charBorderCornerBottomLeft);
+		borderBottom = borderBottom.replace(SettingsManager.charBorderCornerTopRight, SettingsManager.charBorderCornerBottomRight);
+		
+		System.out.println(borderBottom);
+		System.out.println(numberBottom);
 	}
 	
 	/**
@@ -377,21 +459,20 @@ public class UserInterface {
 			roundString = "00" + roundString;
 		
 		// Score in Treasure Chase is rounds
-		
 		System.out.println();
-		System.out.println("      ------------------- --------------- ---------------");
-		System.out.println("     |    SPARE  TILE    |     ROUND     |     SCORE     |");
-		System.out.println("     |===================|===============|===============|");
-		System.out.println("     |      " + tileRows[0] + "      |               |               |");
-		System.out.println("     |      " + tileRows[1] + "      |               |               |");
-		System.out.println("     |      " + tileRows[2] + "      |     " + roundString + "     |     " + roundString + "     |");
-		System.out.println("     |      " + tileRows[3] + "      |               |               |");
-		System.out.println("     |      " + tileRows[4] + "      |               |               |");
-		System.out.println("      ------------------- --------------- ---------------");
-		System.out.println("     |    LAST COMPUTER MOVE                             |");
-		System.out.println("     |===================================================|");
-		System.out.println("       " + game.getComputerPlayer().getLastMove());
-		System.out.println("     |___________________________________________________|");
+		System.out.println("    ------------------- --------------- ---------------");
+		System.out.println("   |    SPARE  TILE    |     ROUND     |     SCORE     |");
+		System.out.println("   |===================|===============|===============|");
+		System.out.println("   |      " + tileRows[0] + "      |               |               |");
+		System.out.println("   |      " + tileRows[1] + "      |               |               |");
+		System.out.println("   |      " + tileRows[2] + "      |     " + roundString + "     |     " + roundString + "     |");
+		System.out.println("   |      " + tileRows[3] + "      |               |               |");
+		System.out.println("   |      " + tileRows[4] + "      |               |               |");
+		System.out.println("    ------------------- --------------- ---------------");
+		System.out.println("   |    LAST COMPUTER MOVE                             |");
+		System.out.println("   |===================================================|");
+		System.out.println("     " + game.getComputerPlayer().getLastMove());
+		System.out.println("   |___________________________________________________|");
 		System.out.println();
 		
 		
@@ -430,6 +511,7 @@ public class UserInterface {
 		
 		// Leaderboard code
 		promptLeaderboard();
+		enterPrompt();
 	}
 	
 	/**
@@ -440,16 +522,16 @@ public class UserInterface {
 		String choice;
 		
 		System.out.print("Do you want to submit score (Y/N)? ");
-		choice = input.next().toLowerCase();
+		choice = input.nextLine().toLowerCase();
 		
 		if(choice.equals("y")) {
 			System.out.print("Enter name: ");
-			name = input.next();
+			name = input.nextLine();
 			
 			while(name.length() > 14) {
 				System.out.println("Name must not exceed 14 characters!");
 				System.out.print("Enter name: ");
-				name = input.next();
+				name = input.nextLine();
 			}
 			
 			game.getLeaderboard().submit(name, game.getPlayer().getScore());
@@ -506,6 +588,43 @@ public class UserInterface {
 		
 		// Form bottom
 		System.out.println(" -------------------- ------------- ");
+	}
+	
+	/**
+	 * Output the contents of a file.
+	 * 
+	 * @param path The path to the file.
+	 */
+	private void outputFile(String path) {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(path));
+			Scanner scanner = null;
+			
+			String line = reader.readLine();
+			
+			while(line != null) {
+				scanner = new Scanner(line);
+				String l = "";
+				
+				try {
+					l = scanner.nextLine();
+				} catch(NoSuchElementException e) {
+					// Ignore
+				}
+				
+				l = l.replace("[W]", Character.toString(SettingsManager.charBlock));
+				
+				System.out.println(l);
+				line = reader.readLine();
+			}
+			
+			scanner.close();
+			reader.close();
+		} catch(FileNotFoundException e) {
+			System.out.println("File not found: " + path);
+		} catch(Exception e) {
+			System.out.println("Couldn't process file: " + path);
+		}
 	}
 
 }
