@@ -11,11 +11,10 @@ public class Labyrinth {
 	public static final String SETTINGS_PATH = System.getProperty("user.dir") + "/settings/settings.txt";
 	
 	public static void main(String[] args) {
-		Player player = new Player();
 		SettingsManager settings = new SettingsManager(SETTINGS_PATH);
 		
 		// By default just start up a new Treasure Chase game
-		GameMode game = new TreasureChase(player, settings);
+		GameMode game = new TreasureChase(settings);
 		UserInterface ui = new UserInterface(game);
 		
 		System.out.println("       _           _                _       _   _           \n" +

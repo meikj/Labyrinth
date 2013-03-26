@@ -21,11 +21,10 @@ public class TreasureChase implements GameMode {
 	/**
 	 * Construct a TreasureChase game with a specified player.
 	 * 
-	 * @param player The player to play the game.
 	 * @param settings The settings to use for the game.
 	 */
-	public TreasureChase(Player player, SettingsManager settings) {
-		this.player = player;
+	public TreasureChase(SettingsManager settings) {
+		this.player = new Player();
 		this.leaderboard = new Leaderboard();
 		this.settings = settings;
 		
