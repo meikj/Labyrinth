@@ -19,6 +19,12 @@ public class Leaderboard {
 	public Leaderboard() {
 		names = new ArrayList<String>();
 		scores = new ArrayList<Integer>();
+		
+		names.add("John");
+		names.add("Barri");
+		
+		scores.add(3);
+		scores.add(2);
 	}
 	
 	/**
@@ -43,7 +49,6 @@ public class Leaderboard {
 	
 	/**
 	 * Get the name entries. Same index is used for scores.
-	 * @return
 	 */
 	public ArrayList<String> getNames() {
 		return names;
@@ -52,7 +57,6 @@ public class Leaderboard {
 	
 	/**
 	 * Get the score entries. Same index is used for names.
-	 * @return
 	 */
 	public ArrayList<Integer> getScores() {
 		return scores;

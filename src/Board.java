@@ -133,7 +133,7 @@ public class Board {
 	 * 
 	 * @param column The column coordinate of the tile.
 	 * @param row The row coordinate of the tile.
-	 * @return The particular tile at the specified location. Returns null on error.
+	 * @return The particular tile at the specified location.
 	 * @throws IllegalArgumentException If either the row or column is not within range.
 	 */
 	public Tile getTile(int column, int row) throws IllegalArgumentException {

@@ -25,7 +25,7 @@ public class TreasureChase implements GameMode {
 	 */
 	public TreasureChase(SettingsManager settings) {
 		this.player = new Player();
-		this.leaderboard = new Leaderboard();
+		this.leaderboard = new Leaderboard(settings.getLeaderboard());
 		this.settings = settings;
 		
 		// Generate a board with settings specified in the SettingsManager

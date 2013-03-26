@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -31,6 +32,7 @@ public class UserInterface {
 	 * Run the user interface.
 	 */
 	public void run() {
+		displayLeaderboard();
 		while(running) {
 			// Main game loop
 			update();
@@ -426,9 +428,24 @@ public class UserInterface {
 		System.out.println("Your final score: " + game.getPlayer().getScore());
 		System.out.println();
 		
+		displayLeaderboard();
+		
 		//
 		// TODO: Display leaderboard and do high score checking...
 		//
+	}
+	
+	/**
+	 * Display the leaderboard.
+	 */
+	public void displayLeaderboard() {
+		Leaderboard l = game.getLeaderboard();
+		ArrayList<String> names = l.getNames();
+		ArrayList<Integer> scores = l.getScores();
+		
+		for(int i = 0; i < names.size(); i++) {
+			System.out.println((i + 1) + ". " + names.get(i) + "\t" + scores.get(i));
+		}
 	}
 
 }
