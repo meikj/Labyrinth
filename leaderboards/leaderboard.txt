@@ -1,2 +1,6 @@
-JOHN 500
-JANE 390
+Rascal 0
+John 2
+Rudolph 3
+Barri 5
+Boaby 5
+Jeeves 8

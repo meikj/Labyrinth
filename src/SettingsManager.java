@@ -81,14 +81,20 @@ public class SettingsManager {
 
 			while(line != null) {
 				scanner = new Scanner(line);
-				String type = scanner.next(); // i.e. ROWS, COLUMNS, etc.
+				String[] entry = scanner.nextLine().split(" ");
+				
+				if(entry.length < 2) {
+					scanner.close();
+					reader.close();
+					throw new IOException("Invalid entry in settings file!");
+				}
 
-				if(type.equals("ROWS")) {
+				if(entry[0].equals("ROWS")) {
 					// Line contains ROWS value
 					int r;
 
 					try {
-						r = scanner.nextInt();
+						r = Integer.parseInt(entry[1]);
 						
 						if((r % 2 == 0) || (r < 5) || (r > 15)) {
 							// Violates row rules
@@ -100,18 +106,18 @@ public class SettingsManager {
 					catch(NumberFormatException e) {
 						scanner.close();
 						reader.close();
-						throw new IOException("Settings file is invalid: '" + type + "' contains invalid value.");
+						throw new IOException("Settings file is invalid: '" + entry[0] + "' contains invalid value.");
 					}
 
 					// Set rows to that specified in settings file
 					this.rows = r;
 				}
-				else if(type.equals("COLUMNS")) {
+				else if(entry[0].equals("COLUMNS")) {
 					// Line contains ROWS value
 					int c;
 
 					try {
-						c = scanner.nextInt();
+						c = Integer.parseInt(entry[1]);
 						
 						if((c % 2 == 0) || (c < 5) || (c > 15)) {
 							// Violates row rules
@@ -123,33 +129,21 @@ public class SettingsManager {
 					catch(NumberFormatException e) {
 						scanner.close();
 						reader.close();
-						throw new IOException("Settings file is invalid: '" + type + "' contains invalid value.");
+						throw new IOException("Settings file is invalid: '" + entry[0] + "' contains invalid value.");
 					}
 
 					// Set columns to that specified in settings file
 					this.columns = c;
 				}
-				else if(type.equals("LEADERBOARD")) {
-					// Line contains ROWS value
-					String l;
-
-					try {
-						l = scanner.nextLine();
-					}
-					catch(NumberFormatException e) {
-						scanner.close();
-						reader.close();
-						throw new IOException("Settings file is invalid: '" + type + "' contains invalid value.");
-					}
-
+				else if(entry[0].equals("LEADERBOARD")) {
 					// Set leaderboard to that specified in settings file
-					this.leaderboard = l;
+					this.leaderboard = System.getProperty("user.dir") + entry[1];
 				}
 				else {
 					// Invalid type?
 					scanner.close();
 					reader.close();
-					throw new IOException("Settings file is invalid: '" + type + "' is an invalid type.");
+					throw new IOException("Settings file is invalid: '" + entry[0] + "' is an invalid type.");
 				}
 
 				line = reader.readLine();

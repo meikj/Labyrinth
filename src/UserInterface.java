@@ -32,7 +32,7 @@ public class UserInterface {
 	 * Run the user interface.
 	 */
 	public void run() {
-		displayLeaderboard();
+		displayLeaderboard(10);
 		while(running) {
 			// Main game loop
 			update();
@@ -428,24 +428,84 @@ public class UserInterface {
 		System.out.println("Your final score: " + game.getPlayer().getScore());
 		System.out.println();
 		
-		displayLeaderboard();
+		// Leaderboard code
+		promptLeaderboard();
+	}
+	
+	/**
+	 * Prompt the user for leaderboard entry.
+	 */
+	public void promptLeaderboard() {
+		String name;
+		String choice;
 		
-		//
-		// TODO: Display leaderboard and do high score checking...
-		//
+		System.out.print("Do you want to submit score (Y/N)? ");
+		choice = input.next().toLowerCase();
+		
+		if(choice.equals("y")) {
+			System.out.print("Enter name: ");
+			name = input.next();
+			
+			while(name.length() > 14) {
+				System.out.println("Name must not exceed 14 characters!");
+				System.out.print("Enter name: ");
+				name = input.next();
+			}
+			
+			game.getLeaderboard().submit(name, game.getPlayer().getScore());
+			System.out.println("Score submitted! Here is the current top 10 now: \n");
+			
+			displayLeaderboard(10);
+			
+			try {
+				game.getLeaderboard().save();
+			} catch(Exception e) {
+				System.out.println("Couldn't save score to leaderboard file. Score will NOT be saved.");
+			}
+		}
 	}
 	
 	/**
 	 * Display the leaderboard.
 	 */
-	public void displayLeaderboard() {
+	public void displayLeaderboard(int entries) {
 		Leaderboard l = game.getLeaderboard();
 		ArrayList<String> names = l.getNames();
 		ArrayList<Integer> scores = l.getScores();
 		
-		for(int i = 0; i < names.size(); i++) {
-			System.out.println((i + 1) + ". " + names.get(i) + "\t" + scores.get(i));
+		System.out.println(" -------------------- ------------- ");
+		System.out.println("|        NAME        |    SCORE    |");
+		System.out.println("|====================|=============|");
+		
+		if(names.size() < entries)
+			entries = names.size();
+		
+		for(int i = 0; i < entries; i++) {
+			// Form name entry
+			String entry = "| " + (i + 1) + ". " + names.get(i);
+			
+			while(entry.length() < 21) {
+				// Pad the name out to 21 characters to fit in field
+				entry += " ";
+			}
+			
+			entry += "|";
+			
+			// Form score entry
+			entry += " " + scores.get(i);
+			
+			while(entry.length() < (21 + 14)) {
+				// Pad the score out to 21 further characters to fit in field
+				entry += " ";
+			}
+			
+			entry += "|";
+			
+			System.out.println(entry);
 		}
+		
+		// Form bottom
+		System.out.println(" -------------------- ------------- ");
 	}
 
 }
