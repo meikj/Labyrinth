@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Represents the leaderboard in the Labyrinth game.
  * 
@@ -8,23 +10,15 @@
  */
 public class Leaderboard {
 	
-	private String[][] scores;
-	private int maxEntries;
+	private ArrayList<String> names;
+	private ArrayList<Integer> scores;
 	
 	/**
 	 * Construct a standard empty leaderboard.
 	 */
 	public Leaderboard() {
-		// Set the default max entries to 10
-		this.maxEntries = 10;
-		
-		// [][0] = Name, [][1] = Score
-		this.scores = new String[maxEntries][2];
-		
-		for(int i = 0; i < maxEntries; i++) {
-			scores[i][0] = "John Doe";
-			scores[i][1] = "No Score";
-		}
+		names = new ArrayList<String>();
+		scores = new ArrayList<Integer>();
 	}
 	
 	/**
@@ -41,21 +35,27 @@ public class Leaderboard {
 	 * 
 	 * @param name The name of the player.
 	 * @param score The score to submit.
-	 * @return Returns whether or not the submission was successful.
 	 */
-	public boolean submit(String name, int score) {
-		// Check if any spaces spare, if score is eligible, etc.
-		return false;
+	public void submit(String name, int score) {
+		// TODO
 	}
 	
-	public String[][] getScores() { return scores; }
-	public int getMaxEntries() { return maxEntries; }
 	
 	/**
-	 * Display the leaderboard.
+	 * Get the name entries. Same index is used for scores.
+	 * @return
 	 */
-	public void display() {
-		
+	public ArrayList<String> getNames() {
+		return names;
+	}
+	
+	
+	/**
+	 * Get the score entries. Same index is used for names.
+	 * @return
+	 */
+	public ArrayList<Integer> getScores() {
+		return scores;
 	}
 
 }
