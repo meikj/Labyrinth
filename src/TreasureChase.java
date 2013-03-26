@@ -31,10 +31,16 @@ public class TreasureChase implements GameMode {
 		// Generate a board with settings specified in the SettingsManager
 		this.board = new Board(settings.getColumns(), settings.getRows());
 		
-		// Set a random tile on the board to contain treasure
+		// Set a random tile on the board to contain treasure (disclude 1,1)
 		this.rand = new Random();
 		int rCol = rand.nextInt(settings.getColumns()) + 1;
 		int rRow = rand.nextInt(settings.getRows()) + 1;
+		
+		while(rCol == 1 && rRow == 1) {
+			rCol = rand.nextInt(settings.getColumns()) + 1;
+			rRow = rand.nextInt(settings.getRows()) + 1; 
+		}
+		
 		this.board.getTile(rCol, rRow).setTreasure(true);
 		
 		// Initialise the computer opponent
