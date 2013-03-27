@@ -101,13 +101,13 @@ public class UserInterface {
 		String in = input.nextLine();
 		String[] tokens = in.split(" ");
 		
-		// A tile move is either rotate, insert or exit
+		// A tile move is either rotate, insert, save or exit
 		if(tokens[0].equals("rotate")) {
 			// When the player does a rotation, it does not count as a move, so ask for another tile move
 			parse(tokens);
 			update();
 			promptTileMove();
-		} else if(tokens[0].equals("insert") || tokens[0].equals("exit")) {
+		} else if(tokens[0].equals("insert") || tokens[0].equals("save") || tokens[0].equals("exit")) {
 			parse(tokens);
 		} else {
 			throw new IllegalArgumentException("Invalid tile move command: only rotate and insert allowed");
@@ -127,8 +127,8 @@ public class UserInterface {
 		String in = input.nextLine();
 		String[] tokens = in.split(" ");
 		
-		// A token move is move or exit
-		if(tokens[0].equals("move") || tokens[0].equals("exit")) {
+		// A token move is move, save or exit
+		if(tokens[0].equals("move") || tokens[0].equals("save") || tokens[0].equals("exit")) {
 			parse(tokens);
 		} else {
 			throw new IllegalArgumentException("Invalid token move command: only move allowed");
@@ -229,6 +229,16 @@ public class UserInterface {
 				} catch(IllegalMoveException e) {
 					throw new IllegalArgumentException(e.getMessage());
 				}
+			}
+		} else if(inputArgs[0].toLowerCase().equals("save")) {
+			String gameName = inputArgs[1];
+			
+			try {
+				manager.save(System.getProperty("user.dir") + "/saves/" + gameName + ".txt", game);
+				manager.addGameEntry(gameName);
+			} catch(IOException e) {
+				System.out.println("Couldn't save file: " + e.getMessage());
+				enterPrompt();
 			}
 		} else if(inputArgs[0].toLowerCase().equals("exit")) {
 			// Exit command called

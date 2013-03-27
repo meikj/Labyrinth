@@ -46,7 +46,6 @@ public class GameManager {
 			} else if(lineTokens[0].equals("GAME_MODE")) {
 				// Process game mode
 				if(lineTokens[1].equals("tc")) {
-					System.out.println("Initialising TC");
 					game = new TreasureChase(settings);
 				}
 			} else if(lineTokens[0].equals("TILE")) {
@@ -71,7 +70,10 @@ public class GameManager {
 				// Form new tile
 				newTile = new Tile(tileType, rotationAngle);
 				
-				System.out.println("Setting tile (" + nextColumn + "," + nextRow + ")");
+				// Check if immovable
+				if((nextColumn % 2 != 0) && (nextRow % 2 != 0))
+					newTile.setMovable(false);
+				
 				game.getBoard().setTile(nextColumn, nextRow, newTile);
 				
 				nextColumn++;
@@ -86,6 +88,56 @@ public class GameManager {
 		
 		reader.close();
 		return game;
+	}
+	
+	/**
+	 * Save a game to the specified path.
+	 */
+	public void save(String path, GameMode game) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+		
+		// Get the game properties
+		int rows = game.getSettings().getRows();
+		int columns = game.getSettings().getColumns();
+		String gameMode = game.getClass().getName().equals("TreasureChase") ? "tc" : "lc";
+		
+		writer.write("ROWS " + rows);
+		writer.newLine();
+		writer.write("COLUMNS " + columns);
+		writer.newLine();
+		writer.write("GAME_MODE " + gameMode);
+		writer.newLine();
+		
+		for(int i = 1; i <= rows; i++) {
+			for(int j = 1; j <= columns; j++) {
+				Tile t = game.getBoard().getTile(j, i);
+				
+				writer.write("TILE " + t.getType() + " " + t.getRotation());
+				writer.newLine();
+			}
+		}
+		
+		writer.write("TOKEN " + game.getBoard().getTokenPos()[0] + " " + game.getBoard().getTokenPos()[1]);
+		writer.newLine();
+		
+		writer.write("TREASURE " + game.getBoard().getTreasurePos()[0] + " " + game.getBoard().getTreasurePos()[1]);
+		writer.newLine();
+		
+		writer.close();
+	}
+	
+	/**
+	 * Add an entry of a saved game to the entry list.
+	 * 
+	 * @param name The name of the saved game.
+	 */
+	public void addGameEntry(String name) throws IOException {
+		String path = System.getProperty("user.dir") + "/saves/list.txt";
+		BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
+		
+		writer.write(name);
+		writer.newLine();
+		writer.close();
 	}
 
 }

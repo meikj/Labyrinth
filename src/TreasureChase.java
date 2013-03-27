@@ -42,6 +42,7 @@ public class TreasureChase implements GameMode {
 		}
 		
 		this.board.getTile(rCol, rRow).setTreasure(true);
+		this.board.setTreasurePos(rCol, rRow);
 		
 		// Initialise the computer opponent
 		this.computer = new ComputerPlayer(this.board);
@@ -312,6 +313,7 @@ public class TreasureChase implements GameMode {
 			// The tile that is going to fall off contains the treasure, so set treasure to new tile
 			spareTile.setTreasure(false);
 			newTile.setTreasure(true);
+			board.setTreasurePos(1, row);
 		}
 		
 		// Push all tiles across
@@ -367,6 +369,7 @@ public class TreasureChase implements GameMode {
 			// The tile that is going to fall off contains the treasure, so set treasure to new tile
 			spareTile.setTreasure(false);
 			newTile.setTreasure(true);
+			board.setTreasurePos(board.getWidth(), row);
 		}
 		
 		// Push all tiles across
@@ -476,6 +479,7 @@ public class TreasureChase implements GameMode {
 			// The tile that is going to fall off contains the treasure, so set treasure to new tile
 			spareTile.setTreasure(false);
 			newTile.setTreasure(true);
+			board.setTreasurePos(column, 1);
 		}
 		
 		// Push all tiles across
@@ -531,6 +535,7 @@ public class TreasureChase implements GameMode {
 			// The tile that is going to fall off contains the treasure, so set treasure to new tile
 			spareTile.setTreasure(false);
 			newTile.setTreasure(true);
+			board.setTreasurePos(column, board.getHeight());
 		}
 		
 		// Push all tiles across

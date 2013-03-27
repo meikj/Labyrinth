@@ -14,6 +14,7 @@ public class Board {
 	private int width;
 	private int height;
 	private int[] tokenPos;
+	private int[] treasurePos;
 	private Random r;
 	
 	/**
@@ -126,6 +127,9 @@ public class Board {
 		this.tokenPos[1] = 1; // row
 		
 		tiles[getInternalRow(tokenPos[1])][getInternalColumn(tokenPos[0])].setToken(true);
+		
+		// Initialise treasure (but don't set)
+		this.treasurePos = new int[2];
 	}
 	
 	/**
@@ -187,6 +191,27 @@ public class Board {
 	public void setTokenPos(int column, int row) {
 		tokenPos[0] = column;
 		tokenPos[1] = row;
+	}
+	
+	/**
+	 * Get the current treasure position as a board coordinate.
+	 * 
+	 * @return The treasure position as an integer array. Index 0 is
+	 * the column, index 1 is the row.
+	 */
+	public int[] getTreasurePos() {
+		return treasurePos;
+	}
+	
+	/**
+	 * Set the current treasure position as a board coordinate.
+	 * 
+	 * @param column The column number of the treasure.
+	 * @param row The row number of the treasure.
+	 */
+	public void setTreasurePos(int column, int row) {
+		treasurePos[0] = column;
+		treasurePos[1] = row;
 	}
 	
 	/**
