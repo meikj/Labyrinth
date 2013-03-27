@@ -36,5 +36,3 @@ Available Commands
 4. move <up/down/left/right> - Move token
 5. save <game_name> - Save the current progress of game to disk
 6. exit - Exit the game without saving
-
-  

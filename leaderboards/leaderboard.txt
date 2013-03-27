@@ -1,4 +1,5 @@
 Rascal 0
+YASS 1
 John 2
 Rudolph 3
 Bawbag 4

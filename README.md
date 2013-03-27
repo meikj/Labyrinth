@@ -15,6 +15,7 @@ As it stands, the project is still under heavy development, but is progressing v
 * [Move Tile Use Case](https://github.com/meikj/Labyrinth/wiki/Move-Tile-Use-Case)
 * [Move Token Use Case](https://github.com/meikj/Labyrinth/wiki/Move-Token-Use-Case)
 * [Treasure Chase Use Case](https://github.com/meikj/Labyrinth/wiki/Treasure-Chase-Use-Case)
+* [The Final Product](https://github.com/meikj/Labyrinth/wiki/The-Final-Product)
 
 ## Authors
 * Gareth Gill - <gareth.gill@strath.ac.uk>
