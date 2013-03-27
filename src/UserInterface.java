@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -254,7 +255,11 @@ public class UserInterface {
 	 * Display the help file.
 	 */
 	public void displayHelp() {
-		outputFile(System.getProperty("user.dir") + "/media/help.txt");
+		LinkedList<String> helpFile = processFile(System.getProperty("user.dir") + "/media/help.txt");
+		
+		for(String line : helpFile)
+			System.out.println(line);
+		
 		enterPrompt();
 	}
 	
@@ -279,7 +284,8 @@ public class UserInterface {
 			break;
 		case 2:
 			// Load game
-			// TODO
+			System.out.println();
+			promptLoad();
 			break;
 		case 3:
 			// Options
@@ -287,6 +293,7 @@ public class UserInterface {
 			break;
 		case 4:
 			// Help
+			System.out.println();
 			displayHelp();
 			break;
 		case 5:
@@ -299,10 +306,65 @@ public class UserInterface {
 	}
 	
 	/**
+	 * Display the load screen and prompt the user for their option.
+	 */
+	public void promptLoad() {
+		String option;
+		
+		while(running) {
+			displayLoad();
+			System.out.print("\n    Load Game: ");
+			
+			try {
+				option = input.nextLine();
+			} catch(Exception e) {
+				System.out.println("Please enter a valid game name.");
+				enterPrompt();
+				continue;
+			}
+		
+			// Process option
+			// TODO
+		}
+	}
+	
+	/**
+	 * Display the load screen.
+	 */
+	public void displayLoad() {
+		LinkedList<String> loadFile = processFile(System.getProperty("user.dir") + "/media/load.txt");
+		LinkedList<String> gameList = processFile(System.getProperty("user.dir") + "/saves/list.txt");
+		
+		for(String line : loadFile) {
+			// Check for %START% - this signifies where to begin outputting the available games
+			if(line.contains("%")) {
+				// Begin outputting games here
+				String[] split = line.split("%");
+				
+				for(String game : gameList) {
+					// Process each game
+					if(game.isEmpty())
+						continue;
+					
+					// Offset is number of spaces to skip to retain border placement
+					int offset = game.length() - 1;
+					game = split[0] + game + split[1].substring(offset, split[1].length());
+					System.out.println(game);
+				}
+			} else {
+				System.out.println(line);
+			}
+		}
+	}
+	
+	/**
 	 * Display the menu.
 	 */
 	public void displayMenu() {
-		outputFile(System.getProperty("user.dir") + "/media/menu.txt");
+		LinkedList<String> menuFile = processFile(System.getProperty("user.dir") + "/media/menu.txt");
+		
+		for(String line : menuFile)
+			System.out.println(line);
 	}
 	
 	/**
@@ -591,11 +653,14 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Output the contents of a file.
+	 * Retrieve the contents of a file.
 	 * 
 	 * @param path The path to the file.
+	 * @returns The lines of the processed file.
 	 */
-	private void outputFile(String path) {
+	private LinkedList<String> processFile(String path) {
+		LinkedList<String> lines = new LinkedList<String>();
+		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(path));
 			Scanner scanner = null;
@@ -612,9 +677,11 @@ public class UserInterface {
 					// Ignore
 				}
 				
+				// [W] = wall block
 				l = l.replace("[W]", Character.toString(SettingsManager.charBlock));
+				lines.add(l);
 				
-				System.out.println(l);
+				// Proceed to next line
 				line = reader.readLine();
 			}
 			
@@ -625,6 +692,8 @@ public class UserInterface {
 		} catch(Exception e) {
 			System.out.println("Couldn't process file: " + path);
 		}
+		
+		return lines;
 	}
 
 }
