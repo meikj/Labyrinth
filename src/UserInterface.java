@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -20,6 +21,7 @@ public class UserInterface {
 	private GameMode game;
 	private boolean running;
 	private Scanner input;
+	private GameManager manager;
 	
 	/**
 	 * Construct a new user interface to interface with a valid
@@ -31,6 +33,7 @@ public class UserInterface {
 		this.game = game;
 		this.input = new Scanner(System.in);
 		this.running = true;
+		this.manager = new GameManager();
 	}
 	
 	/**
@@ -324,7 +327,30 @@ public class UserInterface {
 			}
 		
 			// Process option
-			// TODO
+			GameMode newGame = null;
+			
+			try {
+				newGame = manager.load(System.getProperty("user.dir") + "/saves/" + option + ".txt");
+			} catch(FileNotFoundException e) {
+				System.out.println("Couldn't find: " + System.getProperty("user.dir") + "/saves/" + option + ".txt");
+				enterPrompt();
+				continue;
+			} catch(IOException e) {
+				System.out.println("Error parsing: " + System.getProperty("user.dir") + "/saves/" + option + ".txt");
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+				enterPrompt();
+				continue;
+			}
+			
+			// Assign the saved game to the active game
+			if(newGame != null) {
+				this.game = newGame;
+				run();
+			} else {
+				System.out.println("Something went horribly wrong processing the save. Try again?");
+				enterPrompt();
+			}
 		}
 	}
 	
