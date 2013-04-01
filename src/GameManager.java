@@ -5,7 +5,7 @@ import java.io.*;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.270312
+ * @version 0.1.01042013
  *
  */
 public class GameManager {
@@ -21,7 +21,7 @@ public class GameManager {
 	 * ... (ROWS x COLUMNS)
 	 * TILE <type> <rotation>
 	 * TOKEN <column> <row>
-	 * TREAURE <column> <row>
+	 * TREASURE <column> <row>
 	 * 
 	 * @param path The path to the save game.
 	 * @return The result in the form of a GameMode.

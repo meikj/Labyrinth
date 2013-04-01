@@ -13,7 +13,7 @@ import java.util.Scanner;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version v0.1.24032013
+ * @version 0.1.01042013
  *
  */
 public class UserInterface {
@@ -404,7 +404,7 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Display and run the main menu. This implicitly calls run().
+	 * Display and run the main menu.
 	 */
 	public void runMenu() {
 		while(running) {
@@ -441,7 +441,7 @@ public class UserInterface {
 	/**
 	 * Draw the game board.
 	 */
-	public void drawGameBoard() {
+	public void displayGameBoard() {
 		// Get board details from game
 		int width = game.getBoard().getWidth();
 		int height = game.getBoard().getHeight();
@@ -533,13 +533,9 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Update the interface.
+	 * Display the game HUB.
 	 */
-	public void update() {
-		// Draw the board
-		drawGameBoard();
-		
-		// Draw the "HUB"
+	public void displayHUB() {
 		Tile spareTile = game.getPlayer().getSpareTile();
 		String[] tileRows = spareTile.getTileString();
 		
@@ -576,6 +572,17 @@ public class UserInterface {
 		
 		System.out.println("DEBUG INFO:");
 		System.out.println("\tToken Position: (" + game.getBoard().getTokenPos()[0] + "," + game.getBoard().getTokenPos()[1] + ")");
+	}
+	
+	/**
+	 * Update the interface.
+	 */
+	public void update() {
+		// Display the game board
+		displayGameBoard();
+		
+		// Display the HUB
+		displayHUB();
 	}
 	
 	/**
