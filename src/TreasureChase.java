@@ -5,7 +5,7 @@ import java.util.Random;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.24032013
+ * @version 0.1.01042013
  *
  */
 public class TreasureChase implements GameMode {
@@ -19,7 +19,7 @@ public class TreasureChase implements GameMode {
 	private Random rand;
 	
 	/**
-	 * Construct a TreasureChase game with a specified player.
+	 * Construct a new Treasure Chase game with the specified settings.
 	 * 
 	 * @param settings The settings to use for the game.
 	 */
@@ -27,15 +27,15 @@ public class TreasureChase implements GameMode {
 		this.player = new Player();
 		this.leaderboard = new Leaderboard(settings.getLeaderboard());
 		this.settings = settings;
-		
-		// Generate a board with settings specified in the SettingsManager
 		this.board = new Board(settings.getColumns(), settings.getRows());
+		this.computer = new ComputerPlayer(this.board);
 		
-		// Set a random tile on the board to contain treasure (disclude 1,1)
+		// Set a random tile on the board to contain treasure
 		this.rand = new Random();
 		int rCol = rand.nextInt(settings.getColumns()) + 1;
 		int rRow = rand.nextInt(settings.getRows()) + 1;
 		
+		// Do not include (1,1)
 		while(rCol == 1 && rRow == 1) {
 			rCol = rand.nextInt(settings.getColumns()) + 1;
 			rRow = rand.nextInt(settings.getRows()) + 1; 
@@ -43,9 +43,6 @@ public class TreasureChase implements GameMode {
 		
 		this.board.getTile(rCol, rRow).setTreasure(true);
 		this.board.setTreasurePos(rCol, rRow);
-		
-		// Initialise the computer opponent
-		this.computer = new ComputerPlayer(this.board);
 	}
 	
 	/**
@@ -321,10 +318,13 @@ public class TreasureChase implements GameMode {
 			// Set tile to preceding tile
 			Tile t = board.getTile(i - 1, row);
 			
-			// Check if preceding tile contains token
+			// Check if preceding tile contains token or treasure
 			if(t.hasToken()) {
 				// If so, set token position to new position
 				board.setTokenPos(i, row);
+			} else if(t.hasTreasure()) {
+				// If so, set treasure position to new position
+				board.setTreasurePos(i, row);
 			}
 			
 			board.setTile(i, row, t);
@@ -381,6 +381,9 @@ public class TreasureChase implements GameMode {
 			if(t.hasToken()) {
 				// If so, set token position to new position
 				board.setTokenPos(i, row);
+			} else if(t.hasTreasure()) {
+				// If so, set treasure position to new position
+				board.setTreasurePos(i, row);
 			}
 			
 			board.setTile(i, row, t);
@@ -491,6 +494,9 @@ public class TreasureChase implements GameMode {
 			if(t.hasToken()) {
 				// If so, set token position to new position
 				board.setTokenPos(column, i);
+			} else if(t.hasTreasure()) {
+				// If so, set treasure position to new position
+				board.setTreasurePos(column, i);
 			}
 			
 			board.setTile(column, i, t);
@@ -547,6 +553,9 @@ public class TreasureChase implements GameMode {
 			if(t.hasToken()) {
 				// If so, set token position to new position
 				board.setTokenPos(column, i);
+			} else if(t.hasTreasure()) {
+				// If so, set treasure position to new position
+				board.setTreasurePos(column, i);
 			}
 			
 			board.setTile(column, i, t);
@@ -559,7 +568,7 @@ public class TreasureChase implements GameMode {
 	}
 	
 	/**
-	 * Update the player with a new player. Useful when performing a tile move.
+	 * Update the player with a new player.
 	 * 
 	 * @param p The new player.
 	 */
@@ -579,18 +588,6 @@ public class TreasureChase implements GameMode {
 			// Make computer move if win condition not satisfied
 			computerMove();
 		}
-	}
-	
-	/**
-	 * Save the current progress of the game.
-	 * 
-	 * @param name The name of the saved game.
-	 */
-	public void save(String name) {
-		//
-		// TODO
-		//
-		return;
 	}
 	
 	/**

@@ -1,11 +1,9 @@
 /**
- * Represents a game mode in the Labyrinth game. The two game modes planned
- * are Treasure Chase and Word Chase. At the moment only Treasure Chase is
- * being implemented.
+ * Represents a general game mode.
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.22032013
+ * @version 0.1.01042013
  *
  */
 public interface GameMode {
@@ -69,14 +67,7 @@ public interface GameMode {
 	public Player insertColumn(int column, Direction direc, Player performer) throws IllegalMoveException;
 	
 	/**
-	 * Save the game.
-	 * 
-	 * @param name The name of the saved game.
-	 */
-	public void save(String name);
-	
-	/**
-	 * Update the player with a new player. Useful when performing a tile move.
+	 * Update the player with a new player.
 	 * 
 	 * @param p The new player.
 	 */
