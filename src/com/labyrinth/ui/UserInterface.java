@@ -10,10 +10,10 @@ import java.util.Scanner;
 
 import com.labyrinth.Direction;
 import com.labyrinth.GameManager;
-import com.labyrinth.GameMode;
 import com.labyrinth.IllegalMoveException;
 import com.labyrinth.Leaderboard;
 import com.labyrinth.Tile;
+import com.labyrinth.gamemodes.GameMode;
 
 /**
  * Represents a text based user interface for use as a front-end for the Labyrinth game.
