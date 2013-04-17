@@ -459,13 +459,13 @@ public class UserInterface {
 		Tile[][] tiles = game.getBoard().getTiles();
 		
 		// Form horizontal top border
-		String borderTop = "   " + Character.toString(SettingsManager.charBorderCornerTopLeft) +
-				new String(new char[9]).replace('\0', SettingsManager.charBorderHorizontal);
+		String borderTop = "   " + Character.toString(CharacterElements.charBorderCornerTopLeft) +
+				new String(new char[9]).replace('\0', CharacterElements.charBorderHorizontal);
 		
 		for(int i = 1; i < width; i++)
-			borderTop += new String(new char[7]).replace('\0', SettingsManager.charBorderHorizontal);
+			borderTop += new String(new char[7]).replace('\0', CharacterElements.charBorderHorizontal);
 		
-		borderTop += Character.toString(SettingsManager.charBorderCornerTopRight);
+		borderTop += Character.toString(CharacterElements.charBorderCornerTopRight);
 		
 		// Display top border
 		System.out.println(borderTop);
@@ -484,11 +484,11 @@ public class UserInterface {
 				number = Integer.toString(height - i);
 			}
 			
-			String rowTop    = "   " + Character.toString(SettingsManager.charBorderVertical) + " ";
-			String rowTM     = "   " + Character.toString(SettingsManager.charBorderVertical) + " ";
-			String rowMiddle = " " + number + Character.toString(SettingsManager.charBorderVertical) + " ";
-			String rowMB     = "   " + Character.toString(SettingsManager.charBorderVertical) + " ";
-			String rowBottom = "   " + Character.toString(SettingsManager.charBorderVertical) + " ";
+			String rowTop    = "   " + Character.toString(CharacterElements.charBorderVertical) + " ";
+			String rowTM     = "   " + Character.toString(CharacterElements.charBorderVertical) + " ";
+			String rowMiddle = " " + number + Character.toString(CharacterElements.charBorderVertical) + " ";
+			String rowMB     = "   " + Character.toString(CharacterElements.charBorderVertical) + " ";
+			String rowBottom = "   " + Character.toString(CharacterElements.charBorderVertical) + " ";
 			
 			for(int j = 0; j < width; j++) {
 				// Split the tile up into its relevant sections
@@ -501,11 +501,11 @@ public class UserInterface {
 				// Check which tile it is for correct border placement
 				if(j == (width - 1)) {
 					// Last tile on row requires a border
-					rowTop    += tile[0] + " " + Character.toString(SettingsManager.charBorderVertical);
-					rowTM     += tile[1] + " " + Character.toString(SettingsManager.charBorderVertical);
-					rowMiddle += tile[2] + " " + Character.toString(SettingsManager.charBorderVertical);
-					rowMB     += tile[3] + " " + Character.toString(SettingsManager.charBorderVertical);
-					rowBottom += tile[4] + " " + Character.toString(SettingsManager.charBorderVertical);
+					rowTop    += tile[0] + " " + Character.toString(CharacterElements.charBorderVertical);
+					rowTM     += tile[1] + " " + Character.toString(CharacterElements.charBorderVertical);
+					rowMiddle += tile[2] + " " + Character.toString(CharacterElements.charBorderVertical);
+					rowMB     += tile[3] + " " + Character.toString(CharacterElements.charBorderVertical);
+					rowBottom += tile[4] + " " + Character.toString(CharacterElements.charBorderVertical);
 				}
 				else {
 					// A tile will be placed to the right of this tile, so skip border
@@ -534,8 +534,8 @@ public class UserInterface {
 			else
 				numberBottom += Integer.toString(i + 1) + "     ";
 		
-		String borderBottom = borderTop.replace(SettingsManager.charBorderCornerTopLeft, SettingsManager.charBorderCornerBottomLeft);
-		borderBottom = borderBottom.replace(SettingsManager.charBorderCornerTopRight, SettingsManager.charBorderCornerBottomRight);
+		String borderBottom = borderTop.replace(CharacterElements.charBorderCornerTopLeft, CharacterElements.charBorderCornerBottomLeft);
+		borderBottom = borderBottom.replace(CharacterElements.charBorderCornerTopRight, CharacterElements.charBorderCornerBottomRight);
 		
 		System.out.println(borderBottom);
 		System.out.println(numberBottom);
@@ -730,7 +730,7 @@ public class UserInterface {
 				}
 				
 				// [W] = wall block
-				l = l.replace("[W]", Character.toString(SettingsManager.charBlock));
+				l = l.replace("[W]", Character.toString(CharacterElements.charBlock));
 				lines.add(l);
 				
 				// Proceed to next line

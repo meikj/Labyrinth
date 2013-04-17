@@ -25,7 +25,6 @@ public class SettingsManager {
 	 */
 	public SettingsManager() {
 		// Set to default
-		initCharacters();
 		setDefault();
 	}
 	

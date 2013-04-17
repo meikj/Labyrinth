@@ -1,4 +1,7 @@
 package com.labyrinth;
+
+import com.labyrinth.ui.CharacterElements;
+
 /**
  * Represents a tile for use within a board.
  * 
@@ -167,7 +170,7 @@ public class Tile {
 	 */
 	private String[] convertFromPattern(String[] pattern) {
 		for(int i = 0; i < pattern.length; i++) {
-			pattern[i] = pattern[i].replace('1', SettingsManager.charBlock);
+			pattern[i] = pattern[i].replace('1', CharacterElements.charBlock);
 			pattern[i] = pattern[i].replace('0', ' ');
 		}
 		
@@ -377,13 +380,13 @@ public class Tile {
 		if(hasToken()) {
 			// Change middle section, middle element to token
 			char[] tileMiddle = tile[2].toCharArray();
-			tileMiddle[3] = SettingsManager.charToken; // Set to token
+			tileMiddle[3] = CharacterElements.charToken; // Set to token
 			tile[2] = new String(tileMiddle);
 		}
 		else if(hasTreasure()) {
 			// Change middle section, middle element to treasure
 			char[] tileMiddle = tile[2].toCharArray();
-			tileMiddle[3] = SettingsManager.charTreasure; // Set to token
+			tileMiddle[3] = CharacterElements.charTreasure; // Set to token
 			tile[2] = new String(tileMiddle);
 		}
 		
@@ -391,7 +394,7 @@ public class Tile {
 		if(!isMovable()) {
 			// Change tile string to fixed representation
 			for(int i = 0; i < 5; i++)
-				tile[i] = tile[i].replace(' ', SettingsManager.charImmovable);
+				tile[i] = tile[i].replace(' ', CharacterElements.charImmovable);
 		}
 		
 		return tile;

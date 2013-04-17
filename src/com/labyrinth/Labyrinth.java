@@ -1,6 +1,6 @@
 package com.labyrinth;
 
-import com.labyrinth.ui.UserInterface;
+import com.labyrinth.ui.*;
 
 /**
  * The main entry point to the Labyrinth game.
@@ -15,7 +15,7 @@ public class Labyrinth {
 	public static final String SETTINGS_PATH = System.getProperty("user.dir") + "/settings/settings.txt";
 	
 	public static void main(String[] args) {
-		SettingsManager.initCharacters(); // Set the static characters in accordance to the charset in use
+		CharacterElements.initCharacters(); // Set the static characters in accordance to the charset in use
 		SettingsManager settings = new SettingsManager(SETTINGS_PATH);
 		
 		// By default just start up a new Treasure Chase game
