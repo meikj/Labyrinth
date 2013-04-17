@@ -22,10 +22,6 @@ public class Labyrinth {
 		//GameMode game = new TreasureChase(settings);
 		//UserInterface ui = new UserInterface(game);
 		//ui.runMenu();
-		
-		Window w = new Window("LOAD");
-		w.addContent("1. Hello world!");
-		w.display();
 	}
 
 }

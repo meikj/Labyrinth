@@ -19,7 +19,7 @@ public class Window {
 	private String title;
 	private String layoutPath;
 	private LinkedList<String> window;
-	private LinkedList<String> contents;
+	protected LinkedList<String> contents;
 	
 	/**
 	 * Construct a default window.
