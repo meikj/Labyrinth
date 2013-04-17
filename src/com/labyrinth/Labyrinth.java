@@ -19,9 +19,13 @@ public class Labyrinth {
 		SettingsManager settings = new SettingsManager(SETTINGS_PATH);
 		
 		// By default just start up a new Treasure Chase game
-		GameMode game = new TreasureChase(settings);
-		UserInterface ui = new UserInterface(game);
-		ui.runMenu();
+		//GameMode game = new TreasureChase(settings);
+		//UserInterface ui = new UserInterface(game);
+		//ui.runMenu();
+		
+		Window w = new Window("LOAD");
+		w.addContent("1. Hello world!");
+		w.display();
 	}
 
 }

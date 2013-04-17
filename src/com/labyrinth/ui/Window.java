@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import com.labyrinth.SettingsManager;
-
 /**
  * Represents a basic text-based graphical window.
  * 
@@ -31,6 +29,8 @@ public class Window {
 		layoutPath = System.getProperty("user.dir") + "/media/window";
 		window = new LinkedList<String>();
 		contents = new LinkedList<String>();
+		
+		reset();
 	}
 	
 	/**
@@ -41,6 +41,8 @@ public class Window {
 	public Window(String title) {
 		this();
 		this.title = title;
+		
+		reset();
 	}
 	
 	/**
@@ -55,8 +57,8 @@ public class Window {
 					String[] split = line.split("%");
 					
 					int offset = content.length() - 1;
-					line = split[0] + content + split[1].substring(offset, split[1].length());
-					System.out.println(line);
+					String newLine = split[0] + content + split[1].substring(offset, split[1].length());
+					System.out.println(newLine);
 				}
 			} else {
 				System.out.println(line);
@@ -116,6 +118,13 @@ public class Window {
 			refresh();
 		} catch(Exception e) {
 			System.out.println("Invalid layout path. Can't refresh() window.");
+		}
+		
+		// Add title to contents
+		if(!title.isEmpty()) {
+			contents.add(title);
+			contents.add("------------------------------------------------------------------------");
+			contents.add(" ");
 		}
 	}
 

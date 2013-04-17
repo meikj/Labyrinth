@@ -2,8 +2,6 @@ package com.labyrinth.ui;
 
 import java.nio.charset.Charset;
 
-import com.labyrinth.SettingsManager;
-
 /**
  * Represents all the available character elements for use within
  * the text-based user interface. The characters are initialised in

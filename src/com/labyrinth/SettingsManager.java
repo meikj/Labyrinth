@@ -2,7 +2,6 @@ package com.labyrinth;
 import java.io.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.nio.charset.Charset;
 
 /**
  * Manages settings and configurations for the Labyrinth game. Allows for the loading

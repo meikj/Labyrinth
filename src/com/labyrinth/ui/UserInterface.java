@@ -13,7 +13,6 @@ import com.labyrinth.GameManager;
 import com.labyrinth.GameMode;
 import com.labyrinth.IllegalMoveException;
 import com.labyrinth.Leaderboard;
-import com.labyrinth.SettingsManager;
 import com.labyrinth.Tile;
 
 /**
