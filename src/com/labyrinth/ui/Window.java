@@ -26,7 +26,7 @@ public class Window {
 	 */
 	public Window() {
 		title = "";
-		layoutPath = System.getProperty("user.dir") + "/media/window";
+		layoutPath = System.getProperty("user.dir") + "/media/window_default";
 		window = new LinkedList<String>();
 		contents = new LinkedList<String>();
 		
@@ -107,17 +107,20 @@ public class Window {
 	}
 	
 	/**
-	 * Add a line of content to the window. Maximum length should be 80 characters to ensure 
+	 * Add a line of content to the window. Maximum length should be 72 characters to ensure 
 	 * consistency.
 	 * 
 	 * @param content The line of content to add to the window.
-	 * @throws IllegalArgumentException If the content passed is greater than 80 characters or is empty.
+	 * @throws IllegalArgumentException If the content passed is greater than 80 characters.
 	 */
 	public void addContent(String content) throws IllegalArgumentException {
-		if(content.length() > 80 || content.length() < 1)
-			throw new IllegalArgumentException("Content must not exceed 80 characters, nor be empty.");
+		if(content.length() > 72)
+			throw new IllegalArgumentException("Content must not exceed 72 characters.");
 		
-		contents.add(content);
+		if(content.isEmpty())
+			contents.add(" ");
+		else
+			contents.add(content);
 	}
 	
 	/**

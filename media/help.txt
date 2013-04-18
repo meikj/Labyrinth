@@ -1,38 +1,40 @@
 What is Labyrinth?
 ------------------
 
-Labyrinth is a puzzle game consisting of two game modes: Treasure Chase and
-Letter Chase. At the moment, only Treasure Chase is supported.
+Labyrinth is a puzzle game consisting of two game modes: Treasure Chase
+and Letter Chase. At the moment, only Treasure Chase is supported.
 
-The aim of Treasure Chase is to collect the treausure in as few rounds as
-possible. A round consists of a player tile move, a player token move, and a
-computer tile move. 
+The aim of Treasure Chase is to collect the treasure in as few rounds
+as possible. A round consists of a player tile move, a player token
+move, and finally a computer tile move. 
 
-A tile move is when a players spare tile is inserted into a column or row on the
-board. The row or column must NOT contain any immovable tiles, otherwise it
-cannot be inserted there. A tile can be inserted from the top or bottom in the
-case of a column. And a tile can be inserted from the left or right in the case
-of a row. The tile that falls of the row or column becomes the new spare tile.
+A tile move is when a players spare tile is inserted into a column or 
+row on the board. The row or column must NOT contain any immovable
+tiles, otherwise it cannot be inserted there. A tile can be inserted 
+from the top or bottom in the case of a column. And a tile can be 
+inserted from the left or right in the case of a row. The tile that 
+falls off the row or column becomes the new spare tile.
 
-Also, you cannot insert the spare tile back into it's previous location (i.e.
-insert column bottom 2, then insert column top 2). The computer is not allowed
-to do this either. This ensures a stalemate cannot occur.
+Also, you cannot insert the spare tile back into it's previous location
+(i.e.insert column bottom 2, then insert column top 2). The computer is
+not allowed to do this either. This ensures a stalemate cannot occur.
 
-The spare tile can be rotated before placement - this does not take up a tile
-move. It can be rotated by 90, 180 or 270 degrees.
+The spare tile can be rotated before placement - this does not take up
+a tile move. It can be rotated by 90, 180 or 270 degrees.
 
-A token move is simply moving the token to a traversable location (i.e. a tile
-without any walls blocking). The computer does not have a token, only the player.
-The computers job is just to make getting to the treasure harder. The token can also
-transition 'pac-man' style - in other words, it can move to the other side of the
-board if it is at an edge and there are no walls blocking entry.
+A token move is simply moving the token to a traversable location (i.e.
+a tile without any walls blocking). The computer does not have a token,
+only the player. The computers job is just to make getting to the
+treasure harder. The token can also transition 'pac-man' style - in
+other words, it can move to the other side of the board if it is at an 
+edge and there are no walls blocking entry.
 
 Available Commands
 ------------------
 
-1. insert column <top/bottom> <no> - Insert spare tile into specified column
-2. insert row <left/right> <no> - Insert spare tile into specified row
-3. rotate <90/180/270> - Rotate spare tile by specified degrees
+1. insert column <top/bottom> <no> - Insert tile into specified column
+2. insert row <left/right> <no> - Insert tile into specified row
+3. rotate <90/180/270> - Rotate tile by specified degrees
 4. move <up/down/left/right> - Move token
-5. save <game_name> - Save the current progress of game to disk
-6. exit - Exit the game without saving
+5. save <game_name> - Save the current progress of game
+6. exit - Exit the game

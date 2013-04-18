@@ -1,19 +1,20 @@
 package com.labyrinth.ui;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import com.labyrinth.Direction;
-import com.labyrinth.GameManager;
-import com.labyrinth.IllegalMoveException;
-import com.labyrinth.Leaderboard;
-import com.labyrinth.Tile;
-import com.labyrinth.gamemodes.GameMode;
+import com.labyrinth.game.Direction;
+import com.labyrinth.game.GameManager;
+import com.labyrinth.game.IllegalMoveException;
+import com.labyrinth.game.Labyrinth;
+import com.labyrinth.game.Leaderboard;
+import com.labyrinth.game.Tile;
+import com.labyrinth.game.modes.GameMode;
 
 /**
  * Represents a text based user interface for use as a front-end for the Labyrinth game.
@@ -31,6 +32,12 @@ public class UserInterface {
 	private Scanner input;
 	private GameManager manager;
 	
+	// Windows
+	Window menuWindow;
+	Window loadWindow;
+	Window optionsWindow;
+	Window helpWindow;
+	
 	/**
 	 * Construct a new user interface to interface with a valid
 	 * game mode.
@@ -42,6 +49,70 @@ public class UserInterface {
 		this.input = new Scanner(System.in);
 		this.running = true;
 		this.manager = new GameManager();
+		
+		// Set up windows
+		makeMenuWindow();
+		makeLoadWindow();
+		makeOptionsWindow();
+		makeHelpWindow();
+	}
+	
+	/**
+	 * Initialise the main menu window.
+	 */
+	private void makeMenuWindow() {
+		menuWindow = new Window();
+		menuWindow.setLayoutPath("media/window_menu");
+		
+		menuWindow.addContent("1. Play game");
+		menuWindow.addContent("2. Load game");
+		menuWindow.addContent("3. Options");
+		menuWindow.addContent("4. Help");
+		menuWindow.addContent("5. Quit");
+		
+		try {
+			menuWindow.refresh();
+		} catch (Exception e) {
+			System.out.println("Error: makeMenuWindow(): Couldn't process layout file.");
+		}
+	}
+	
+	/**
+	 * Initialise the load game window.
+	 */
+	private void makeLoadWindow() {
+		loadWindow = new Window("LOAD GAME");
+		
+		loadWindow.addContent("Available saved games to choose from:");
+		loadWindow.addContent("");
+	}
+	
+	/**
+	 * Initialise the options window.
+	 */
+	private void makeOptionsWindow() {
+		optionsWindow = new Window("OPTIONS");
+	}
+	
+	/**
+	 * Initialise the help window.
+	 */
+	private void makeHelpWindow() {
+		LinkedList<String> helpFile = null;
+		helpWindow = new Window("HELP");
+		
+		try {
+			helpFile = processFile(Labyrinth.HELP_PATH);
+		} catch(FileNotFoundException e) {
+			helpWindow.addContent("Well this is embarassing... Couldn't find the help file.");
+		} catch(IOException e) {
+			helpWindow.addContent("Hmm, there was a problem processing the help file!");
+		}
+		
+		// Add the help file to the window
+		for(String line : helpFile) {
+			helpWindow.addContent(line);
+		}
 	}
 	
 	/**
@@ -276,11 +347,7 @@ public class UserInterface {
 	 * Display the help file.
 	 */
 	public void displayHelp() {
-		LinkedList<String> helpFile = processFile(System.getProperty("user.dir") + "/media/help.txt");
-		
-		for(String line : helpFile)
-			System.out.println(line);
-		
+		helpWindow.display();
 		enterPrompt();
 	}
 	
@@ -376,39 +443,14 @@ public class UserInterface {
 	 * Display the load screen.
 	 */
 	public void displayLoad() {
-		LinkedList<String> loadFile = processFile(System.getProperty("user.dir") + "/media/load.txt");
-		LinkedList<String> gameList = processFile(System.getProperty("user.dir") + "/saves/list.txt");
-		
-		for(String line : loadFile) {
-			// Check for %START% - this signifies where to begin outputting the available games
-			if(line.contains("%")) {
-				// Begin outputting games here
-				String[] split = line.split("%");
-				
-				for(String game : gameList) {
-					// Process each game
-					if(game.isEmpty())
-						continue;
-					
-					// Offset is number of spaces to skip to retain border placement
-					int offset = game.length() - 1;
-					game = split[0] + game + split[1].substring(offset, split[1].length());
-					System.out.println(game);
-				}
-			} else {
-				System.out.println(line);
-			}
-		}
+		loadWindow.display();
 	}
 	
 	/**
 	 * Display the menu.
 	 */
 	public void displayMenu() {
-		LinkedList<String> menuFile = processFile(System.getProperty("user.dir") + "/media/menu.txt");
-		
-		for(String line : menuFile)
-			System.out.println(line);
+		menuWindow.display();
 	}
 	
 	/**
@@ -709,40 +751,16 @@ public class UserInterface {
 	 * @param path The path to the file.
 	 * @returns The lines of the processed file.
 	 */
-	private LinkedList<String> processFile(String path) {
+	private LinkedList<String> processFile(String path) throws FileNotFoundException, IOException {
 		LinkedList<String> lines = new LinkedList<String>();
-		
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(path));
-			Scanner scanner = null;
+		BufferedReader reader = new BufferedReader(new FileReader(path));
+		String line = reader.readLine();
 			
-			String line = reader.readLine();
-			
-			while(line != null) {
-				scanner = new Scanner(line);
-				String l = "";
-				
-				try {
-					l = scanner.nextLine();
-				} catch(NoSuchElementException e) {
-					// Ignore
-				}
-				
-				// [W] = wall block
-				l = l.replace("[W]", Character.toString(CharacterElements.charBlock));
-				lines.add(l);
-				
-				// Proceed to next line
-				line = reader.readLine();
-			}
-			
-			scanner.close();
-			reader.close();
-		} catch(FileNotFoundException e) {
-			System.out.println("File not found: " + path);
-		} catch(Exception e) {
-			System.out.println("Couldn't process file: " + path);
+		while(line != null) {
+			lines.add(line);
+			line = reader.readLine();
 		}
+		reader.close();
 		
 		return lines;
 	}
