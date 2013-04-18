@@ -90,7 +90,7 @@ public class UserInterface {
 		try {
 			loadFile = processFile(Labyrinth.LOAD_PATH);
 		} catch(Exception e) {
-			helpWindow.addContent("    No saved games available");
+			loadWindow.addContent("    No saved games available");
 		}
 		
 		// Add the available saved games to the window
@@ -107,9 +107,29 @@ public class UserInterface {
 	 * Initialise the options window.
 	 */
 	private void makeOptionsWindow() {
+		LinkedList<String> optionsFile = null;
 		optionsWindow = new Window("OPTIONS");
 		
-		// TODO
+		optionsWindow.addContent("To alter an option, type <option_name> <new_value>. Current options:");
+		optionsWindow.addContent("");
+		
+		try {
+			optionsFile = processFile(Labyrinth.SETTINGS_PATH);
+		} catch(Exception e) {
+			optionsWindow.addContent("    No options available");
+		}
+		
+		// Add the available saved games to the window
+		if(optionsFile.isEmpty()) {
+			optionsWindow.addContent("    No options available");
+		} else {
+			for(String line : optionsFile) {
+				optionsWindow.addContent("    * " + line);
+			}
+		}
+		
+		optionsWindow.addContent("");
+		optionsWindow.addContent("Labyrinth v0.1.18042013    Charset: " + CharacterElements.charSet);
 	}
 	
 	/**
@@ -393,7 +413,8 @@ public class UserInterface {
 			break;
 		case 3:
 			// Options
-			// TODO
+			System.out.println();
+			displayOptions();
 			break;
 		case 4:
 			// Help
@@ -467,6 +488,14 @@ public class UserInterface {
 	 */
 	public void displayMenu() {
 		menuWindow.display();
+	}
+	
+	/**
+	 * Display the options window.
+	 */
+	public void displayOptions() {
+		optionsWindow.display();
+		enterPrompt();
 	}
 	
 	/**
