@@ -1,4 +1,4 @@
-package com.labyrinth;
+package com.labyrinth.game;
 /**
  * Used to represent a tile type.
  * 

@@ -1,4 +1,4 @@
-package com.labyrinth;
+package com.labyrinth.game;
 /**
  * Represents a number of possible directions.
  * 

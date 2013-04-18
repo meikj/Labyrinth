@@ -1,15 +1,15 @@
-package com.labyrinth.gamemodes;
+package com.labyrinth.game.modes;
 import java.util.Random;
 
-import com.labyrinth.Board;
-import com.labyrinth.ComputerPlayer;
-import com.labyrinth.Direction;
-import com.labyrinth.IllegalMoveException;
-import com.labyrinth.Leaderboard;
-import com.labyrinth.Player;
-import com.labyrinth.RotationAngle;
-import com.labyrinth.SettingsManager;
-import com.labyrinth.Tile;
+import com.labyrinth.game.Board;
+import com.labyrinth.game.ComputerPlayer;
+import com.labyrinth.game.Direction;
+import com.labyrinth.game.IllegalMoveException;
+import com.labyrinth.game.Leaderboard;
+import com.labyrinth.game.Player;
+import com.labyrinth.game.RotationAngle;
+import com.labyrinth.game.SettingsManager;
+import com.labyrinth.game.Tile;
 
 /**
  * Represents the Treasure Chase game mode.

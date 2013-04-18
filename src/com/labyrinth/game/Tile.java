@@ -1,4 +1,4 @@
-package com.labyrinth;
+package com.labyrinth.game;
 
 import com.labyrinth.ui.CharacterElements;
 

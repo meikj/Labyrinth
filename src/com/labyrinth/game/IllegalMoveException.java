@@ -1,4 +1,4 @@
-package com.labyrinth;
+package com.labyrinth.game;
 /**
  * Thrown when an illegal move occurs.
  * 

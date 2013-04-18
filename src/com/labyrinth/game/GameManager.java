@@ -1,8 +1,8 @@
-package com.labyrinth;
+package com.labyrinth.game;
 import java.io.*;
 
-import com.labyrinth.gamemodes.GameMode;
-import com.labyrinth.gamemodes.TreasureChase;
+import com.labyrinth.game.modes.GameMode;
+import com.labyrinth.game.modes.TreasureChase;
 
 /**
  * Allows for the loading and saving of games.

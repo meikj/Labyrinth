@@ -1,4 +1,4 @@
-package com.labyrinth;
+package com.labyrinth.game;
 import java.io.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;

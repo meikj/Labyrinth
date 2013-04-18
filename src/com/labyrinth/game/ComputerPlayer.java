@@ -1,4 +1,4 @@
-package com.labyrinth;
+package com.labyrinth.game;
 import java.util.ArrayList;
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package com.labyrinth;
+package com.labyrinth.game;
 /**
  * Used to represent the choice of possible rotation angles for use with tile
  * manipulation.
