@@ -30,7 +30,11 @@ public class Window {
 		window = new LinkedList<String>();
 		contents = new LinkedList<String>();
 		
-		reset();
+		try {
+			refresh();
+		} catch(Exception e) {
+			System.out.println("Fatal Error: Couldn't load default window layout.");
+		}
 	}
 	
 	/**
@@ -41,8 +45,13 @@ public class Window {
 	public Window(String title) {
 		this();
 		this.title = title;
+		clearContents();
 		
-		reset();
+		try {
+			refresh();
+		} catch(Exception e) {
+			System.out.println("Fatal Error: Couldn't load default window layout.");
+		}
 	}
 	
 	/**
@@ -67,7 +76,9 @@ public class Window {
 	}
 	
 	/**
-	 * Set the layout path to a new (custom) layout file.
+	 * Set the layout path to a new (custom) layout file. Custom elements include:
+	 * 
+	 * 	[W] = Black block
 	 * 
 	 * @param path The path to the new layout.
 	 */
@@ -76,11 +87,13 @@ public class Window {
 	}
 	
 	/**
-	 * Refresh the window contents.
+	 * Refresh the window contents by internally redrawing the window.
+	 * This should be called after setting a new layout path.
 	 */
 	public void refresh() throws FileNotFoundException, IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(layoutPath));
 		String line = reader.readLine();
+		window = new LinkedList<String>();
 		
 		while(line != null) {
 			// Do some replacements
@@ -94,11 +107,11 @@ public class Window {
 	}
 	
 	/**
-	 * Add an item of content to the window. Maximum length should be 80 characters to ensure 
+	 * Add a line of content to the window. Maximum length should be 80 characters to ensure 
 	 * consistency.
 	 * 
-	 * @param content The content to add.
-	 * @throws IllegalArgumentException If the content passed is greater than 80 characters or empty.
+	 * @param content The line of content to add to the window.
+	 * @throws IllegalArgumentException If the content passed is greater than 80 characters or is empty.
 	 */
 	public void addContent(String content) throws IllegalArgumentException {
 		if(content.length() > 80 || content.length() < 1)
@@ -108,17 +121,10 @@ public class Window {
 	}
 	
 	/**
-	 * Reset the window by emptying the contents and refreshing the layout.
+	 * Clear the contents of the window.
 	 */
-	public void reset() {
-		window = new LinkedList<String>();
+	public void clearContents() {
 		contents = new LinkedList<String>();
-		
-		try {
-			refresh();
-		} catch(Exception e) {
-			System.out.println("Invalid layout path. Can't refresh() window.");
-		}
 		
 		// Add title to contents
 		if(!title.isEmpty()) {
