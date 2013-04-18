@@ -81,10 +81,26 @@ public class UserInterface {
 	 * Initialise the load game window.
 	 */
 	private void makeLoadWindow() {
+		LinkedList<String> loadFile = null;
 		loadWindow = new Window("LOAD GAME");
 		
 		loadWindow.addContent("Available saved games to choose from:");
 		loadWindow.addContent("");
+		
+		try {
+			loadFile = processFile(Labyrinth.LOAD_PATH);
+		} catch(Exception e) {
+			helpWindow.addContent("    No saved games available");
+		}
+		
+		// Add the available saved games to the window
+		if(loadFile.isEmpty()) {
+			loadWindow.addContent("    No saved games available");
+		} else {
+			for(String line : loadFile) {
+				loadWindow.addContent("    * " + line);
+			}
+		}
 	}
 	
 	/**
@@ -92,6 +108,8 @@ public class UserInterface {
 	 */
 	private void makeOptionsWindow() {
 		optionsWindow = new Window("OPTIONS");
+		
+		// TODO
 	}
 	
 	/**
@@ -103,10 +121,8 @@ public class UserInterface {
 		
 		try {
 			helpFile = processFile(Labyrinth.HELP_PATH);
-		} catch(FileNotFoundException e) {
-			helpWindow.addContent("Well this is embarassing... Couldn't find the help file.");
-		} catch(IOException e) {
-			helpWindow.addContent("Hmm, there was a problem processing the help file!");
+		} catch(Exception e) {
+			helpWindow.addContent("Help file not available, sorry!");
 		}
 		
 		// Add the help file to the window
