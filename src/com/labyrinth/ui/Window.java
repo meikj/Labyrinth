@@ -111,7 +111,7 @@ public class Window {
 	 * consistency.
 	 * 
 	 * @param content The line of content to add to the window.
-	 * @throws IllegalArgumentException If the content passed is greater than 80 characters.
+	 * @throws IllegalArgumentException If the content passed is greater than 72 characters.
 	 */
 	public void addContent(String content) throws IllegalArgumentException {
 		if(content.length() > 72)
