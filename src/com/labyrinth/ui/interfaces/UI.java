@@ -61,6 +61,18 @@ public abstract class UI extends Window {
 	 */
 	public void run() {
 		running = true;
+		
+		while(isRunning()) {
+			display();
+			String[] choice = prompt();
+			
+			try {
+				parse(choice);
+			} catch(IllegalArgumentException e) {
+				System.out.println(e.getMessage());
+				continue;
+			}
+		}
 	}
 	
 	/**

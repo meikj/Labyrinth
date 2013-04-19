@@ -3,44 +3,43 @@ package com.labyrinth.ui.interfaces;
 import java.util.LinkedList;
 
 import com.labyrinth.game.Labyrinth;
-import com.labyrinth.ui.CharacterElements;
+import com.labyrinth.game.SettingsManager;
+import com.labyrinth.game.modes.TreasureChase;
 import com.labyrinth.ui.Window;
 
 public class MainMenuUI extends UI {
 	
+	private SettingsManager settings;
+	
 	// UI's
-	Window menuWindow;
+	GameUI gameUI;
 	LoadUI loadUI;
-	Window optionsWindow;
+	OptionsUI optionsUI;
+	
+	// Windows
 	Window helpWindow;
 	
 	public MainMenuUI() {
-		super("Main Menu");
+		super();
+		
+		// Load in settings
+		settings = new SettingsManager(Labyrinth.SETTINGS_PATH);
+		
+		// Set up UI's
+		gameUI = new GameUI(new TreasureChase(settings));
+		loadUI = new LoadUI();
+		optionsUI = new OptionsUI();
 		
 		// Set up windows
-		makeOptionsWindow();
 		makeHelpWindow();
 	}
 	
 	/**
-	 * Display and run the main menu.
+	 * Prompt the user for their menu option.
 	 */
-	public void run() {
-		super.run();
-		
-		while(isRunning()) {
-			displayMenu();
-			
-			System.out.print("\n    Option: ");
-			String[] input = prompt();
-			
-			try {
-				parse(input);
-			} catch(IllegalArgumentException e) {
-				System.out.println(e.getMessage());
-				continue;
-			}
-		}
+	public String[] prompt() {
+		System.out.print("\n    Option: ");
+		return super.prompt();
 	}
 	
 	/**
@@ -60,7 +59,7 @@ public class MainMenuUI extends UI {
 		case 1:
 			// Play game
 			System.out.println("\nStarting new Treasure Chase game...\n");
-			run();
+			gameUI.run();
 			break;
 		case 2:
 			// Load game
@@ -70,7 +69,7 @@ public class MainMenuUI extends UI {
 		case 3:
 			// Options
 			System.out.println();
-			displayOptions();
+			optionsUI.run();
 			break;
 		case 4:
 			// Help
@@ -80,24 +79,10 @@ public class MainMenuUI extends UI {
 		case 5:
 			// Exit
 			stop();
+			break;
 		default:
 			throw new IllegalArgumentException("Please enter an option between 1-5 (inclusive).");
 		}
-	}
-	
-	/**
-	 * Display the menu.
-	 */
-	public void displayMenu() {
-		menuWindow.display();
-	}
-	
-	/**
-	 * Display the options window.
-	 */
-	public void displayOptions() {
-		optionsWindow.display();
-		enterPrompt();
 	}
 	
 	/**
@@ -112,19 +97,18 @@ public class MainMenuUI extends UI {
 	 * Initialise the main menu window.
 	 */
 	protected void makeWindow() {
-		menuWindow = new Window();
-		menuWindow.setLayoutPath("media/window_menu");
+		setLayoutPath("media/window_menu");
 		
-		menuWindow.addContent("1. Play game");
-		menuWindow.addContent("2. Load game");
-		menuWindow.addContent("3. Options");
-		menuWindow.addContent("4. Help");
-		menuWindow.addContent("5. Quit");
+		addContent("1. Play game");
+		addContent("2. Load game");
+		addContent("3. Options");
+		addContent("4. Help");
+		addContent("5. Quit");
 		
 		try {
-			menuWindow.refresh();
+			refresh();
 		} catch (Exception e) {
-			System.out.println("Error: makeMenuWindow(): Couldn't process layout file.");
+			System.out.println("Error: MainMenuUI.makeWindow(): Couldn't process layout file.");
 		}
 	}
 	

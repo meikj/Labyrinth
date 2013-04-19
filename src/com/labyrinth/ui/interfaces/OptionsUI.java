@@ -6,10 +6,13 @@ import com.labyrinth.game.Labyrinth;
 import com.labyrinth.ui.CharacterElements;
 
 public class OptionsUI extends UI {
+	
+	public OptionsUI() {
+		super("OPTIONS");
+	}
 
 	public void parse(String[] args) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	/**
