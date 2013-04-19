@@ -123,4 +123,19 @@ public interface GameMode {
 	 */
 	public SettingsManager getSettings();
 	
+	/**
+	 * Set the current round number.
+	 */
+	public void setRound(int round);
+	
+	/**
+	 * Set the current move of the game.
+	 */
+	public void setCurrentMove(String move);
+	
+	/**
+	 * Get the current move of the game.
+	 */
+	public String getCurrentMove();
+	
 }

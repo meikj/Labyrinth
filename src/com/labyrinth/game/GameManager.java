@@ -28,6 +28,9 @@ public class GameManager {
 	 * TILE <type> <rotation>
 	 * TOKEN <column> <row>
 	 * TREASURE <column> <row>
+	 * ROUND <no>
+	 * SCORE <no>
+	 * CURRENT_MOVE <tile/token>
 	 * 
 	 * @param path The path to the save game.
 	 * @return The result in the form of a GameMode.
@@ -85,8 +88,16 @@ public class GameManager {
 				nextColumn++;
 			} else if(lineTokens[0].equals("TOKEN")) {
 				game.getBoard().getTile(Integer.parseInt(lineTokens[1]), Integer.parseInt(lineTokens[2])).setToken(true);
+				game.getBoard().setTokenPos(Integer.parseInt(lineTokens[1]), Integer.parseInt(lineTokens[2]));
 			} else if(lineTokens[0].equals("TREASURE")) {
 				game.getBoard().getTile(Integer.parseInt(lineTokens[1]), Integer.parseInt(lineTokens[2])).setTreasure(true);
+				game.getBoard().setTreasurePos(Integer.parseInt(lineTokens[1]), Integer.parseInt(lineTokens[2]));
+			} else if(lineTokens[0].equals("ROUND")) {
+				game.setRound(Integer.parseInt(lineTokens[1]));
+			} else if(lineTokens[0].equals("SCORE")) {
+				game.getPlayer().setScore(Integer.parseInt(lineTokens[1]));
+			} else if(lineTokens[0].equals("CURRENT_MOVE")) {
+				game.setCurrentMove(lineTokens[1]);
 			}
 			
 			line = reader.readLine();
@@ -127,6 +138,15 @@ public class GameManager {
 		writer.newLine();
 		
 		writer.write("TREASURE " + game.getBoard().getTreasurePos()[0] + " " + game.getBoard().getTreasurePos()[1]);
+		writer.newLine();
+		
+		writer.write("ROUND " + game.getRound());
+		writer.newLine();
+		
+		writer.write("SCORE " + game.getPlayer().getScore());
+		writer.newLine();
+		
+		writer.write("CURRENT_MOVE " + game.getCurrentMove());
 		writer.newLine();
 		
 		writer.close();

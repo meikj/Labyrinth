@@ -28,6 +28,7 @@ public class TreasureChase implements GameMode {
 	private SettingsManager settings;
 	private ComputerPlayer computer;
 	private Random rand;
+	private String currentMove; // tile/token
 	
 	/**
 	 * Construct a new Treasure Chase game with the specified settings.
@@ -54,6 +55,8 @@ public class TreasureChase implements GameMode {
 		
 		this.board.getTile(rCol, rRow).setTreasure(true);
 		this.board.setTreasurePos(rCol, rRow);
+		
+		this.currentMove = "tile";
 	}
 	
 	/**
@@ -715,5 +718,26 @@ public class TreasureChase implements GameMode {
 	 */
 	public SettingsManager getSettings() {
 		return settings;
+	}
+	
+	/**
+	 * Set the current round number.
+	 */
+	public void setRound(int round) {
+		this.round = round;
+	}
+	
+	/**
+	 * Set the current move of the game.
+	 */
+	public void setCurrentMove(String move) {
+		currentMove = move;
+	}
+	
+	/**
+	 * Get the current move of the game.
+	 */
+	public String getCurrentMove() {
+		return currentMove;
 	}
 }

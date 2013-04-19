@@ -28,6 +28,8 @@ public class GameView {
 	private Scanner input;
 	private GameManager manager;
 	
+	private boolean makeTokenMove;
+	
 	/**
 	 * Construct a new user interface to interface with a valid
 	 * game mode.
@@ -39,6 +41,7 @@ public class GameView {
 		this.input = new Scanner(System.in);
 		this.running = true;
 		this.manager = new GameManager();
+		this.makeTokenMove = false;
 	}
 	
 	/**
@@ -49,46 +52,82 @@ public class GameView {
 			// Main game loop
 			update();
 			
-			if(game.hasWon()) {
-				// Check if win condition has been satisfied before continuing
-				onTreasureChaseWin();
-				return;
-			} else {
-				// Process player tile move
-				while(true) {
-					try {
-						promptTileMove();
-						break;
-					} catch(IllegalArgumentException e ) {
-						System.out.println(e.getMessage());
-						enterPrompt();
-						continue;
-					}
-				}
-				
-				// Update interface to reflect move
-				update();
-				
-				// Process player token move
-				while(true) {
-					try {
-						promptTokenMove();
-						break;
-					} catch(IllegalArgumentException e) {
-						// Invalid command passed, reset loop
-						System.out.println(e.getMessage());
-						enterPrompt();
-						continue;
-					}
-				}
-				
-				// Advance to next round by checking win, processing computer move, etc.
-				game.nextRound();
+			// Check just in case tile move is first - this can happen from a saved game
+			if(game.getCurrentMove().equals("token")) {
+				startTokenMove();
+				startComputerMove();
+				continue;
 			}
+			
+			startTileMove();
+			
+			// Update interface to reflect move
+			update();
+			
+			startTokenMove();
+			startComputerMove();
 		}
 		
 		// Game loop closed, call clean up code
 		input.close();
+	}
+	
+	/**
+	 * Start the tile move.
+	 */
+	public void startTileMove() {
+		// Process player tile move
+		while(running) {
+			try {
+				promptTileMove();
+				break;
+			} catch(IllegalArgumentException e ) {
+				System.out.println(e.getMessage());
+				enterPrompt();
+				continue;
+			}
+		}
+		
+		game.setCurrentMove("token");
+	}
+	
+	/**
+	 * Start the token move.
+	 */
+	public void startTokenMove() {
+		// Process player token move
+		makeTokenMove = true;
+		
+		while(makeTokenMove) {
+			try {
+				promptTokenMove();
+				
+				// Premature update to reflect new token position
+				update();
+				
+				// Check if token has landed on treasure
+				if(game.hasWon()) {
+					onTreasureChaseWin();
+					return;
+				}
+			} catch(IllegalArgumentException e) {
+				// Invalid command passed, reset loop
+				System.out.println(e.getMessage());
+				enterPrompt();
+				continue;
+			}
+		}
+		
+		game.setCurrentMove("computer");
+	}
+	
+	/**
+	 * Start the computer move.
+	 */
+	public void startComputerMove() {
+		// Advance to next round by checking win, processing computer move, etc.
+		game.nextRound();
+		game.setCurrentMove("tile");
 	}
 	
 	/**
@@ -101,18 +140,20 @@ public class GameView {
 		System.out.println("\trotate <degrees>");
 		System.out.println("\tinsert row <left/right> <no>");
 		System.out.println("\tinsert column <top/bottom> <no>");
+		System.out.println("\thelp");
 		System.out.print("\nTile Move > ");
 		
 		String in = input.nextLine();
 		String[] tokens = in.split(" ");
 		
 		// A tile move is either rotate, insert, save or exit
-		if(tokens[0].equals("rotate")) {
+		if(tokens[0].equals("rotate") || tokens[0].equals("save") || tokens[0].equals("help")) {
 			// When the player does a rotation, it does not count as a move, so ask for another tile move
+			// Likewise with save and help
 			parse(tokens);
 			update();
 			promptTileMove();
-		} else if(tokens[0].equals("insert") || tokens[0].equals("save") || tokens[0].equals("exit")) {
+		} else if(tokens[0].equals("insert") || tokens[0].equals("exit")) {
 			parse(tokens);
 		} else {
 			throw new IllegalArgumentException("Invalid tile move command: only rotate and insert allowed");
@@ -127,13 +168,20 @@ public class GameView {
 	public void promptTokenMove() throws IllegalArgumentException {
 		System.out.println("Token Move Commands:");
 		System.out.println("\tmove <up/down/left/right>");
+		System.out.println("\tdone (end token move)");
+		System.out.println("\thelp");
 		System.out.print("\nToken Move > ");
 		
 		String in = input.nextLine();
 		String[] tokens = in.split(" ");
 		
 		// A token move is move, save or exit
-		if(tokens[0].equals("move") || tokens[0].equals("save") || tokens[0].equals("exit")) {
+		if(tokens[0].equals("save") || tokens[0].equals("help")) {
+			// When a player calls save or help, it doesn't take up a move
+			parse(tokens);
+			update();
+			promptTokenMove();
+		} else if(tokens[0].equals("move") || tokens[0].equals("done") || tokens[0].equals("exit")) {
 			parse(tokens);
 		} else {
 			throw new IllegalArgumentException("Invalid token move command: only move allowed");
@@ -235,6 +283,9 @@ public class GameView {
 					throw new IllegalArgumentException(e.getMessage());
 				}
 			}
+		} else if(inputArgs[0].toLowerCase().equals("done")) {
+			// User is done making token move
+			makeTokenMove = false;
 		} else if(inputArgs[0].toLowerCase().equals("save")) {
 			String gameName = inputArgs[1];
 			
@@ -245,6 +296,18 @@ public class GameView {
 				System.out.println("Couldn't save file: " + e.getMessage());
 				enterPrompt();
 			}
+		} else if(inputArgs[0].toLowerCase().equals("help")) {
+			// Help command called, display available commands
+			System.out.println("All Command (all not neccessarily available):");
+			System.out.println("\trotate <degrees>");
+			System.out.println("\tinsert row <left/right> <no>");
+			System.out.println("\tinsert column <top/bottom> <no>");
+			System.out.println("\tmove <up/down/left/right>");
+			System.out.println("\tdone (end token move)");
+			System.out.println("\tsave <game_name>");
+			System.out.println("\texit");
+			
+			enterPrompt();
 		} else if(inputArgs[0].toLowerCase().equals("exit")) {
 			// Exit command called
 			setRunning(false);
@@ -457,6 +520,9 @@ public class GameView {
 		// Leaderboard code
 		promptLeaderboard();
 		enterPrompt();
+		
+		System.out.println("Thanks for playing, goodbye!");
+		System.exit(0);
 	}
 	
 	/**

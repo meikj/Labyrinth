@@ -117,7 +117,7 @@ public abstract class UserInterface extends Window {
 	 * Retrieve the contents of a file line by line.
 	 * 
 	 * @param path The path to the file.
-	 * @returns The lines of the processed file.
+	 * @return The lines of the processed file.
 	 */
 	public LinkedList<String> processFile(String path) throws FileNotFoundException, IOException {
 		LinkedList<String> lines = new LinkedList<String>();
