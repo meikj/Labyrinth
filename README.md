@@ -26,4 +26,4 @@ As it stands, the project is still under heavy development, but is progressing v
 * John Meikle - <john.meikle@strath.ac.uk>
 
 ## UML Diagram
-![Labyrinth UML Diagram](https://raw.github.com/meikj/Labyrinth/master/Labyrinth.umlcd.png)
+![Labyrinth UML Diagram](http://i.imgur.com/U8GY3eV.png)
