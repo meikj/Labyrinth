@@ -471,10 +471,6 @@ public class GameView {
 		System.out.println("     " + game.getComputerPlayer().getLastMove());
 		System.out.println("   |___________________________________________________|");
 		System.out.println();
-		
-		
-		System.out.println("DEBUG INFO:");
-		System.out.println("\tToken Position: (" + game.getBoard().getTokenPos()[0] + "," + game.getBoard().getTokenPos()[1] + ")");
 	}
 	
 	/**
