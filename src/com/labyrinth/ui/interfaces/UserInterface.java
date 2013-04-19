@@ -36,8 +36,6 @@ public abstract class UserInterface extends Window {
 		
 		running = false;
 		input = new Scanner(System.in);
-		
-		makeWindow();
 	}
 	
 	/**
@@ -50,8 +48,6 @@ public abstract class UserInterface extends Window {
 		
 		running = false;
 		input = new Scanner(System.in);
-		
-		makeWindow();
 	}
 	
 	/**
@@ -68,6 +64,9 @@ public abstract class UserInterface extends Window {
 		running = true;
 		
 		while(isRunning()) {
+			// Redraw the window in case of new data
+			makeWindow();
+			
 			display();
 			String[] choice = prompt();
 			
@@ -111,7 +110,9 @@ public abstract class UserInterface extends Window {
 	/**
 	 * Initialise the window with content.
 	 */
-	protected abstract void makeWindow();
+	protected void makeWindow() {
+		clearContents();
+	}
 	
 	/**
 	 * Retrieve the contents of a file line by line.

@@ -71,17 +71,28 @@ public class MainMenuUI extends UserInterface {
 		case 1:
 			// Play game
 			System.out.println("\nStarting new Treasure Chase game...\n");
+			gameUI = new GameView(new TreasureChase(settings));
 			gameUI.run();
 			break;
 		case 2:
 			// Load game
 			System.out.println();
 			loadUI.run();
+			System.out.println();
 			break;
 		case 3:
 			// Options
 			System.out.println();
 			optionsUI.run();
+			System.out.println();
+			
+			// Reload settings
+			try {
+				settings.load(Labyrinth.SETTINGS_FILE);
+			} catch(Exception e) {
+				System.out.println("There was a problem reloading the settings!");
+			}
+			
 			break;
 		case 4:
 			// Help
@@ -109,6 +120,8 @@ public class MainMenuUI extends UserInterface {
 	 * Initialise the main menu window with custom layout and content.
 	 */
 	protected void makeWindow() {
+		super.makeWindow();
+		
 		setLayoutFile("media/window_menu");
 		
 		addContent("1. Play game");

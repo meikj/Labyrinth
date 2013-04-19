@@ -70,6 +70,8 @@ public class LoadUI extends UserInterface {
 	 * Initialise the load game window.
 	 */
 	protected void makeWindow() {
+		super.makeWindow();
+		
 		LinkedList<String> loadFile = null;
 		
 		addContent("Available saved games to choose from:");
@@ -90,6 +92,10 @@ public class LoadUI extends UserInterface {
 				addContent("    * " + line);
 			}
 		}
+		
+		addContent("");
+		addContent("------------------------------------------------------------------------");
+		addContent("Enter 'back' to go back                                                 ");
 	}
 
 }
