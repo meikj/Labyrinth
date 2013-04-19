@@ -24,3 +24,6 @@ As it stands, the project is still under heavy development, but is progressing v
 ## Authors
 * Gareth Gill - <gareth.gill@strath.ac.uk>
 * John Meikle - <john.meikle@strath.ac.uk>
+
+## UML Diagram
+![Labyrinth UML Diagram](https://raw.github.com/meikj/Labyrinth/master/Labyrinth.umlcd.png)
