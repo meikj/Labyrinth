@@ -8,9 +8,9 @@ import com.labyrinth.ui.Window;
 
 public class MainMenuUI extends UI {
 	
-	// Windows
+	// UI's
 	Window menuWindow;
-	Window loadWindow;
+	LoadUI loadUI;
 	Window optionsWindow;
 	Window helpWindow;
 	
@@ -18,8 +18,6 @@ public class MainMenuUI extends UI {
 		super("Main Menu");
 		
 		// Set up windows
-		makeMenuWindow();
-		makeLoadWindow();
 		makeOptionsWindow();
 		makeHelpWindow();
 	}
@@ -67,7 +65,7 @@ public class MainMenuUI extends UI {
 		case 2:
 			// Load game
 			System.out.println();
-			loadWindow.display();
+			loadUI.run();
 			break;
 		case 3:
 			// Options
@@ -111,18 +109,9 @@ public class MainMenuUI extends UI {
 	}
 	
 	/**
-	 * Display and wait for enter. Useful to pause states until user is ready.
-	 */
-	public void enterPrompt() {
-		System.out.print("\nPlease press [ENTER] to continue... ");
-		
-		input.nextLine();
-	}
-	
-	/**
 	 * Initialise the main menu window.
 	 */
-	private void makeMenuWindow() {
+	protected void makeWindow() {
 		menuWindow = new Window();
 		menuWindow.setLayoutPath("media/window_menu");
 		
@@ -137,61 +126,6 @@ public class MainMenuUI extends UI {
 		} catch (Exception e) {
 			System.out.println("Error: makeMenuWindow(): Couldn't process layout file.");
 		}
-	}
-	
-	/**
-	 * Initialise the load game window.
-	 */
-	private void makeLoadWindow() {
-		LinkedList<String> loadFile = null;
-		loadWindow = new Window("LOAD GAME");
-		
-		loadWindow.addContent("Available saved games to choose from:");
-		loadWindow.addContent("");
-		
-		try {
-			loadFile = processFile(Labyrinth.LOAD_PATH);
-		} catch(Exception e) {
-			loadWindow.addContent("    No saved games available");
-		}
-		
-		// Add the available saved games to the window
-		if(loadFile.isEmpty()) {
-			loadWindow.addContent("    No saved games available");
-		} else {
-			for(String line : loadFile) {
-				loadWindow.addContent("    * " + line);
-			}
-		}
-	}
-	
-	/**
-	 * Initialise the options window.
-	 */
-	private void makeOptionsWindow() {
-		LinkedList<String> optionsFile = null;
-		optionsWindow = new Window("OPTIONS");
-		
-		optionsWindow.addContent("To alter an option, type <option_name> <new_value>. Current options:");
-		optionsWindow.addContent("");
-		
-		try {
-			optionsFile = processFile(Labyrinth.SETTINGS_PATH);
-		} catch(Exception e) {
-			optionsWindow.addContent("    No options available");
-		}
-		
-		// Add the available saved games to the window
-		if(optionsFile.isEmpty()) {
-			optionsWindow.addContent("    No options available");
-		} else {
-			for(String line : optionsFile) {
-				optionsWindow.addContent("    * " + line);
-			}
-		}
-		
-		optionsWindow.addContent("");
-		optionsWindow.addContent("Labyrinth v0.1.18042013    Charset: " + CharacterElements.charSet);
 	}
 	
 	/**

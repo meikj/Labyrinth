@@ -31,17 +31,22 @@ public abstract class UI extends Window {
 		
 		running = false;
 		input = new Scanner(System.in);
+		
+		makeWindow();
 	}
 	
 	/**
 	 * Construct a basic user interface with title.
-	 * @param title
+	 * 
+	 * @param title The title of the interface.
 	 */
 	public UI(String title) {
 		super(title);
 		
 		running = false;
 		input = new Scanner(System.in);
+		
+		makeWindow();
 	}
 	
 	/**
@@ -84,6 +89,11 @@ public abstract class UI extends Window {
 	public abstract void parse(String[] args) throws IllegalArgumentException;
 	
 	/**
+	 * Initialise the window with content and what have you.
+	 */
+	protected abstract void makeWindow();
+	
+	/**
 	 * Retrieve the contents of a file line by line.
 	 * 
 	 * @param path The path to the file.
@@ -101,6 +111,15 @@ public abstract class UI extends Window {
 		reader.close();
 		
 		return lines;
+	}
+	
+	/**
+	 * Display and wait for enter. Useful to pause states until user is ready.
+	 */
+	public void enterPrompt() {
+		System.out.print("\nPlease press [ENTER] to continue... ");
+		
+		input.nextLine();
 	}
 	
 }

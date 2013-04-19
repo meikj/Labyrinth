@@ -1,17 +1,12 @@
 package com.labyrinth.ui.interfaces;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 import com.labyrinth.game.Direction;
 import com.labyrinth.game.GameManager;
 import com.labyrinth.game.IllegalMoveException;
-import com.labyrinth.game.Labyrinth;
 import com.labyrinth.game.Leaderboard;
 import com.labyrinth.game.Tile;
 import com.labyrinth.game.modes.GameMode;
@@ -538,26 +533,6 @@ public class GameUI {
 		
 		// Form bottom
 		System.out.println(" -------------------- ------------- ");
-	}
-	
-	/**
-	 * Retrieve the contents of a file line by line.
-	 * 
-	 * @param path The path to the file.
-	 * @returns The lines of the processed file.
-	 */
-	private LinkedList<String> processFile(String path) throws FileNotFoundException, IOException {
-		LinkedList<String> lines = new LinkedList<String>();
-		BufferedReader reader = new BufferedReader(new FileReader(path));
-		String line = reader.readLine();
-			
-		while(line != null) {
-			lines.add(line);
-			line = reader.readLine();
-		}
-		reader.close();
-		
-		return lines;
 	}
 
 }
