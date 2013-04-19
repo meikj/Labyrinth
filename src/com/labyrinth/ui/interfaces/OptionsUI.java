@@ -2,7 +2,7 @@ package com.labyrinth.ui.interfaces;
 
 import java.util.LinkedList;
 
-import com.labyrinth.game.Labyrinth;
+import com.labyrinth.Labyrinth;
 import com.labyrinth.game.SettingsManager;
 import com.labyrinth.ui.CharacterElements;
 
@@ -14,7 +14,7 @@ import com.labyrinth.ui.CharacterElements;
  * @version 0.1.19042013
  *
  */
-public class OptionsUI extends UI {
+public class OptionsUI extends UserInterface {
 	
 	private SettingsManager settings;
 	

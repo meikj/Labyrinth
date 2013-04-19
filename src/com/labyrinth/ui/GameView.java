@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.labyrinth.Labyrinth;
 import com.labyrinth.game.Direction;
 import com.labyrinth.game.GameManager;
 import com.labyrinth.game.IllegalMoveException;
-import com.labyrinth.game.Labyrinth;
 import com.labyrinth.game.Leaderboard;
 import com.labyrinth.game.Tile;
 import com.labyrinth.game.modes.GameMode;

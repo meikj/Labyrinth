@@ -2,24 +2,35 @@ package com.labyrinth.ui.interfaces;
 
 import java.util.LinkedList;
 
-import com.labyrinth.game.Labyrinth;
+import com.labyrinth.Labyrinth;
 import com.labyrinth.game.SettingsManager;
 import com.labyrinth.game.modes.TreasureChase;
 import com.labyrinth.ui.GameView;
 import com.labyrinth.ui.Window;
 
-public class MainMenuUI extends UI {
+/**
+ * Represents the main menu user interface.
+ * 
+ * @author Gareth Gill
+ * @author John Meikle
+ * @version 0.1.19042013
+ *
+ */
+public class MainMenuUI extends UserInterface {
 	
 	private SettingsManager settings;
 	
 	// UI's
-	GameView gameUI;
-	LoadUI loadUI;
-	OptionsUI optionsUI;
+	private GameView gameUI;
+	private LoadUI loadUI;
+	private OptionsUI optionsUI;
 	
-	// Windows
-	Window helpWindow;
+	// Windows (I don't think these warrant a full UserInterface given what they do)
+	private Window helpWindow;
 	
+	/**
+	 * Construct a main menu interface.
+	 */
 	public MainMenuUI() {
 		super();
 		
@@ -95,10 +106,10 @@ public class MainMenuUI extends UI {
 	}
 	
 	/**
-	 * Initialise the main menu window.
+	 * Initialise the main menu window with custom layout and content.
 	 */
 	protected void makeWindow() {
-		setLayoutPath("media/window_menu");
+		setLayoutFile("media/window_menu");
 		
 		addContent("1. Play game");
 		addContent("2. Load game");
@@ -109,7 +120,7 @@ public class MainMenuUI extends UI {
 		try {
 			refresh();
 		} catch (Exception e) {
-			System.out.println("Error: MainMenuUI.makeWindow(): Couldn't process layout file.");
+			System.out.println("Error: MainMenuUI.makeWindow(): Couldn't process layout file: " + getLayoutFile());
 		}
 	}
 	

@@ -1,6 +1,8 @@
 package com.labyrinth.game;
+
 import java.io.*;
 
+import com.labyrinth.Labyrinth;
 import com.labyrinth.game.modes.GameMode;
 import com.labyrinth.game.modes.TreasureChase;
 
@@ -9,7 +11,7 @@ import com.labyrinth.game.modes.TreasureChase;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.01042013
+ * @version 0.1.19042013
  *
  */
 public class GameManager {

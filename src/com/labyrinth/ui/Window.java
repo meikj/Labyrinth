@@ -7,17 +7,18 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 /**
- * Represents a basic text-based graphical window.
+ * Represents a basic text-based graphical window with no
+ * user interaction.
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.17042013
+ * @version 0.1.19042013
  *
  */
 public class Window {
 	
 	private String title;
-	private String layoutPath;
+	private String layoutFile;
 	private LinkedList<String> window;
 	protected LinkedList<String> contents;
 	
@@ -26,7 +27,7 @@ public class Window {
 	 */
 	public Window() {
 		title = "";
-		layoutPath = System.getProperty("user.dir") + "/media/window_default";
+		layoutFile = "media/window_default";
 		window = new LinkedList<String>();
 		contents = new LinkedList<String>();
 		
@@ -80,10 +81,17 @@ public class Window {
 	 * 
 	 * 	[W] = Black block
 	 * 
-	 * @param path The path to the new layout.
+	 * @param path The path to the new layout file.
 	 */
-	public void setLayoutPath(String path) {
-		layoutPath = path;
+	public void setLayoutFile(String path) {
+		layoutFile = path;
+	}
+	
+	/**
+	 * Get the current layout file that is in use.
+	 */
+	public String getLayoutFile() {
+		return layoutFile;
 	}
 	
 	/**
@@ -91,7 +99,7 @@ public class Window {
 	 * This should be called after setting a new layout path.
 	 */
 	public void refresh() throws FileNotFoundException, IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(layoutPath));
+		BufferedReader reader = new BufferedReader(new FileReader(layoutFile));
 		String line = reader.readLine();
 		window = new LinkedList<String>();
 		

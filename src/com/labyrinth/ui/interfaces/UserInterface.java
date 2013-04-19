@@ -10,15 +10,20 @@ import java.util.Scanner;
 import com.labyrinth.ui.Window;
 
 /**
- * Represents the outline of a text-based UI for a general
- * purpose.
+ * Represents the outline of a text-based UI for a general purpose. It provides 
+ * functionality for prompting the user for input via the standard input stream. 
+ * This input is then returned in a 'tokenized' form. For example:
+ * 
+ * 		input: "hello world" -> output: ["hello", "world"]
+ * 
+ * It also provides basic functionality for parsing the input.
  * 
  * @author Gareth Gill
  * @author John Meikle
  * @version 0.1.19042013
  *
  */
-public abstract class UI extends Window {
+public abstract class UserInterface extends Window {
 
 	private boolean running;
 	protected Scanner input;
@@ -26,7 +31,7 @@ public abstract class UI extends Window {
 	/**
 	 * Construct a basic user interface.
 	 */
-	public UI() {
+	public UserInterface() {
 		super();
 		
 		running = false;
@@ -40,7 +45,7 @@ public abstract class UI extends Window {
 	 * 
 	 * @param title The title of the interface.
 	 */
-	public UI(String title) {
+	public UserInterface(String title) {
 		super(title);
 		
 		running = false;
@@ -57,7 +62,7 @@ public abstract class UI extends Window {
 	}
 	
 	/**
-	 * Run the user interface.
+	 * Run the user interface until told to stop().
 	 */
 	public void run() {
 		running = true;
@@ -93,7 +98,7 @@ public abstract class UI extends Window {
 	}
 	
 	/**
-	 * Parse a tokenized form of any form of input or commands.
+	 * Parse a tokenized form of arguments (e.g. ["command", "arg1", ...]).
 	 * 
 	 * @param args The arguments to be parsed.
 	 * @throws IllegalArgumentException Thrown when an invalid argument (or arguments) is passed.
@@ -104,7 +109,7 @@ public abstract class UI extends Window {
 	}
 	
 	/**
-	 * Initialise the window with content and what have you.
+	 * Initialise the window with content.
 	 */
 	protected abstract void makeWindow();
 	

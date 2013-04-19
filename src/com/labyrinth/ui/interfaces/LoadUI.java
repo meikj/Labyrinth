@@ -4,8 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import com.labyrinth.Labyrinth;
 import com.labyrinth.game.GameManager;
-import com.labyrinth.game.Labyrinth;
 import com.labyrinth.game.modes.GameMode;
 import com.labyrinth.ui.GameView;
 
@@ -17,7 +17,7 @@ import com.labyrinth.ui.GameView;
  * @version 0.1.19042013
  *
  */
-public class LoadUI extends UI {
+public class LoadUI extends UserInterface {
 	
 	private GameManager manager;
 	private GameView gameUI;

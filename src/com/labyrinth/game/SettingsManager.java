@@ -1,4 +1,5 @@
 package com.labyrinth.game;
+
 import java.io.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -10,7 +11,7 @@ import java.util.Scanner;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.24032013
+ * @version 0.1.19042013
  *
  */
 public class SettingsManager {
@@ -57,7 +58,7 @@ public class SettingsManager {
 	public void setDefault() {
 		rows = 7;
 		columns = 7;
-		leaderboard = System.getProperty("user.dir") + "\\leaderboards\\leaderboard";
+		leaderboard = "leaderboards/default";
 	}
 	
 	/**
@@ -143,7 +144,7 @@ public class SettingsManager {
 				}
 				else if(entry[0].equals("LEADERBOARD")) {
 					// Set leaderboard to that specified in settings file
-					this.leaderboard = System.getProperty("user.dir") + entry[1];
+					this.leaderboard = entry[1];
 				}
 				else {
 					// Invalid type?
@@ -170,7 +171,7 @@ public class SettingsManager {
 			columns = 7;
 		}
 		if(leaderboard == null) {
-			leaderboard = System.getProperty("user.dir") + "\\leaderboards\\leaderboard.txt";
+			leaderboard = "leaderboards/default";
 		}
 	}
 
