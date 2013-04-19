@@ -35,8 +35,6 @@ public class SettingsManager {
 	 * @param path The path to the settings file.
 	 */
 	public SettingsManager(String path) {
-		this();
-		
 		// Set to 'erroneous' values first
 		rows = 0;
 		columns = 0;
@@ -59,7 +57,7 @@ public class SettingsManager {
 	public void setDefault() {
 		rows = 7;
 		columns = 7;
-		leaderboard = System.getProperty("user.dir") + "\\leaderboards\\leaderboard.txt";
+		leaderboard = System.getProperty("user.dir") + "\\leaderboards\\leaderboard";
 	}
 	
 	/**

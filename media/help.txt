@@ -37,4 +37,5 @@ Available Commands
 3. rotate <90/180/270> - Rotate tile by specified degrees
 4. move <up/down/left/right> - Move token
 5. save <game_name> - Save the current progress of game
-6. exit - Exit the game
+6. back - Go back a screen (in main menu)
+7. exit - Exit the game

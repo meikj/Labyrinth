@@ -103,7 +103,7 @@ public class GameManager {
 		// Get the game properties
 		int rows = game.getSettings().getRows();
 		int columns = game.getSettings().getColumns();
-		String gameMode = game.getClass().getName().equals("TreasureChase") ? "tc" : "lc";
+		String gameMode = game.getClass().getName().equals("com.labyrinth.game.modes.TreasureChase") ? "tc" : "lc";
 		
 		writer.write("ROWS " + rows);
 		writer.newLine();
@@ -136,7 +136,7 @@ public class GameManager {
 	 * @param name The name of the saved game.
 	 */
 	public void addGameEntry(String name) throws IOException {
-		String path = System.getProperty("user.dir") + "/saves/list.txt";
+		String path = Labyrinth.LOAD_PATH + "list";
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
 		
 		writer.write(name);

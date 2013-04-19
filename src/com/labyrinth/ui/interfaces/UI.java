@@ -98,7 +98,10 @@ public abstract class UI extends Window {
 	 * @param args The arguments to be parsed.
 	 * @throws IllegalArgumentException Thrown when an invalid argument (or arguments) is passed.
 	 */
-	public abstract void parse(String[] args) throws IllegalArgumentException;
+	public void parse(String[] args) throws IllegalArgumentException {
+		if(args[0].toLowerCase().equals("back") || args[0].toLowerCase().equals("exit"))
+			stop();
+	}
 	
 	/**
 	 * Initialise the window with content and what have you.

@@ -1,4 +1,4 @@
-package com.labyrinth.ui.interfaces;
+package com.labyrinth.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,10 +7,10 @@ import java.util.Scanner;
 import com.labyrinth.game.Direction;
 import com.labyrinth.game.GameManager;
 import com.labyrinth.game.IllegalMoveException;
+import com.labyrinth.game.Labyrinth;
 import com.labyrinth.game.Leaderboard;
 import com.labyrinth.game.Tile;
 import com.labyrinth.game.modes.GameMode;
-import com.labyrinth.ui.CharacterElements;
 
 /**
  * Represents a text based user interface for use as a front-end for the Labyrinth game.
@@ -21,7 +21,7 @@ import com.labyrinth.ui.CharacterElements;
  * @version 0.1.19042013
  *
  */
-public class GameUI {
+public class GameView {
 	
 	private GameMode game;
 	private boolean running;
@@ -34,7 +34,7 @@ public class GameUI {
 	 * 
 	 * @param game The game mode object to manipulate.
 	 */
-	public GameUI(GameMode game) {
+	public GameView(GameMode game) {
 		this.game = game;
 		this.input = new Scanner(System.in);
 		this.running = true;
@@ -239,7 +239,7 @@ public class GameUI {
 			String gameName = inputArgs[1];
 			
 			try {
-				manager.save(System.getProperty("user.dir") + "/saves/" + gameName + ".txt", game);
+				manager.save(Labyrinth.LOAD_PATH + gameName, game);
 				manager.addGameEntry(gameName);
 			} catch(IOException e) {
 				System.out.println("Couldn't save file: " + e.getMessage());

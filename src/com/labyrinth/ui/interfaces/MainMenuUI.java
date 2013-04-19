@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import com.labyrinth.game.Labyrinth;
 import com.labyrinth.game.SettingsManager;
 import com.labyrinth.game.modes.TreasureChase;
+import com.labyrinth.ui.GameView;
 import com.labyrinth.ui.Window;
 
 public class MainMenuUI extends UI {
@@ -12,7 +13,7 @@ public class MainMenuUI extends UI {
 	private SettingsManager settings;
 	
 	// UI's
-	GameUI gameUI;
+	GameView gameUI;
 	LoadUI loadUI;
 	OptionsUI optionsUI;
 	
@@ -23,12 +24,12 @@ public class MainMenuUI extends UI {
 		super();
 		
 		// Load in settings
-		settings = new SettingsManager(Labyrinth.SETTINGS_PATH);
+		settings = new SettingsManager(Labyrinth.SETTINGS_FILE);
 		
 		// Set up UI's
-		gameUI = new GameUI(new TreasureChase(settings));
+		gameUI = new GameView(new TreasureChase(settings));
 		loadUI = new LoadUI();
-		optionsUI = new OptionsUI();
+		optionsUI = new OptionsUI(settings);
 		
 		// Set up windows
 		makeHelpWindow();
@@ -103,7 +104,7 @@ public class MainMenuUI extends UI {
 		addContent("2. Load game");
 		addContent("3. Options");
 		addContent("4. Help");
-		addContent("5. Quit");
+		addContent("5. Exit");
 		
 		try {
 			refresh();
@@ -120,7 +121,7 @@ public class MainMenuUI extends UI {
 		helpWindow = new Window("HELP");
 		
 		try {
-			helpFile = processFile(Labyrinth.HELP_PATH);
+			helpFile = processFile(Labyrinth.HELP_FILE);
 		} catch(Exception e) {
 			helpWindow.addContent("Help file not available, sorry!");
 		}
