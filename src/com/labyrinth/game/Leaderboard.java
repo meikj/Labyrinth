@@ -56,7 +56,7 @@ public class Leaderboard {
 			return;
 		}
 		
-		int placementIndex = 0;
+		int placementIndex = scores.size();
 		
 		for(int i = 0; i < scores.size(); i++) {
 			if(scores.get(i) > score) {
