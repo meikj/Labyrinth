@@ -3,6 +3,9 @@ package com.labyrinth.game;
 import com.labyrinth.game.modes.GameMode;
 import com.labyrinth.game.modes.TreasureChase;
 import com.labyrinth.ui.*;
+import com.labyrinth.ui.interfaces.GameUI;
+import com.labyrinth.ui.interfaces.MainMenuUI;
+import com.labyrinth.ui.interfaces.UI;
 
 /**
  * The main entry point to the Labyrinth game.
@@ -25,8 +28,11 @@ public class Labyrinth {
 		
 		// By default just start up a new Treasure Chase game
 		GameMode game = new TreasureChase(settings);
-		UserInterface ui = new UserInterface(game);
-		ui.runMenu();
+		//GameUI ui = new GameUI(game);
+		//ui.runMenu();
+		
+		UI ui = new MainMenuUI();
+		ui.run();
 	}
 
 }

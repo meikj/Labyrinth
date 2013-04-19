@@ -1,4 +1,4 @@
-package com.labyrinth.ui;
+package com.labyrinth.ui.interfaces;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -15,6 +15,7 @@ import com.labyrinth.game.Labyrinth;
 import com.labyrinth.game.Leaderboard;
 import com.labyrinth.game.Tile;
 import com.labyrinth.game.modes.GameMode;
+import com.labyrinth.ui.CharacterElements;
 
 /**
  * Represents a text based user interface for use as a front-end for the Labyrinth game.
@@ -22,21 +23,15 @@ import com.labyrinth.game.modes.GameMode;
  * 
  * @author Gareth Gill
  * @author John Meikle
- * @version 0.1.01042013
+ * @version 0.1.19042013
  *
  */
-public class UserInterface {
+public class GameUI {
 	
 	private GameMode game;
 	private boolean running;
 	private Scanner input;
 	private GameManager manager;
-	
-	// Windows
-	Window menuWindow;
-	Window loadWindow;
-	Window optionsWindow;
-	Window helpWindow;
 	
 	/**
 	 * Construct a new user interface to interface with a valid
@@ -44,111 +39,11 @@ public class UserInterface {
 	 * 
 	 * @param game The game mode object to manipulate.
 	 */
-	public UserInterface(GameMode game) {
+	public GameUI(GameMode game) {
 		this.game = game;
 		this.input = new Scanner(System.in);
 		this.running = true;
 		this.manager = new GameManager();
-		
-		// Set up windows
-		makeMenuWindow();
-		makeLoadWindow();
-		makeOptionsWindow();
-		makeHelpWindow();
-	}
-	
-	/**
-	 * Initialise the main menu window.
-	 */
-	private void makeMenuWindow() {
-		menuWindow = new Window();
-		menuWindow.setLayoutPath("media/window_menu");
-		
-		menuWindow.addContent("1. Play game");
-		menuWindow.addContent("2. Load game");
-		menuWindow.addContent("3. Options");
-		menuWindow.addContent("4. Help");
-		menuWindow.addContent("5. Quit");
-		
-		try {
-			menuWindow.refresh();
-		} catch (Exception e) {
-			System.out.println("Error: makeMenuWindow(): Couldn't process layout file.");
-		}
-	}
-	
-	/**
-	 * Initialise the load game window.
-	 */
-	private void makeLoadWindow() {
-		LinkedList<String> loadFile = null;
-		loadWindow = new Window("LOAD GAME");
-		
-		loadWindow.addContent("Available saved games to choose from:");
-		loadWindow.addContent("");
-		
-		try {
-			loadFile = processFile(Labyrinth.LOAD_PATH);
-		} catch(Exception e) {
-			loadWindow.addContent("    No saved games available");
-		}
-		
-		// Add the available saved games to the window
-		if(loadFile.isEmpty()) {
-			loadWindow.addContent("    No saved games available");
-		} else {
-			for(String line : loadFile) {
-				loadWindow.addContent("    * " + line);
-			}
-		}
-	}
-	
-	/**
-	 * Initialise the options window.
-	 */
-	private void makeOptionsWindow() {
-		LinkedList<String> optionsFile = null;
-		optionsWindow = new Window("OPTIONS");
-		
-		optionsWindow.addContent("To alter an option, type <option_name> <new_value>. Current options:");
-		optionsWindow.addContent("");
-		
-		try {
-			optionsFile = processFile(Labyrinth.SETTINGS_PATH);
-		} catch(Exception e) {
-			optionsWindow.addContent("    No options available");
-		}
-		
-		// Add the available saved games to the window
-		if(optionsFile.isEmpty()) {
-			optionsWindow.addContent("    No options available");
-		} else {
-			for(String line : optionsFile) {
-				optionsWindow.addContent("    * " + line);
-			}
-		}
-		
-		optionsWindow.addContent("");
-		optionsWindow.addContent("Labyrinth v0.1.18042013    Charset: " + CharacterElements.charSet);
-	}
-	
-	/**
-	 * Initialise the help window.
-	 */
-	private void makeHelpWindow() {
-		LinkedList<String> helpFile = null;
-		helpWindow = new Window("HELP");
-		
-		try {
-			helpFile = processFile(Labyrinth.HELP_PATH);
-		} catch(Exception e) {
-			helpWindow.addContent("Help file not available, sorry!");
-		}
-		
-		// Add the help file to the window
-		for(String line : helpFile) {
-			helpWindow.addContent(line);
-		}
 	}
 	
 	/**
@@ -377,151 +272,6 @@ public class UserInterface {
 	 */
 	public void setRunning(boolean state) {
 		running = state;
-	}
-	
-	/**
-	 * Display the help file.
-	 */
-	public void displayHelp() {
-		helpWindow.display();
-		enterPrompt();
-	}
-	
-	/**
-	 * Parse a menu option.
-	 * 
-	 * 1 - Play game
-	 * 2 - Load game
-	 * 3 - Options
-	 * 4 - Help
-	 * 5 - Exit
-	 * 
-	 * @param choice The menu option.
-	 * @throws IllegalArgumentException When an invalid menu option is passed.
-	 */
-	public void parseMenu(int choice) throws IllegalArgumentException {
-		switch(choice) {
-		case 1:
-			// Play game
-			System.out.println("\nStarting new Treasure Chase game...\n");
-			run();
-			break;
-		case 2:
-			// Load game
-			System.out.println();
-			promptLoad();
-			break;
-		case 3:
-			// Options
-			System.out.println();
-			displayOptions();
-			break;
-		case 4:
-			// Help
-			System.out.println();
-			displayHelp();
-			break;
-		case 5:
-			// Exit
-			setRunning(false);
-			System.exit(0);
-		default:
-			throw new IllegalArgumentException("Please enter an option between 1-5 (inclusive).");
-		}
-	}
-	
-	/**
-	 * Display the load screen and prompt the user for their option.
-	 */
-	public void promptLoad() {
-		String option;
-		
-		while(running) {
-			displayLoad();
-			System.out.print("\n    Load Game: ");
-			
-			try {
-				option = input.nextLine();
-			} catch(Exception e) {
-				System.out.println("Please enter a valid game name.");
-				enterPrompt();
-				continue;
-			}
-		
-			// Process option
-			GameMode newGame = null;
-			
-			try {
-				newGame = manager.load(System.getProperty("user.dir") + "/saves/" + option + ".txt");
-			} catch(FileNotFoundException e) {
-				System.out.println("Couldn't find: " + System.getProperty("user.dir") + "/saves/" + option + ".txt");
-				enterPrompt();
-				continue;
-			} catch(IOException e) {
-				System.out.println("Error parsing: " + System.getProperty("user.dir") + "/saves/" + option + ".txt");
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-				enterPrompt();
-				continue;
-			}
-			
-			// Assign the saved game to the active game
-			if(newGame != null) {
-				this.game = newGame;
-				run();
-			} else {
-				System.out.println("Something went horribly wrong processing the save. Try again?");
-				enterPrompt();
-			}
-		}
-	}
-	
-	/**
-	 * Display the load screen.
-	 */
-	public void displayLoad() {
-		loadWindow.display();
-	}
-	
-	/**
-	 * Display the menu.
-	 */
-	public void displayMenu() {
-		menuWindow.display();
-	}
-	
-	/**
-	 * Display the options window.
-	 */
-	public void displayOptions() {
-		optionsWindow.display();
-		enterPrompt();
-	}
-	
-	/**
-	 * Display and run the main menu.
-	 */
-	public void runMenu() {
-		while(running) {
-			displayMenu();
-			
-			System.out.print("\n    Option: ");
-			int option = 0;
-			
-			try {
-				option = Integer.parseInt(input.nextLine());
-			} catch(NumberFormatException e) {
-				System.out.println("Please enter a valid menu option.");
-				continue;
-			}
-			
-			try {
-				parseMenu(option);
-			} catch(IllegalArgumentException e) {
-				System.out.println(e.getMessage());
-				continue;
-			}
-		}
 	}
 	
 	/**
