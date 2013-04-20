@@ -13,7 +13,7 @@ The player has a spare tile in which they can rotate by 90, 180 or 270 before pl
 
 After the player performs their moves, a computer player randomly makes a tile move. The computer player acts as a player so retains score, spare tile, etc. It is a **very** simple opponent.
 
-As it stands, the project is still under heavy development, but is progressing very well.
+The project is now complete. It was submitted to MyPlace on the 19th of April for marking.
 
 ## Progress
 * [Move Tile Use Case](https://github.com/meikj/Labyrinth/wiki/Move-Tile-Use-Case)

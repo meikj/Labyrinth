@@ -36,6 +36,7 @@ Available Commands
 2. insert row <left/right> <no> - Insert tile into specified row
 3. rotate <90/180/270> - Rotate tile by specified degrees
 4. move <up/down/left/right> - Move token
+5. done - Finish token move
 5. save <game_name> - Save the current progress of game
 6. back - Go back a screen (in main menu)
 7. exit - Exit the game
